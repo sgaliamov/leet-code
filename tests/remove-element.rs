@@ -91,14 +91,7 @@ mod tests {
         run_test(remove_element_swap_remove);
     }
 
-    fn run_test(f: fn(&mut Vec<i32>, i32) -> i32) {
-        cases().into_iter().for_each(|(mut nums, val, expected)| {
-            let actual = f(&mut nums, val) as usize;
-            assert(nums, expected, actual);
-        });
-    }
-
-    fn cases() -> Vec<(Vec<i32>, i32, Vec<i32>)> {
+    fn run_test(target: fn(&mut Vec<i32>, i32) -> i32) {
         vec![
             (vec![3, 2, 2, 3], 3, vec![2, 2]),
             (vec![2, 3], 3, vec![2]),
@@ -110,15 +103,16 @@ mod tests {
                 vec![0, 0, 1, 2, 2, 2, 3, 4],
             ),
         ]
-    }
+        .into_iter()
+        .for_each(|(mut nums, val, expected)| {
+            let actual = target(&mut nums, val) as usize;
+            let nums = nums.into_iter().take(expected.len()).sorted().collect_vec();
+            let name = format!("{nums:?} | {expected:?} | {actual}");
 
-    fn assert(nums: Vec<i32>, expected: Vec<i32>, actual: usize) {
-        let nums = nums.into_iter().take(expected.len()).sorted().collect_vec();
-        let name = format!("{nums:?} | {expected:?} | {actual}");
-
-        assert_that!(nums).named(&name).is_equal_to(&expected);
-        assert_that!(actual)
-            .named(&name)
-            .is_equal_to(expected.len());
+            assert_that!(nums).named(&name).is_equal_to(&expected);
+            assert_that!(actual)
+                .named(&name)
+                .is_equal_to(expected.len());
+        });
     }
 }
