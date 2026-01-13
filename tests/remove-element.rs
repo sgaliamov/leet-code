@@ -16,27 +16,42 @@ pub fn remove_element_dummy(nums: &mut Vec<i32>, val: i32) -> i32 {
     nums.len() as i32
 }
 
+// not mine
+pub fn remove_element_perfect(nums: &mut Vec<i32>, val: i32) -> i32 {
+    nums.retain(|&num| num != val);
+    nums.len() as i32
+}
+
 pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
-    let mut j = nums.len() - 1;
+    let mut j = nums.len();
+    let mut i = 0;
+    let mut s = 0;
 
-    for i in 0..nums.len() {
-        if i == j {
-            break;
-        }
-
+    while i < j {
         if nums[i] == val {
-            for l in (i..=j).rev() {
+            let mut found = false;
+            s += 1;
+
+            for l in (i + 1..j).rev() {
                 if nums[l] != val {
+                    found = true;
                     j = l;
                     break;
+                } else {
+                    j = l;
+                    s += 1;
                 }
             }
 
-            nums.swap(i, j);
+            if found {
+                nums.swap(i, j);
+            }
         }
+
+        i += 1;
     }
 
-    j as i32
+    (nums.len() - s) as i32
 }
 
 use itertools::Itertools;
@@ -50,6 +65,14 @@ fn test_dummy() {
 }
 
 #[test]
+fn test_perfect() {
+    cases().into_iter().for_each(|(mut nums, val, expected)| {
+        let actual = remove_element_perfect(&mut nums, val) as usize;
+        assert(nums, expected, actual);
+    });
+}
+
+#[test]
 fn test() {
     cases().into_iter().for_each(|(mut nums, val, expected)| {
         let actual = remove_element(&mut nums, val) as usize;
@@ -57,15 +80,26 @@ fn test() {
     });
 }
 
-fn assert(nums: Vec<i32>, expected: Vec<i32>, actual: usize) {
-    let nums = nums.into_iter().take(expected.len()).sorted().collect_vec();
-    assert_that!(nums).is_equal_to(&expected);
-    assert_that!(actual).is_equal_to(expected.len());
+fn cases() -> Vec<(Vec<i32>, i32, Vec<i32>)> {
+    vec![
+        (vec![3, 2, 2, 3], 3, vec![2, 2]),
+        (vec![2, 3], 3, vec![2]),
+        (vec![3, 3], 3, vec![]),
+        (vec![0, 1, 2, 2, 3, 0, 4, 2], 2, vec![0, 0, 1, 3, 4]),
+        (
+            vec![0, 1, 2, 2, 3, 0, 4, 2],
+            5,
+            vec![0, 0, 1, 2, 2, 2, 3, 4],
+        ),
+    ]
 }
 
-fn cases() -> [(Vec<i32>, i32, Vec<i32>); 2] {
-    [
-        (vec![3, 2, 2, 3], 3, vec![2, 2]),
-        (vec![0, 1, 2, 2, 3, 0, 4, 2], 2, vec![0, 0, 1, 3, 4]),
-    ]
+fn assert(nums: Vec<i32>, expected: Vec<i32>, actual: usize) {
+    let nums = nums.into_iter().take(expected.len()).sorted().collect_vec();
+    let name = format!("{nums:?} | {expected:?} | {actual}");
+
+    assert_that!(nums).named(&name).is_equal_to(&expected);
+    assert_that!(actual)
+        .named(&name)
+        .is_equal_to(expected.len());
 }
