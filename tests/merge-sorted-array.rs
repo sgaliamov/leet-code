@@ -1,12 +1,12 @@
-//! You are given two integer arrays nums1 and nums2, sorted in non-decreasing order, and two integers m and n, representing the number of elements in nums1 and nums2 respectively.
-//! Merge nums1 and nums2 into a single array sorted in non-decreasing order.
-//! The final sorted array should not be returned by the function, but instead be stored inside the array nums1.
-//! To accommodate this, nums1 has a length of m + n, where the first m elements denote the elements that should be merged, and the last n elements are set to 0 and should be ignored.
-//! nums2 has a length of n.
+//! https://leetcode.com/problems/merge-sorted-array
 
-use spectral::assert_that;
+use spectral::prelude::*;
 
-/// https://leetcode.com/problems/merge-sorted-array
+/// Merge nums1 and nums2 into a single array sorted in non-decreasing order.
+/// You are given two integer arrays nums1 and nums2, sorted in non-decreasing order, and two integers m and n, representing the number of elements in nums1 and nums2 respectively.
+/// The final sorted array should not be returned by the function, but instead be stored inside the array nums1.
+/// To accommodate this, nums1 has a length of m + n, where the first m elements denote the elements that should be merged, and the last n elements are set to 0 and should be ignored.
+/// nums2 has a length of n.
 pub fn merge(nums1: &mut Vec<i32>, mut m: i32, nums2: &mut Vec<i32>, mut n: i32) {
     if n == 0 {
         return;
@@ -82,6 +82,11 @@ fn test() {
         (vec![1], vec![2], vec![1, 2]),
         (vec![2], vec![1], vec![1, 2]),
         (vec![], vec![], vec![]),
+        (
+            vec![5, 6, 7], //
+            vec![1, 2, 3, 4],
+            vec![1, 2, 3, 4, 5, 6, 7],
+        ),
     ];
 
     cases.iter_mut().for_each(|(nums1, nums2, expected)| {
