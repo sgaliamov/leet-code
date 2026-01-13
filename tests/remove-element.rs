@@ -22,6 +22,20 @@ pub fn remove_element_perfect(nums: &mut Vec<i32>, val: i32) -> i32 {
     nums.len() as i32
 }
 
+// gemini
+pub fn remove_element_swap_remove(nums: &mut Vec<i32>, val: i32) -> i32 {
+    let mut i = 0;
+    while i < nums.len() {
+        if nums[i] == val {
+            nums.swap_remove(i);
+        } else {
+            i += 1;
+        }
+    }
+    nums.len() as i32
+}
+
+// my first ugly solution
 pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
     let mut j = nums.len();
     let mut i = 0;
@@ -57,25 +71,27 @@ pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
 use itertools::Itertools;
 
 #[test]
+fn test() {
+    run_test(remove_element);
+}
+#[test]
 fn test_dummy() {
-    cases().into_iter().for_each(|(mut nums, val, expected)| {
-        let actual = remove_element_dummy(&mut nums, val) as usize;
-        assert(nums, expected, actual);
-    });
+    run_test(remove_element_dummy);
 }
 
 #[test]
 fn test_perfect() {
-    cases().into_iter().for_each(|(mut nums, val, expected)| {
-        let actual = remove_element_perfect(&mut nums, val) as usize;
-        assert(nums, expected, actual);
-    });
+    run_test(remove_element_perfect);
 }
 
 #[test]
-fn test() {
+fn test_swap_remove() {
+    run_test(remove_element_swap_remove);
+}
+
+fn run_test(f: fn(&mut Vec<i32>, i32) -> i32) {
     cases().into_iter().for_each(|(mut nums, val, expected)| {
-        let actual = remove_element(&mut nums, val) as usize;
+        let actual = f(&mut nums, val) as usize;
         assert(nums, expected, actual);
     });
 }
