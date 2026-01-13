@@ -1,0 +1,6 @@
+[build]
+rustc-wrapper = "sccache" # makes builds significantly faster
+
+[target.'cfg(target_os = "windows")']
+linker = "lld-link" # as mold is not supported on windows, use lld as a fallback to build faster
+rustflags = ["-C", "target-cpu=native"]
