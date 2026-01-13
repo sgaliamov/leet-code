@@ -82,6 +82,11 @@ fn test() {
         (vec![1], vec![2], vec![1, 2]),
         (vec![2], vec![1], vec![1, 2]),
         (vec![], vec![], vec![]),
+        (
+            vec![5, 6, 7], //
+            vec![1, 2, 3, 4],
+            vec![1, 2, 3, 4, 5, 6, 7],
+        ),
     ];
 
     cases.iter_mut().for_each(|(nums1, nums2, expected)| {
