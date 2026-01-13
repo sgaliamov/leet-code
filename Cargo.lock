@@ -34,6 +34,7 @@ name = "leet-code"
 version = "0.1.0"
 dependencies = [
  "itertools",
+ "rustc-hash",
  "spectral",
 ]
 
@@ -159,6 +160,12 @@ checksum = "678054eb77286b51581ba43620cc911abf02758c91f93f479767aed0f90458b2"
 dependencies = [
  "rand_core 0.3.1",
 ]
+
+[[package]]
+name = "rustc-hash"
+version = "2.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "357703d41365b4b27c590e3ed91eabb1b663f07c4c084095e60cbed4362dff0d"
 
 [[package]]
 name = "rustc-serialize"
