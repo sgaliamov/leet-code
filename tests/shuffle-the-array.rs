@@ -3,9 +3,15 @@
 //! Given the array nums consisting of 2n elements in the form [x1,x2,...,xn,y1,y2,...,yn].
 //! Return the array in the form [x1,y1,x2,y2,...,xn,yn].
 
-pub fn shuffle(nums: Vec<i32>, n: i32) -> Vec<i32> {
+// mine first attempt, slow
+pub fn shuffle_slow(nums: Vec<i32>, n: i32) -> Vec<i32> {
     let n = n as usize;
-    let mut ans = vec![0; n * 2];
+    let mut ans = Vec::with_capacity(n * 2);
+
+    #[allow(clippy::uninit_vec)]
+    unsafe {
+        ans.set_len(n * 2);
+    }
 
     for i in 0..n {
         ans[i * 2] = nums[i];
@@ -22,7 +28,7 @@ mod tests {
 
     #[test]
     fn test() {
-        run_test(shuffle);
+        run_test(shuffle_slow);
     }
 
     fn run_test(target: fn(Vec<i32>, i32) -> Vec<i32>) {
