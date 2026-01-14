@@ -9,3 +9,8 @@ rustc-hash = "2.1.1"
 
 [dev-dependencies]
 spectral = "0.6.0" # Fluent assertions.
+criterion = "0.8.1"
+
+[[bench]]
+name = "concatenation_of_array"
+harness = false
