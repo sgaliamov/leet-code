@@ -3,7 +3,7 @@
 //! Given the array nums consisting of 2n elements in the form [x1,x2,...,xn,y1,y2,...,yn].
 //! Return the array in the form [x1,y1,x2,y2,...,xn,yn].
 
-// mine first attempt, slow
+// mine first attempt
 pub fn shuffle_slow(nums: Vec<i32>, n: i32) -> Vec<i32> {
     let n = n as usize;
     let mut ans = Vec::with_capacity(n * 2);
@@ -27,7 +27,7 @@ mod tests {
     use spectral::prelude::*;
 
     #[test]
-    fn test() {
+    fn test_slow() {
         run_test(shuffle_slow);
     }
 
