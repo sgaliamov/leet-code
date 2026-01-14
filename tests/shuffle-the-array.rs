@@ -3,8 +3,8 @@
 //! Given the array nums consisting of 2n elements in the form [x1,x2,...,xn,y1,y2,...,yn].
 //! Return the array in the form [x1,y1,x2,y2,...,xn,yn].
 
-// mine first attempt
-pub fn shuffle_slow(nums: Vec<i32>, n: i32) -> Vec<i32> {
+/// mine first attempt
+pub fn shuffle(nums: Vec<i32>, n: i32) -> Vec<i32> {
     let n = n as usize;
     let mut ans = Vec::with_capacity(n * 2);
 
@@ -21,14 +21,32 @@ pub fn shuffle_slow(nums: Vec<i32>, n: i32) -> Vec<i32> {
     ans
 }
 
+/// what is probably expected
+fn shuffle_2(nums: Vec<i32>, n: i32) -> Vec<i32> {
+    let n = n as usize;
+    let mut ans = vec![0; n * 2];
+
+    for i in 0..n {
+        ans[i * 2] = nums[i];
+        ans[i * 2 + 1] = nums[i + n];
+    }
+
+    ans
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use spectral::prelude::*;
 
     #[test]
-    fn test_slow() {
-        run_test(shuffle_slow);
+    fn test() {
+        run_test(shuffle);
+    }
+
+    #[test]
+    fn test_2() {
+        run_test(shuffle_2);
     }
 
     fn run_test(target: fn(Vec<i32>, i32) -> Vec<i32>) {

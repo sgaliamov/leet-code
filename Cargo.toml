@@ -14,3 +14,7 @@ criterion = "0.8.1"
 [[bench]]
 name = "concatenation_of_array"
 harness = false
+
+[[bench]]
+name = "shuffle_the_array"
+harness = false
