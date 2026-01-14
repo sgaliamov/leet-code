@@ -5,13 +5,15 @@
 //! Return the array ans.
 
 pub fn get_concatenation(nums: Vec<i32>) -> Vec<i32> {
-    todo!()
+    let mut ans = Vec::with_capacity(nums.len() * 2);
+    ans.extend(&nums);
+    ans.extend(&nums);
+    ans
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use itertools::Itertools;
     use spectral::prelude::*;
 
     #[test]
@@ -19,5 +21,14 @@ mod tests {
         run_test(get_concatenation);
     }
 
-    fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {}
+    fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
+        vec![(vec![1, 3, 2, 1], vec![1, 3, 2, 1, 1, 3, 2, 1])]
+            .into_iter()
+            .for_each(|(nums, expected)| {
+                let actual = target(nums);
+                let name = format!("{expected:?}");
+
+                assert_that!(actual).named(&name).is_equal_to(&expected);
+            });
+    }
 }
