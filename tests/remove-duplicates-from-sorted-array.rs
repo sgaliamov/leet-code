@@ -13,14 +13,22 @@ pub fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
         return 0;
     }
 
-    for i in 0..nums.len() {
+    let mut i = 0;
+    while i < nums.len() {
         if nums[i] != nums[k] {
             k += 1;
             nums[k] = nums[i];
         }
+
+        i += 1;
     }
 
     (k + 1) as i32
+}
+
+pub fn remove_duplicates_2(nums: &mut Vec<i32>) -> i32 {
+    nums.dedup();
+    nums.len() as i32
 }
 
 #[cfg(test)]
@@ -32,6 +40,11 @@ mod tests {
     #[test]
     fn test() {
         run_test(remove_duplicates);
+    }
+
+    #[test]
+    fn test_2() {
+        run_test(remove_duplicates_2);
     }
 
     fn run_test(target: fn(&mut Vec<i32>) -> i32) {
