@@ -2,6 +2,8 @@
     "cSpell.words": [
         "gemini",
         "itertools",
-        "nums"
+        "nonoverlapping",
+        "nums",
+        "uninit"
     ]
 }
