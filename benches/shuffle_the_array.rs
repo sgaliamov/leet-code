@@ -1,17 +1,9 @@
-use std::hint::black_box;
+#[path = "../tests/shuffle-the-array.rs"]
+mod shuffle_the_array;
+
 use criterion::{Criterion, criterion_group, criterion_main};
-
-fn current_version(nums: Vec<i32>, n: i32) -> Vec<i32> {
-    let n = n as usize;
-    let mut ans = vec![0; n * 2];
-
-    for i in 0..n {
-        ans[i * 2] = nums[i];
-        ans[i * 2 + 1] = nums[i + n];
-    }
-
-    ans
-}
+use shuffle_the_array::shuffle as current_version;
+use std::hint::black_box;
 
 fn with_capacity_push(nums: Vec<i32>, n: i32) -> Vec<i32> {
     let n = n as usize;

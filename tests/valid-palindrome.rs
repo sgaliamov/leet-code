@@ -3,7 +3,7 @@
 //! A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.
 //! Given a string s, return true if it is a palindrome, or false otherwise.
 
-/// correct but slow
+/// correct but slow, because of `nth`
 pub fn is_palindrome_1(s: String) -> bool {
     let mut i = 0_usize;
     let mut j = s.len() - 1;
@@ -96,7 +96,8 @@ pub fn is_palindrome_3(s: String) -> bool {
     true
 }
 
-fn is_palindrome_4(s: String) -> bool {
+/// the fastest
+pub fn is_palindrome_4(s: String) -> bool {
     let bytes = s.as_bytes();
     let mut i = 0;
     let mut j = bytes.len() - 1;
