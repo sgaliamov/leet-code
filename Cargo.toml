@@ -5,7 +5,6 @@ edition = "2024"
 
 [dependencies]
 itertools = "0.14.0"
-rustc-hash = "2.1.1"
 
 [dev-dependencies]
 spectral = "0.6.0" # Fluent assertions.
@@ -17,4 +16,8 @@ harness = false
 
 [[bench]]
 name = "shuffle_the_array"
+harness = false
+
+[[bench]]
+name = "valid_palindrome"
 harness = false

@@ -1,13 +1,9 @@
+#[path = "../tests/concatenation-of-array.rs"]
+mod concatenation_of_array;
+
 use std::hint::black_box;
-
 use criterion::{Criterion, criterion_group, criterion_main};
-
-fn current_version(nums: Vec<i32>) -> Vec<i32> {
-    let mut ans = Vec::with_capacity(nums.len() * 2);
-    ans.extend_from_slice(&nums);
-    ans.extend_from_slice(&nums);
-    ans
-}
+use concatenation_of_array::get_concatenation as current_version;
 
 fn unsafe_version(nums: Vec<i32>) -> Vec<i32> {
     let len = nums.len();
