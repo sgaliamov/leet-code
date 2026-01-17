@@ -65,6 +65,37 @@ pub fn is_palindrome_2(s: String) -> bool {
 
     true
 }
+
+/// passed 100% runtime test.
+pub fn is_palindrome_3(s: String) -> bool {
+    let chars: Vec<_> = s
+        .chars()
+        .filter(|x| x.is_alphanumeric())
+        .map(|x| x.to_ascii_lowercase())
+        .collect();
+
+    if chars.is_empty() {
+        return true;
+    }
+
+    let mut i = 0_usize;
+    let mut j = chars.len() - 1;
+
+    while i < j {
+        let a = chars[i];
+        let b = chars[j];
+
+        if a != b {
+            return false;
+        }
+
+        i += 1;
+        j -= 1;
+    }
+
+    true
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -78,6 +109,11 @@ mod tests {
     #[test]
     fn test_2() {
         run_test(is_palindrome_2);
+    }
+
+    #[test]
+    fn test_3() {
+        run_test(is_palindrome_3);
     }
 
     fn run_test(target: fn(String) -> bool) {
