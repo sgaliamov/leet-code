@@ -13,7 +13,6 @@ I want to learn and grow as a programmer, not just get answers.
 - Write clear, direct code: prefer explicit loops and iteration over chained iterators unless the functional approach is genuinely clearer.
 - Prefer imperative style over overly functional style as we are mastering problem-solving skills, not Rust libraries.
 - Place helper functions and types at the bottom of the module.
-- Instead of standard HashMap and HashSet, use analogous data structures from the `rustc-hash` crate for better performance and ergonomics.
 
 ## Testing Standards
 
@@ -36,6 +35,12 @@ I want to learn and grow as a programmer, not just get answers.
   ```
 - DO NOT test obvious null/empty guard clauses (no position, no data, missing parameters).
 - DO NOT test panic conditions or trivial validation logic (assert statements).
+- When implementing benchmarks, don't forget to add them to `Cargo.toml`:
+  ```toml
+  [[bench]]
+  name = "problem_name"
+  harness = false
+  ```
 
 ## Error Handling & Documentation
 

@@ -17,3 +17,7 @@ harness = false
 [[bench]]
 name = "shuffle_the_array"
 harness = false
+
+[[bench]]
+name = "valid_palindrome"
+harness = false
