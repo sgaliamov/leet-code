@@ -218,9 +218,12 @@ fn benchmark_palindrome(c: &mut Criterion) {
     for (name, input) in test_cases {
         let input_owned = input.to_string();
 
-        group.bench_function(format!("is_palindrome_1_{}", name), |b| {
-            b.iter(|| is_palindrome_1(black_box(input_owned.clone())))
-        });
+        // Skip is_palindrome_1 for long inputs - it's O(n²) and will take forever
+        if !name.starts_with("long") {
+            group.bench_function(format!("is_palindrome_1_{}", name), |b| {
+                b.iter(|| is_palindrome_1(black_box(input_owned.clone())))
+            });
+        }
 
         group.bench_function(format!("is_palindrome_2_{}", name), |b| {
             b.iter(|| is_palindrome_2(black_box(input_owned.clone())))

@@ -41,6 +41,7 @@ I want to learn and grow as a programmer, not just get answers.
   name = "problem_name"
   harness = false
   ```
+- Add comments to benchmarks showing which implementation is the fastest.
 
 ## Error Handling & Documentation
 
@@ -48,7 +49,7 @@ I want to learn and grow as a programmer, not just get answers.
 - Use `unwrap()` only in tests or when failure is genuinely impossible.
 - In solution code, handle errors explicitly or document why panics are acceptable.
 - Add inline comments only when the "why" isn't obvious from the code itself.
-- Document solution approach and time/space complexity in a module-level doc comment.
+- Do not add comments where you explain what you did and why; your reasoning should stay in chat only.
 
 ## Personality
 
