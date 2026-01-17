@@ -35,6 +35,36 @@ pub fn is_palindrome_1(s: String) -> bool {
     true
 }
 
+/// still slow
+pub fn is_palindrome_2(s: String) -> bool {
+    use itertools::Itertools;
+    let mut i = 0_usize;
+    let mut j = s.len() - 1;
+    let chars = s.chars().collect_vec();
+
+    while i < j {
+        let a = chars[i];
+        if !a.is_alphanumeric() {
+            i += 1;
+            continue;
+        }
+
+        let b = chars[j];
+        if !b.is_alphanumeric() {
+            j -= 1;
+            continue;
+        }
+
+        if !a.eq_ignore_ascii_case(&b) {
+            return false;
+        }
+
+        i += 1;
+        j -= 1;
+    }
+
+    true
+}
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -43,6 +73,11 @@ mod tests {
     #[test]
     fn test() {
         run_test(is_palindrome_1);
+    }
+
+    #[test]
+    fn test_2() {
+        run_test(is_palindrome_2);
     }
 
     fn run_test(target: fn(String) -> bool) {
