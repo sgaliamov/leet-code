@@ -96,11 +96,9 @@ fn is_palindrome_3(s: String) -> bool {
 fn is_palindrome_bytes(s: String) -> bool {
     let bytes = s.as_bytes();
     let mut i = 0;
-    let mut j = bytes.len();
+    let mut j = bytes.len() - 1;
 
     while i < j {
-        j -= 1;
-
         let a = bytes[i];
         if !a.is_ascii_alphanumeric() {
             i += 1;
@@ -109,6 +107,8 @@ fn is_palindrome_bytes(s: String) -> bool {
 
         let b = bytes[j];
         if !b.is_ascii_alphanumeric() {
+            j -= 1;
+
             continue;
         }
 
@@ -116,6 +116,7 @@ fn is_palindrome_bytes(s: String) -> bool {
             return false;
         }
 
+        j -= 1;
         i += 1;
     }
 

@@ -96,6 +96,36 @@ pub fn is_palindrome_3(s: String) -> bool {
     true
 }
 
+fn is_palindrome_4(s: String) -> bool {
+    let bytes = s.as_bytes();
+    let mut i = 0;
+    let mut j = bytes.len() - 1;
+
+    while i < j {
+        let a = bytes[i];
+        if !a.is_ascii_alphanumeric() {
+            i += 1;
+            continue;
+        }
+
+        let b = bytes[j];
+        if !b.is_ascii_alphanumeric() {
+            j -= 1;
+
+            continue;
+        }
+
+        if !a.eq_ignore_ascii_case(&b) {
+            return false;
+        }
+
+        j -= 1;
+        i += 1;
+    }
+
+    true
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -114,6 +144,11 @@ mod tests {
     #[test]
     fn test_3() {
         run_test(is_palindrome_3);
+    }
+
+    #[test]
+    fn test_4() {
+        run_test(is_palindrome_4);
     }
 
     fn run_test(target: fn(String) -> bool) {
