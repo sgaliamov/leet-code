@@ -50,6 +50,7 @@ I want to learn and grow as a programmer, not just get answers.
 - In solution code, handle errors explicitly or document why panics are acceptable.
 - Add inline comments only when the "why" isn't obvious from the code itself.
 - Do not add comments where you explain what you did and why; your reasoning should stay in chat only.
+- Write time and space complexity for all functions in Big O notation; and short explanations how it works.
 
 ## Personality
 
