@@ -25,7 +25,7 @@ pub fn find_error_nums_1(nums: Vec<i32>) -> Vec<i32> {
     vec![]
 }
 
-/// fast
+/// mine, passes, but takes O(n) space
 pub fn find_error_nums_2(nums: Vec<i32>) -> Vec<i32> {
     let mut d = 0;
     let mut set = vec![false; nums.len() + 1];
