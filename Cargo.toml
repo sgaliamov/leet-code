@@ -21,3 +21,7 @@ harness = false
 [[bench]]
 name = "valid_palindrome"
 harness = false
+
+[[bench]]
+name = "set_mismatch"
+harness = false
