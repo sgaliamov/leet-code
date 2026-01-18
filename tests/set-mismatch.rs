@@ -48,7 +48,7 @@ pub fn find_error_nums_2(nums: Vec<i32>) -> Vec<i32> {
     vec![]
 }
 
-/// using sum
+/// using sum, solved with a hint
 pub fn find_error_nums_3(nums: Vec<i32>) -> Vec<i32> {
     let mut dup = 0_i32;
     let mut set = vec![false; nums.len()];
