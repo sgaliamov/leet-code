@@ -4,7 +4,30 @@
 //! Each letter in magazine can only be used once in ransomNote.
 
 pub fn can_construct(ransom_note: String, magazine: String) -> bool {
-    false
+    use itertools::Itertools;
+    use std::collections::HashMap;
+    let mut letters: HashMap<_, _> = magazine
+        .as_bytes()
+        .iter()
+        .sorted()
+        .chunk_by(|&x| x)
+        .into_iter()
+        .map(|(&k, g)| (k, g.count()))
+        .collect();
+
+    for &l in ransom_note.as_bytes() {
+        let Some(e) = letters.get_mut(&l) else {
+            return false;
+        };
+
+        if e == &0 {
+            return false;
+        }
+
+        *e -= 1;
+    }
+
+    true
 }
 
 #[cfg(test)]
