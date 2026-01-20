@@ -119,7 +119,7 @@ pub fn can_construct_4(ransom_note: String, magazine: String) -> bool {
 
         while mi < magazine.len() {
             let ml = magazine[mi];
-            letters[li] += 1;
+            letters[ml] += 1;
             mi += 1;
 
             if ml == li {
@@ -173,9 +173,10 @@ mod tests {
 
     fn run_test(target: fn(String, String) -> bool) {
         vec![
-            ("a", "b", false), //
+            ("a", "b", false),
             ("aa", "ab", false),
             ("aa", "aab", true),
+            ("aab", "baa", true),
         ]
         .into_iter()
         .for_each(|(ransom_note, magazine, expected)| {
