@@ -61,11 +61,11 @@ pub fn can_construct_3(ransom_note: String, magazine: String) -> bool {
     use std::collections::HashMap;
     use std::hash::*;
 
-    fn find(
+    fn find<S: BuildHasher>(
         letter: &u8,
         mut mi: usize,
         magazine: &[u8],
-        letters: &mut HashMap<u8, i32, BuildHasherDefault<DefaultHasher>>,
+        letters: &mut HashMap<u8, i32, S>,
     ) -> Option<usize> {
         if let Some(e) = letters.get(letter)
             && e != &0
@@ -87,7 +87,7 @@ pub fn can_construct_3(ransom_note: String, magazine: String) -> bool {
     }
 
     let mut letters: HashMap<_, _, _> =
-        HashMap::with_capacity_and_hasher(28, BuildHasherDefault::default());
+        HashMap::with_capacity_and_hasher(28, BuildHasherDefault::<DefaultHasher>::default());
     let mut mi = 0;
     let magazine = magazine.as_bytes();
 
