@@ -41,7 +41,7 @@ I want to learn and grow as a programmer, not just get answers.
   name = "problem_name"
   harness = false
   ```
-- Add comments to benchmarks showing which implementation is the fastest.
+- After adding benchmarks, add comments to the tested methods indicating their benchmarked status and performance characteristics in big O notation.
 
 ## Error Handling & Documentation
 

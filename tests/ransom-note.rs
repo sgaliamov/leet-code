@@ -103,6 +103,7 @@ pub fn can_construct_3(ransom_note: String, magazine: String) -> bool {
     true
 }
 
+/// overcomplicated
 pub fn can_construct_4(ransom_note: String, magazine: String) -> bool {
     let mut letters = vec![0; 26];
     let mut mi = 0;
@@ -146,6 +147,25 @@ pub fn can_construct_4(ransom_note: String, magazine: String) -> bool {
     true
 }
 
+/// Simple, straightforward: count then check
+pub fn can_construct_5(ransom_note: String, magazine: String) -> bool {
+    let mut letters = [0_u8; 26];
+
+    for b in magazine.bytes() {
+        letters[(b - b'a') as usize] += 1;
+    }
+
+    for b in ransom_note.bytes() {
+        let idx = (b - b'a') as usize;
+        if letters[idx] == 0 {
+            return false;
+        }
+        letters[idx] -= 1;
+    }
+
+    true
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -177,6 +197,7 @@ mod tests {
             ("aa", "ab", false),
             ("aa", "aab", true),
             ("aab", "baa", true),
+            ("abc", "cba", true),
         ]
         .into_iter()
         .for_each(|(ransom_note, magazine, expected)| {
