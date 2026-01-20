@@ -56,7 +56,7 @@ pub fn can_construct_2(ransom_note: String, magazine: String) -> bool {
     true
 }
 
-/// beats 100%
+/// beats 100%, overcomplicated
 pub fn can_construct_3(ransom_note: String, magazine: String) -> bool {
     use std::collections::HashMap;
     use std::hash::*;
@@ -87,7 +87,7 @@ pub fn can_construct_3(ransom_note: String, magazine: String) -> bool {
     }
 
     let mut letters: HashMap<_, _, _> =
-        HashMap::with_capacity_and_hasher(28, BuildHasherDefault::<DefaultHasher>::default());
+        HashMap::with_capacity_and_hasher(26, BuildHasherDefault::<DefaultHasher>::default());
     let mut mi = 0;
     let magazine = magazine.as_bytes();
 
@@ -95,6 +95,49 @@ pub fn can_construct_3(ransom_note: String, magazine: String) -> bool {
         if let Some(fi) = find(l, mi, magazine, &mut letters) {
             mi = fi;
             letters.entry(*l).and_modify(|e| *e -= 1);
+        } else {
+            return false;
+        };
+    }
+
+    true
+}
+
+pub fn can_construct_4(ransom_note: String, magazine: String) -> bool {
+    let mut letters = vec![0; 26];
+    let mut mi = 0;
+    let magazine: Vec<_> = magazine
+        .as_bytes()
+        .iter()
+        .map(|&x| x as usize - 97_usize)
+        .collect();
+
+    fn find(li: usize, mut mi: usize, magazine: &[usize], letters: &mut [u8]) -> Option<usize> {
+        if letters[li] != 0 {
+            return Some(mi);
+        }
+
+        while mi < magazine.len() {
+            let ml = magazine[mi];
+            letters[li] += 1;
+            mi += 1;
+
+            if ml == li {
+                return Some(mi);
+            }
+        }
+
+        None
+    }
+
+    for li in ransom_note
+        .as_bytes()
+        .iter()
+        .map(|&x| x as usize - 97_usize)
+    {
+        if let Some(fi) = find(li, mi, &magazine, &mut letters) {
+            mi = fi;
+            letters[li] -= 1;
         } else {
             return false;
         };
@@ -123,9 +166,14 @@ mod tests {
         run_test(can_construct_3);
     }
 
+    #[test]
+    fn test_4() {
+        run_test(can_construct_4);
+    }
+
     fn run_test(target: fn(String, String) -> bool) {
         vec![
-            // ("a", "b", false), //
+            ("a", "b", false), //
             ("aa", "ab", false),
             ("aa", "aab", true),
         ]
