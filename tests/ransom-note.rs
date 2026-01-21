@@ -212,7 +212,7 @@ pub fn can_construct_6(ransom_note: String, magazine: String) -> bool {
 /// Bit-flag tracking with early termination when all required letters are found.
 /// Sets a bit for each unique letter needed, clears it when satisfied, exits when flags == 0.
 /// Optimal for cases where magazine is much longer than ransom_note.
-/// Bitflag-based early exit with fixed array - best overall performance.
+/// Bit-flag-based early exit with fixed array - best overall performance.
 ///
 /// Time: O(n + m) best case (early exit), O(n + m) worst case where n = magazine.len(), m = ransom_note.len()
 /// Space: O(1) - fixed 26-element array + 32-bit flag
