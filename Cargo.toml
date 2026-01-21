@@ -25,3 +25,7 @@ harness = false
 [[bench]]
 name = "set_mismatch"
 harness = false
+
+[[bench]]
+name = "ransom_note"
+harness = false
