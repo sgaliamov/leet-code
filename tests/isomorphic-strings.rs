@@ -70,7 +70,7 @@ pub fn is_isomorphic_2(s: String, t: String) -> bool {
     true
 }
 
-// beats runtime and memory
+// beats 100% runtime and memory
 pub fn is_isomorphic_3(s: String, t: String) -> bool {
     let s = s.as_bytes();
     let t = t.as_bytes();
@@ -106,12 +106,12 @@ mod tests {
 
     fn run_test(target: fn(String, String) -> bool) {
         vec![
-            // ("paper", "title", true),
-            // ("egg", "add", true),
-            // ("foo", "bar", false),
+            ("paper", "title", true),
+            ("egg", "add", true),
+            ("foo", "bar", false),
             ("badc", "baba", false),
-            // ("13", "42", true),
-            // ("!!#", "%%!", true),
+            ("13", "42", true),
+            ("!!#", "%%!", true),
         ]
         .into_iter()
         .for_each(|(s, t, expected)| {
