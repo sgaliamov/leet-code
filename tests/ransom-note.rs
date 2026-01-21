@@ -209,15 +209,22 @@ pub fn can_construct_6(ransom_note: String, magazine: String) -> bool {
     true
 }
 
-/// Bitflag tracking with early termination when all required letters are found.
+/// Bit-flag tracking with early termination when all required letters are found.
 /// Sets a bit for each unique letter needed, clears it when satisfied, exits when flags == 0.
 /// Optimal for cases where magazine is much longer than ransom_note.
+/// Bitflag-based early exit with fixed array - best overall performance.
 ///
 /// Time: O(n + m) best case (early exit), O(n + m) worst case where n = magazine.len(), m = ransom_note.len()
 /// Space: O(1) - fixed 26-element array + 32-bit flag
 ///
-/// Benchmarked: ~61ns (small), ~70ns (medium), ~60ns (long magazine - 35% faster!)
-/// Best overall choice: fastest when magazine >> ransom_note, competitive elsewhere
+/// Benchmarks:
+/// - small_match (abc/dcba): ~75 ns
+/// - medium_match: ~108 ns
+/// - worst_case (reverse_alpha): ~147 ns
+/// - early_fail (xyz/abc): ~158 ns
+/// - long_mag (abc/long): ~162 ns
+///
+/// Best overall: fastest on long magazine cases, competitive on all others
 pub fn can_construct_7(ransom_note: String, magazine: String) -> bool {
     if ransom_note.len() > magazine.len() {
         return false;
@@ -226,7 +233,6 @@ pub fn can_construct_7(ransom_note: String, magazine: String) -> bool {
     let mut map = [0_i8; 26];
     let mut flags = 0_u32;
 
-    // Count required letters and set flags
     for b in ransom_note.bytes() {
         let i = (b - b'a') as usize;
         unsafe {
@@ -235,7 +241,6 @@ pub fn can_construct_7(ransom_note: String, magazine: String) -> bool {
         flags |= 1 << i;
     }
 
-    // Scan magazine and clear flags when satisfied
     for b in magazine.bytes() {
         let i = (b - b'a') as usize;
         unsafe {
