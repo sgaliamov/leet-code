@@ -39,18 +39,13 @@ pub fn word_pattern_1(pattern: String, s: String) -> bool {
 
 // even worser on memory
 pub fn word_pattern_2(pattern: String, s: String) -> bool {
-    let pattern = &pattern;
-    let s = &s;
-
     use itertools::Itertools;
     use std::collections::HashMap;
     use std::hash::*;
 
     let mut pattern = pattern.bytes();
-    let mut map: HashMap<u8, &str, _> = HashMap::with_capacity_and_hasher(
-        pattern.len(),
-        BuildHasherDefault::<DefaultHasher>::default(),
-    );
+    let mut map: HashMap<u8, &str, _> =
+        HashMap::with_hasher(BuildHasherDefault::<DefaultHasher>::default());
 
     for s in s.split(' ') {
         let Some(c) = pattern.next() else {
