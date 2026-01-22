@@ -212,7 +212,7 @@ pub fn can_construct_6(ransom_note: String, magazine: String) -> bool {
 /// Bit-flag tracking with early termination when all required letters are found.
 /// Sets a bit for each unique letter needed, clears it when satisfied, exits when flags == 0.
 /// Optimal for cases where magazine is much longer than ransom_note.
-/// Bitflag-based early exit with fixed array - best overall performance.
+/// Bit-flag-based early exit with fixed array - best overall performance.
 ///
 /// Time: O(n + m) best case (early exit), O(n + m) worst case where n = magazine.len(), m = ransom_note.len()
 /// Space: O(1) - fixed 26-element array + 32-bit flag
@@ -261,42 +261,19 @@ pub fn can_construct_7(ransom_note: String, magazine: String) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use leet_code::solution_tests;
     use spectral::prelude::*;
 
-    #[test]
-    fn test_1() {
-        run_test(can_construct_1);
-    }
-
-    #[test]
-    fn test_2() {
-        run_test(can_construct_2);
-    }
-
-    #[test]
-    fn test_3() {
-        run_test(can_construct_3);
-    }
-
-    #[test]
-    fn test_4() {
-        run_test(can_construct_4);
-    }
-
-    #[test]
-    fn test_5() {
-        run_test(can_construct_5);
-    }
-
-    #[test]
-    fn test_6() {
-        run_test(can_construct_6);
-    }
-
-    #[test]
-    fn test_7() {
-        run_test(can_construct_7);
-    }
+    solution_tests!(
+        run_test:
+        can_construct_1,
+        can_construct_2,
+        can_construct_3,
+        can_construct_4,
+        can_construct_5,
+        can_construct_6,
+        can_construct_7,
+    );
 
     fn run_test(target: fn(String, String) -> bool) {
         vec![

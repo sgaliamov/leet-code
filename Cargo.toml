@@ -3,8 +3,13 @@ name = "leet-code"
 version = "0.1.0"
 edition = "2024"
 
+[lib]
+name = "leet_code"
+path = "src/lib.rs"
+
 [dependencies]
 itertools = "0.14.0"
+paste = "1.0.15"
 
 [dev-dependencies]
 spectral = "0.6.0" # Fluent assertions.
