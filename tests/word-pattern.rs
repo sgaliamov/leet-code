@@ -13,7 +13,7 @@ pub fn word_pattern_1(pattern: String, s: String) -> bool {
     let mut map = [""; 26];
 
     for s in s.split(' ') {
-        if i == pattern.len(){
+        if i == pattern.len() {
             return false;
         }
 
@@ -37,6 +37,40 @@ pub fn word_pattern_1(pattern: String, s: String) -> bool {
     i == pattern.len()
 }
 
+// even worser on memory
+pub fn word_pattern_2(pattern: String, s: String) -> bool {
+    let pattern = &pattern;
+    let s = &s;
+
+    use itertools::Itertools;
+    use std::collections::HashMap;
+    use std::hash::*;
+
+    let mut pattern = pattern.bytes();
+    let mut map: HashMap<u8, &str, _> = HashMap::with_capacity_and_hasher(
+        pattern.len(),
+        BuildHasherDefault::<DefaultHasher>::default(),
+    );
+
+    for s in s.split(' ') {
+        let Some(c) = pattern.next() else {
+            return false;
+        };
+
+        if !map.contains_key(&c) && map.values().contains(&s) {
+            return false;
+        }
+
+        let e = map.entry(c).or_insert(s);
+
+        if e != &s {
+            return false;
+        }
+    }
+
+    pattern.next().is_none()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -46,6 +80,7 @@ mod tests {
     solution_tests!(
         run_test:
         word_pattern_1,
+        word_pattern_2,
     );
 
     fn run_test(target: fn(String, String) -> bool) {
