@@ -5,6 +5,7 @@
         "itertools",
         "nonoverlapping",
         "nums",
-        "uninit"
+        "uninit",
+        "usize"
     ]
 }

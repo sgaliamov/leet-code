@@ -15,8 +15,16 @@ The goal is to practice problem-solving skills, improve Rust proficiency, and ma
 1. Use array indexing instead of HashMap for small fixed-size data sets to improve performance:
     ``` rust
     let mut counts = [0; 26]; // For lowercase letters 'a' to 'z'
-    for &b in s.as_bytes() {
+    for &b in s.into_bytes() {
          counts[(b - b'a') as usize] += 1;
     }
     ```
 1. Using linear search in small arrays is efficient enough and simple. No need for complex data structures.
+1. Use bitwise operations to count unique characters in a string:
+   ``` rust
+   let mut mask = 0_u32;
+   for &b in s.into_bytes() {
+       mask |= 1 << (b - b'a');
+   }
+   let unique_count = mask.count_ones();
+   ```

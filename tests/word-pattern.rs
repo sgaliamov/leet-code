@@ -6,28 +6,22 @@
 //! Each unique word in s maps to exactly one letter in pattern.
 //! No two letters map to the same word, and no two words map to the same letter.
 
-/// 100/71
+/// 100/99
 pub fn word_pattern_1(pattern: String, s: String) -> bool {
     let mut i = 0;
-    let pattern = pattern.as_bytes();
+    let pattern = pattern.into_bytes();
     let mut map = [""; 26];
 
-    for s in s.split(' ') {
+    for s in s.split_whitespace() {
         if i == pattern.len() {
             return false;
         }
 
         let pi = (pattern[i] - b'a') as usize;
 
-        if map[pi].is_empty() {
-            if map.contains(&s) {
-                return false;
-            }
-
+        if map[pi].is_empty() && !map.contains(&s) {
             map[pi] = s;
-        }
-
-        if map[pi] != s {
+        } else if map[pi] != s {
             return false;
         }
 
@@ -101,7 +95,7 @@ pub fn word_pattern_3(pattern: String, s: String) -> bool {
     i == pattern.len()
 }
 
-// 2.17 MB
+// 100/71
 pub fn word_pattern_4(pattern: String, s: String) -> bool {
     let pattern = pattern.into_bytes();
     let mut seen = 0u32; // 32 bits is enough for 26 letters
@@ -186,9 +180,9 @@ mod tests {
 
     solution_tests!(
         run_test:
-        // word_pattern_1,
-        // word_pattern_2,
-        // word_pattern_3,
+        word_pattern_1,
+        word_pattern_2,
+        word_pattern_3,
         word_pattern_4,
     );
 
