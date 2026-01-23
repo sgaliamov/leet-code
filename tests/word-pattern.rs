@@ -101,13 +101,14 @@ pub fn word_pattern_3(pattern: String, s: String) -> bool {
     i == pattern.len()
 }
 
+// 2.17 MB
 pub fn word_pattern_4(pattern: String, s: String) -> bool {
     use itertools::Itertools;
 
     let pattern = pattern.into_bytes();
     let capacity = pattern.iter().unique().count();
-    let none = capacity as u8;
-    let mut ps = vec![none; capacity];
+    const NONE: u8 = u8::MAX;
+    let mut ps = vec![NONE; capacity];
     let mut cs = vec![""; capacity];
 
     let mut pi = 0;
@@ -130,7 +131,7 @@ pub fn word_pattern_4(pattern: String, s: String) -> bool {
 
         let mut psi = 0;
         while psi < capacity {
-            if ps[psi] == none {
+            if ps[psi] == NONE {
                 ps[psi] = c;
                 break;
             }
