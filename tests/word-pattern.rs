@@ -6,7 +6,7 @@
 //! Each unique word in s maps to exactly one letter in pattern.
 //! No two letters map to the same word, and no two words map to the same letter.
 
-/// good runtime, mediocre memory
+/// 100/71
 pub fn word_pattern_1(pattern: String, s: String) -> bool {
     let mut i = 0;
     let pattern = pattern.as_bytes();
@@ -37,7 +37,7 @@ pub fn word_pattern_1(pattern: String, s: String) -> bool {
     i == pattern.len()
 }
 
-// even worser on memory
+// 100/33
 pub fn word_pattern_2(pattern: String, s: String) -> bool {
     use itertools::Itertools;
     use std::collections::HashMap;
@@ -66,6 +66,7 @@ pub fn word_pattern_2(pattern: String, s: String) -> bool {
     pattern.next().is_none()
 }
 
+// 100/33
 pub fn word_pattern_3(pattern: String, s: String) -> bool {
     use itertools::Itertools;
     use std::collections::HashMap;
@@ -77,7 +78,7 @@ pub fn word_pattern_3(pattern: String, s: String) -> bool {
     let mut map: HashMap<u8, &str, _> =
         HashMap::with_capacity_and_hasher(capacity, BuildHasherDefault::<DefaultHasher>::default());
 
-    for s in s.split(' ') {
+    for s in s.split_whitespace() {
         if i == pattern.len() {
             return false;
         }
