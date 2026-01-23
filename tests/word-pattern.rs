@@ -66,6 +66,40 @@ pub fn word_pattern_2(pattern: String, s: String) -> bool {
     pattern.next().is_none()
 }
 
+pub fn word_pattern_3(pattern: String, s: String) -> bool {
+    use itertools::Itertools;
+    use std::collections::HashMap;
+    use std::hash::*;
+
+    let mut i = 0;
+    let pattern = pattern.into_bytes();
+    let capacity = pattern.iter().unique().count();
+    let mut map: HashMap<u8, &str, _> =
+        HashMap::with_capacity_and_hasher(capacity, BuildHasherDefault::<DefaultHasher>::default());
+
+    for s in s.split(' ') {
+        if i == pattern.len() {
+            return false;
+        }
+
+        let c = pattern[i];
+
+        if !map.contains_key(&c) && map.values().contains(&s) {
+            return false;
+        }
+
+        let e = map.entry(c).or_insert(s);
+
+        if e != &s {
+            return false;
+        }
+
+        i += 1;
+    }
+
+    i == pattern.len()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -76,6 +110,7 @@ mod tests {
         run_test:
         word_pattern_1,
         word_pattern_2,
+        word_pattern_3,
     );
 
     fn run_test(target: fn(String, String) -> bool) {
