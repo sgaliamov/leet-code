@@ -101,6 +101,68 @@ pub fn word_pattern_3(pattern: String, s: String) -> bool {
     i == pattern.len()
 }
 
+pub fn word_pattern_4(pattern: String, s: String) -> bool {
+    use itertools::Itertools;
+
+    let pattern = pattern.into_bytes();
+    let capacity = pattern.iter().unique().count();
+    let none = capacity as u8;
+    let mut ps = vec![none; capacity];
+    let mut cs = vec![""; capacity];
+
+    let mut pi = 0;
+    let mut si = 0;
+    let mut bi = 0;
+
+    while pi < pattern.len() && bi < s.len() {
+        while bi < s.len() {
+            if &s[bi..=bi] == " " {
+                break;
+            }
+            bi += 1;
+        }
+        let str = &s[si..bi];
+        bi += 1;
+        si = bi;
+
+        let c = pattern[pi];
+        pi += 1;
+
+        let mut psi = 0;
+        while psi < capacity {
+            if ps[psi] == none {
+                ps[psi] = c;
+                break;
+            }
+
+            if ps[psi] == c {
+                break;
+            }
+
+            psi += 1;
+        }
+
+        let mut ssi = 0;
+        while ssi < capacity {
+            if cs[ssi].is_empty() {
+                cs[ssi] = str;
+                break;
+            }
+
+            if cs[ssi] == str {
+                break;
+            }
+
+            ssi += 1;
+        }
+
+        if ssi != psi {
+            return false;
+        }
+    }
+
+    pi == pattern.len() && bi > s.len()
+}
 
 pub fn is_anagram(s: String, t: String) -> bool {
     use itertools::Itertools;
@@ -121,9 +183,10 @@ mod tests {
 
     solution_tests!(
         run_test:
-        word_pattern_1,
-        word_pattern_2,
-        word_pattern_3,
+        // word_pattern_1,
+        // word_pattern_2,
+        // word_pattern_3,
+        word_pattern_4,
     );
 
     fn run_test(target: fn(String, String) -> bool) {
