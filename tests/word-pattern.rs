@@ -101,6 +101,18 @@ pub fn word_pattern_3(pattern: String, s: String) -> bool {
     i == pattern.len()
 }
 
+
+pub fn is_anagram(s: String, t: String) -> bool {
+    use itertools::Itertools;
+    s.len() == t.len()
+        && s.chars()
+            .sorted_unstable()
+            .zip(t.chars().sorted_unstable())
+            .take_while(|(a, b)| a == b)
+            .count()
+            == s.len()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -116,10 +128,11 @@ mod tests {
 
     fn run_test(target: fn(String, String) -> bool) {
         vec![
+            ("aaa", "aa aa", false),
             ("aaa", "aa aa aa aa", false),
             ("abba", "dog cat cat dog", true),
-            ("abbaa", "dog cat cat dog", false),
             ("ab", "dog dog", false),
+            ("aa", "dog cat", false),
             ("abba", "dog cat cat fish", false),
             ("aaaa", "dog cat cat dog", false),
         ]
