@@ -103,10 +103,12 @@ pub fn word_pattern_3(pattern: String, s: String) -> bool {
 
 // 2.17 MB
 pub fn word_pattern_4(pattern: String, s: String) -> bool {
-    use itertools::Itertools;
-
     let pattern = pattern.into_bytes();
-    let capacity = pattern.iter().unique().count();
+    let mut seen = 0u32; // 32 bits is enough for 26 letters
+    for &c in pattern.iter() {
+        seen |= 1 << (c - b'a');
+    }
+    let capacity = seen.count_ones() as usize;
     const NONE: u8 = u8::MAX;
     let mut ps = vec![NONE; capacity];
     let mut cs = vec![""; capacity];
