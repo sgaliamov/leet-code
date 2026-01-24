@@ -161,17 +161,6 @@ pub fn word_pattern_4(pattern: String, s: String) -> bool {
     pi == pattern.len() && bi > s.len()
 }
 
-pub fn is_anagram(s: String, t: String) -> bool {
-    use itertools::Itertools;
-    s.len() == t.len()
-        && s.chars()
-            .sorted_unstable()
-            .zip(t.chars().sorted_unstable())
-            .take_while(|(a, b)| a == b)
-            .count()
-            == s.len()
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
