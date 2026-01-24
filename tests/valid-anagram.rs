@@ -2,6 +2,7 @@
 //!
 //! Given two strings s and t, return true if t is an anagram of s, and false otherwise.
 
+// 100/11
 pub fn is_anagram_1(s: String, t: String) -> bool {
     use itertools::Itertools;
     s.len() == t.len()
@@ -11,6 +12,10 @@ pub fn is_anagram_1(s: String, t: String) -> bool {
             .take_while(|(a, b)| a == b)
             .count()
             == s.len()
+}
+
+pub fn is_anagram_2(s: String, t: String) -> bool {
+    todo!("use hash map")
 }
 
 #[cfg(test)]
