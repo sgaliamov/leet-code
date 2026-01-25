@@ -51,8 +51,48 @@ pub fn summary_ranges_1(nums: Vec<i32>) -> Vec<String> {
     ranges
 }
 
+// 100/86/2.19
 pub fn summary_ranges_2(nums: Vec<i32>) -> Vec<String> {
-    vec![]
+    if nums.is_empty() {
+        return vec![];
+    }
+
+    if nums.len() == 1 {
+        return vec![nums[0].to_string(); 1];
+    }
+
+    let capacity = nums
+        .iter()
+        .enumerate()
+        .skip(1)
+        .filter(|(i, n)| **n != nums[i - 1] + 1)
+        .count()
+        + 1;
+
+    let mut ranges = Vec::with_capacity(capacity);
+    let mut s = 0;
+
+    for i in 1..nums.len() {
+        if nums[i] != nums[i - 1] + 1 {
+            let range = if s + 1 == i {
+                format!("{}", nums[s])
+            } else {
+                format!("{}->{}", nums[s], nums[i - 1])
+            };
+
+            ranges.push(range);
+            s = i;
+        }
+    }
+
+    let range = if s == nums.len() - 1 {
+        nums[s].to_string()
+    } else {
+        format!("{}->{}", nums[s], nums[nums.len() - 1])
+    };
+
+    ranges.push(range);
+    ranges
 }
 
 #[cfg(test)]
@@ -68,6 +108,7 @@ mod tests {
 
     fn run_test(target: fn(Vec<i32>) -> Vec<String>) {
         vec![
+            (vec![], vec![]),
             (vec![0], vec!["0"]),
             (vec![0, 2, 3, 4, 6, 8, 9], vec!["0", "2->4", "6", "8->9"]),
             (vec![0, 1, 2, 4, 5, 7], vec!["0->2", "4->5", "7"]),
