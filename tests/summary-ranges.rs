@@ -8,7 +8,7 @@
 //! - "a->b" if a != b
 //! - "a" if a == b
 
-// 100/24
+// 100/24/2.21
 pub fn summary_ranges_1(nums: Vec<i32>) -> Vec<String> {
     if nums.is_empty() {
         return vec![];
@@ -19,11 +19,17 @@ pub fn summary_ranges_1(nums: Vec<i32>) -> Vec<String> {
     }
 
     let mut s = 0;
-    let mut p = nums[0];
-    let mut ranges = vec![];
+    let mut capacity = 1;
+    for i in 1..nums.len() {
+        if nums[i] != nums[i - 1] + 1 {
+            capacity += 1;
+        }
+    }
+
+    let mut ranges = Vec::with_capacity(capacity);
 
     for i in 1..nums.len() {
-        if nums[i] != p + 1 {
+        if nums[i] != nums[i - 1] + 1 {
             let range = if s + 1 == i {
                 format!("{}", nums[s])
             } else {
@@ -33,8 +39,6 @@ pub fn summary_ranges_1(nums: Vec<i32>) -> Vec<String> {
             ranges.push(range);
             s = i;
         }
-
-        p = nums[i];
     }
 
     let range = if s == nums.len() - 1 {
@@ -44,7 +48,6 @@ pub fn summary_ranges_1(nums: Vec<i32>) -> Vec<String> {
     };
 
     ranges.push(range);
-
     ranges
 }
 
