@@ -45,17 +45,14 @@ fn shuffle_2(nums: Vec<i32>, n: i32) -> Vec<i32> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use leet_code::solution_tests;
     use spectral::prelude::*;
 
-    #[test]
-    fn test() {
-        run_test(shuffle);
-    }
-
-    #[test]
-    fn test_2() {
-        run_test(shuffle_2);
-    }
+    solution_tests!(
+        run_test:
+        shuffle,
+        shuffle_2,
+    );
 
     fn run_test(target: fn(Vec<i32>, i32) -> Vec<i32>) {
         vec![

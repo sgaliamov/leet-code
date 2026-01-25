@@ -8,6 +8,7 @@
 //! - "a->b" if a != b
 //! - "a" if a == b
 
+// 100/24
 pub fn summary_ranges_1(nums: Vec<i32>) -> Vec<String> {
     if nums.is_empty() {
         return vec![];
@@ -47,15 +48,20 @@ pub fn summary_ranges_1(nums: Vec<i32>) -> Vec<String> {
     ranges
 }
 
+pub fn summary_ranges_2(nums: Vec<i32>) -> Vec<String> {
+    vec![]
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use spectral::prelude::*;
 
-    #[test]
-    fn test() {
-        run_test(summary_ranges_1);
-    }
+    leet_code::solution_tests!(
+        run_test:
+        summary_ranges_1,
+        summary_ranges_2,
+    );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<String>) {
         vec![

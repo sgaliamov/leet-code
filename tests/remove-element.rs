@@ -90,32 +90,17 @@ pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
 mod tests {
     use super::*;
     use itertools::Itertools;
+    use leet_code::solution_tests;
     use spectral::prelude::*;
 
-    #[test]
-    fn test() {
-        run_test(remove_element);
-    }
-
-    #[test]
-    fn test_ugly() {
-        run_test(remove_element_ugly);
-    }
-
-    #[test]
-    fn test_dummy() {
-        run_test(remove_element_dummy);
-    }
-
-    #[test]
-    fn test_perfect() {
-        run_test(remove_element_perfect);
-    }
-
-    #[test]
-    fn test_swap_remove() {
-        run_test(remove_element_swap_remove);
-    }
+    solution_tests!(
+        run_test:
+        remove_element,
+        remove_element_ugly,
+        remove_element_dummy,
+        remove_element_perfect,
+        remove_element_swap_remove,
+    );
 
     fn run_test(target: fn(&mut Vec<i32>, i32) -> i32) {
         vec![

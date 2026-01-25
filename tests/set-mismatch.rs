@@ -163,32 +163,17 @@ pub fn find_error_nums_5(nums: Vec<i32>) -> Vec<i32> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use leet_code::solution_tests;
     use spectral::prelude::*;
 
-    #[test]
-    fn test_1() {
-        run_test(find_error_nums_1);
-    }
-
-    #[test]
-    fn test_2() {
-        run_test(find_error_nums_2);
-    }
-
-    #[test]
-    fn test_3() {
-        run_test(find_error_nums_3);
-    }
-
-    #[test]
-    fn test_4() {
-        run_test(find_error_nums_4);
-    }
-
-    #[test]
-    fn test_5() {
-        run_test(find_error_nums_5);
-    }
+    solution_tests!(
+        run_test:
+        find_error_nums_1,
+        find_error_nums_2,
+        find_error_nums_3,
+        find_error_nums_4,
+        find_error_nums_5,
+    );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
         vec![

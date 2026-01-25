@@ -147,27 +147,16 @@ pub fn is_palindrome_4(s: String) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use leet_code::solution_tests;
     use spectral::prelude::*;
 
-    #[test]
-    fn test() {
-        run_test(is_palindrome_1);
-    }
-
-    #[test]
-    fn test_2() {
-        run_test(is_palindrome_2);
-    }
-
-    #[test]
-    fn test_3() {
-        run_test(is_palindrome_3);
-    }
-
-    #[test]
-    fn test_4() {
-        run_test(is_palindrome_4);
-    }
+    solution_tests!(
+        run_test:
+        is_palindrome_1,
+        is_palindrome_2,
+        is_palindrome_3,
+        is_palindrome_4,
+    );
 
     fn run_test(target: fn(String) -> bool) {
         vec![

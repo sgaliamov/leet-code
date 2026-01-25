@@ -29,12 +29,13 @@ pub fn is_subsequence(s: String, t: String) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use leet_code::solution_tests;
     use spectral::prelude::*;
 
-    #[test]
-    fn test() {
-        run_test(is_subsequence);
-    }
+    solution_tests!(
+        run_test:
+        is_subsequence,
+    );
 
     fn run_test(target: fn(String, String) -> bool) {
         vec![
