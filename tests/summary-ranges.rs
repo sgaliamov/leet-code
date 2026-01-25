@@ -1,0 +1,36 @@
+//! https://leetcode.com/problems/summary-ranges
+//!
+//! You are given a sorted unique integer array nums.
+//! A range [a,b] is the set of all integers from a to b (inclusive).
+//! Return the smallest sorted list of ranges that cover all the numbers in the array exactly.
+//! That is, each element of nums is covered by exactly one of the ranges, and there is no integer x such that x is in one of the ranges but not in nums.
+//! Each range [a,b] in the list should be output as:
+//! - "a->b" if a != b
+//! - "a" if a == b
+
+pub fn summary_ranges_1(nums: Vec<i32>) -> Vec<String> {
+    vec![]
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use spectral::prelude::*;
+
+    #[test]
+    fn test() {
+        run_test(summary_ranges_1);
+    }
+
+    fn run_test(target: fn(Vec<i32>) -> Vec<String>) {
+        vec![(vec![0, 1, 2, 4, 5, 7], vec!["0->2", "4->5", "7"])]
+            .into_iter()
+            .for_each(|(nums, expected)| {
+                let name = format!("{nums:?} {expected:?}");
+                let actual = target(nums);
+                let actual: Vec<_> = actual.iter().map(|x| x.as_str()).collect();
+
+                assert_that!(actual).named(&name).is_equal_to(&expected);
+            });
+    }
+}
