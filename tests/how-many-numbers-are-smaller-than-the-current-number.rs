@@ -4,31 +4,29 @@
 //! That is, for each nums[i] you have to count the number of valid j's such that j != i and nums[j] < nums[i].
 //! Return the answer in an array.
 
+// 100/70/2.16
 pub fn smaller_numbers_than_current_1(nums: Vec<i32>) -> Vec<i32> {
     use std::collections::BTreeMap;
 
-    let mut map = BTreeMap::new();
-    (0..nums.len()).for_each(|i| {
-        map.entry(nums[i]).and_modify(|e| *e += 1).or_insert(1);
+    let mut map = nums.iter().fold(BTreeMap::new(), |mut map, n| {
+        map.entry(n).and_modify(|e| *e += 1).or_insert(1);
+        map
     });
 
     let mut pv = 0;
     let mut c = 0;
-
-    map.iter_mut().for_each(|(&_, v)| {
+    map.values_mut().for_each(|v| {
         c += pv;
         pv = *v;
         *v = c;
     });
 
-    let mut res = vec![0; nums.len()];
-
-    (0..nums.len()).for_each(|i| {
-        let n = nums[i];
-        res[i] = *map.get(&n).unwrap();
-    });
-
-    res
+    nums.iter()
+        .enumerate()
+        .fold(vec![0; nums.len()], |mut acc, (i, n)| {
+            acc[i] = *map.get(n).unwrap();
+            acc
+        })
 }
 
 #[cfg(test)]
