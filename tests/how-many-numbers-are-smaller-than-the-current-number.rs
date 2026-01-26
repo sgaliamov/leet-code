@@ -68,6 +68,15 @@ pub fn smaller_numbers_than_current_2(nums: Vec<i32>) -> Vec<i32> {
     res
 }
 
+// 100/30/2.24
+pub fn smaller_numbers_than_current_3(nums: Vec<i32>) -> Vec<i32> {
+    let mut sorted = nums.clone();
+    sorted.sort_unstable();
+    nums.iter()
+        .map(|&n| sorted.partition_point(|&x| x < n) as i32)
+        .collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -78,6 +87,7 @@ mod tests {
         run_test:
         smaller_numbers_than_current_1,
         smaller_numbers_than_current_2,
+        smaller_numbers_than_current_3
     );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
