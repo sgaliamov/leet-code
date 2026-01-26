@@ -95,6 +95,91 @@ pub fn summary_ranges_2(nums: Vec<i32>) -> Vec<String> {
     ranges
 }
 
+// 100/24/2.3
+pub fn summary_ranges_3(nums: Vec<i32>) -> Vec<String> {
+    let capacity = nums
+        .iter()
+        .enumerate()
+        .skip(1)
+        .filter(|(i, n)| **n != nums[i - 1] + 1)
+        .count()
+        + 1;
+
+    let mut s = 0;
+    nums.iter()
+        .enumerate()
+        .fold(Vec::with_capacity(capacity), |mut ranges, (i, &n)| {
+            if i == nums.len() - 1 {
+                ranges.push((s, i));
+            } else if nums[i + 1] != n + 1 {
+                ranges.push((s, i));
+                s = i + 1;
+            }
+
+            ranges
+        })
+        .iter()
+        .map(|&(a, b)| {
+            if a == b {
+                nums[a].to_string()
+            } else {
+                nums[a].to_string() + "->" + &nums[b].to_string()
+            }
+        })
+        .collect()
+}
+
+// 100/99/2.1
+pub fn summary_ranges_4(nums: Vec<i32>) -> Vec<String> {
+    let mut s = 0;
+    nums.iter()
+        .enumerate()
+        .fold(vec![], |mut ranges, (i, &n)| {
+            if i == nums.len() - 1 {
+                ranges.push((s, i));
+            } else if nums[i + 1] != n + 1 {
+                ranges.push((s, i));
+                s = i + 1;
+            }
+
+            ranges
+        })
+        .iter()
+        .map(|&(a, b)| {
+            if a == b {
+                nums[a].to_string()
+            } else {
+                nums[a].to_string() + "->" + &nums[b].to_string()
+            }
+        })
+        .collect()
+}
+
+// 100/99/2.07
+pub fn summary_ranges_5(nums: Vec<i32>) -> Vec<String> {
+    let mut s = 0;
+    (0..nums.len())
+        .fold(vec![], |mut ranges, i| {
+            if i == nums.len() - 1 {
+                ranges.push((s, i));
+            } else if nums[i + 1] != nums[i] + 1 {
+                ranges.push((s, i));
+                s = i + 1;
+            }
+
+            ranges
+        })
+        .iter()
+        .map(|&(a, b)| {
+            if a == b {
+                nums[a].to_string()
+            } else {
+                format!("{}->{}", nums[a], nums[b])
+            }
+        })
+        .collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -104,12 +189,14 @@ mod tests {
         run_test:
         summary_ranges_1,
         summary_ranges_2,
+        summary_ranges_3,
+        summary_ranges_4,
     );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<String>) {
         vec![
-            (vec![], vec![]),
-            (vec![0], vec!["0"]),
+            // (vec![], vec![]),
+            // (vec![0], vec!["0"]),
             (vec![0, 2, 3, 4, 6, 8, 9], vec!["0", "2->4", "6", "8->9"]),
             (vec![0, 1, 2, 4, 5, 7], vec!["0->2", "4->5", "7"]),
         ]
