@@ -29,6 +29,45 @@ pub fn smaller_numbers_than_current_1(nums: Vec<i32>) -> Vec<i32> {
         })
 }
 
+// 100/30/2.24
+pub fn smaller_numbers_than_current_2(nums: Vec<i32>) -> Vec<i32> {
+    use itertools::Itertools;
+    let mut sorted: Vec<_> = nums
+        .iter()
+        .enumerate()
+        .sorted_unstable_by_key(|(_, n)| *n)
+        .dedup_by_with_count(|a, b| a.1 == b.1)
+        .map(|(c, (i, n))| (n, i, c))
+        .collect();
+
+    let mut pv = 0;
+    let mut t = 0;
+    sorted.iter_mut().for_each(|(_, _, c)| {
+        t += pv;
+        pv = *c;
+        *c = t;
+    });
+
+    let mut res = sorted
+        .iter()
+        .fold(vec![-1; nums.len()], |mut acc, &(_, i, c)| {
+            acc[i] = c as i32;
+            acc
+        });
+
+    for i in 0..nums.len() {
+        if res[i] == -1 {
+            let n = nums[i];
+            let j = sorted
+                .binary_search_by(|&x| x.0.cmp(&n))
+                .unwrap_or_else(|x| x);
+            res[i] = sorted[j].2 as i32;
+        }
+    }
+
+    res
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -38,10 +77,22 @@ mod tests {
     solution_tests!(
         run_test:
         smaller_numbers_than_current_1,
+        smaller_numbers_than_current_2,
     );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
         vec![
+            (
+                vec![
+                    12, 23, 5, 7, 76, 2, 96, 27, 87, 4, 63, 90, 67, 92, 78, 56, 43, 84, 35, 15, 78,
+                    88, 22, 12, 28, 51, 29, 63, 57, 48, 96, 21, 29, 30, 36, 59, 70, 74, 49, 27, 57,
+                ],
+                vec![
+                    4, 9, 2, 3, 31, 0, 39, 10, 35, 1, 26, 37, 28, 38, 32, 22, 18, 34, 16, 6, 32,
+                    36, 8, 4, 12, 21, 13, 26, 23, 19, 39, 7, 13, 15, 17, 25, 29, 30, 20, 10, 23,
+                ],
+            ),
+            (vec![6, 3, 7, 6, 9], vec![1, 0, 3, 1, 4]),
             (vec![8, 1, 2, 2, 3], vec![4, 0, 1, 1, 3]),
             (vec![6, 5, 4, 8], vec![2, 1, 0, 3]),
             (vec![6, 5], vec![1, 0]),
