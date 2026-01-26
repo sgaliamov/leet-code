@@ -35,8 +35,8 @@ mod tests {
         vec![(vec![1, 3, 2, 1], vec![1, 3, 2, 1, 1, 3, 2, 1])]
             .into_iter()
             .for_each(|(nums, expected)| {
+                let name = format!("{nums:?} {expected:?}");
                 let actual = target(nums);
-                let name = format!("{expected:?}");
 
                 assert_that!(actual).named(&name).is_equal_to(&expected);
             });
