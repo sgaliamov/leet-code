@@ -23,12 +23,13 @@ pub fn get_concatenation(nums: Vec<i32>) -> Vec<i32> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use leet_code::solution_tests;
     use spectral::prelude::*;
 
-    #[test]
-    fn test() {
-        run_test(get_concatenation);
-    }
+    solution_tests!(
+        run_test:
+        get_concatenation,
+    );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
         vec![(vec![1, 3, 2, 1], vec![1, 3, 2, 1, 1, 3, 2, 1])]

@@ -33,12 +33,13 @@ pub fn find_max_consecutive_ones(nums: Vec<i32>) -> i32 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use leet_code::solution_tests;
     use spectral::prelude::*;
 
-    #[test]
-    fn test() {
-        run_test(find_max_consecutive_ones);
-    }
+    solution_tests!(
+        run_test:
+        find_max_consecutive_ones,
+    );
 
     fn run_test(target: fn(Vec<i32>) -> i32) {
         vec![
