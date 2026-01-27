@@ -38,12 +38,6 @@ pub fn find_disappeared_numbers_1(nums: Vec<i32>) -> Vec<i32> {
 // 31/73/3.56
 pub fn find_disappeared_numbers_2(nums: Vec<i32>) -> Vec<i32> {
     use itertools::Itertools;
-    // nums.into_iter()
-    //     .sorted_unstable()
-    //     .tuple_windows()
-    //     .filter(|&(a, b)| a + 1 != b)
-    //     .flat_map(|(a, b)| (a + 1)..b)
-    //     .collect()
 
     let mut res = Vec::new();
     let mut presented = nums.iter().sorted_unstable().dedup();
@@ -62,9 +56,24 @@ pub fn find_disappeared_numbers_2(nums: Vec<i32>) -> Vec<i32> {
     res
 }
 
+// 31/44/3.62
+pub fn find_disappeared_numbers_3(nums: Vec<i32>) -> Vec<i32> {
+    let mut res = Vec::new();
+    let set: std::collections::HashSet<_> = nums.iter().collect();
+
+    for n in 1..=nums.len() as i32 {
+        if !set.contains(&n) {
+            res.push(n);
+        }
+    }
+
+    res
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+    use itertools::Itertools;
     use leet_code::solution_tests;
     use spectral::prelude::*;
 
@@ -72,6 +81,7 @@ mod tests {
         run_test:
         find_disappeared_numbers_1,
         find_disappeared_numbers_2,
+        find_disappeared_numbers_3,
     );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
@@ -105,7 +115,7 @@ mod tests {
         .into_iter()
         .for_each(|(nums, expected)| {
             let name = format!("{nums:?} {expected:?}");
-            let actual = target(nums);
+            let actual = target(nums).into_iter().sorted_unstable().collect_vec();
 
             assert_that!(actual).named(&name).is_equal_to(&expected);
         });
