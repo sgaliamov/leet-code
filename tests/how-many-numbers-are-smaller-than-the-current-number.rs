@@ -3,6 +3,9 @@
 //! Given the array nums, for each nums[i] find out how many numbers in the array are smaller than it.
 //! That is, for each nums[i] you have to count the number of valid j's such that j != i and nums[j] < nums[i].
 //! Return the answer in an array.
+//! Constraints:
+//! - 2 <= nums.length <= 500
+//! - 0 <= nums[i] <= 100
 
 // 100/70/2.16
 pub fn smaller_numbers_than_current_1(nums: Vec<i32>) -> Vec<i32> {
@@ -77,6 +80,36 @@ pub fn smaller_numbers_than_current_3(nums: Vec<i32>) -> Vec<i32> {
         .collect()
 }
 
+// 100/30/2.24
+pub fn smaller_numbers_than_current_4(nums: Vec<i32>) -> Vec<i32> {
+    let mut sorted = nums.clone();
+    sorted.sort_unstable();
+    nums.iter()
+        .fold(Vec::with_capacity(nums.len()), |mut acc, &n| {
+            acc.push(sorted.partition_point(|&x| x < n) as i32);
+            acc
+        })
+}
+
+
+pub fn smaller_numbers_than_current_5(nums: Vec<i32>) -> Vec<i32> {
+    let mut freq = [0_u16; 101];
+    for &n in &nums {
+        freq[n as usize] += 1;
+    }
+
+    let mut count_smaller = [0_u16; 101];
+    let mut current_smaller = 0;
+    for i in 0..101 {
+        count_smaller[i] = current_smaller;
+        current_smaller += freq[i];
+    }
+
+    nums.iter()
+        .map(|&n| count_smaller[n as usize] as i32)
+        .collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -87,7 +120,9 @@ mod tests {
         run_test:
         smaller_numbers_than_current_1,
         smaller_numbers_than_current_2,
-        smaller_numbers_than_current_3
+        smaller_numbers_than_current_3,
+        smaller_numbers_than_current_4,
+                smaller_numbers_than_current_5
     );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
