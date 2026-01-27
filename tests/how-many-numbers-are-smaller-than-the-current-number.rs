@@ -91,22 +91,28 @@ pub fn smaller_numbers_than_current_4(nums: Vec<i32>) -> Vec<i32> {
         })
 }
 
-
 pub fn smaller_numbers_than_current_5(nums: Vec<i32>) -> Vec<i32> {
-    let mut freq = [0_u16; 101];
-    for &n in &nums {
-        freq[n as usize] += 1;
+    let mut freq = vec![0_u16; 101];
+
+    // Count frequency for each number (0 to 100)
+    for &num in &nums {
+        freq[num as usize] += 1;
     }
 
-    let mut count_smaller = [0_u16; 101];
-    let mut current_smaller = 0;
-    for i in 0..101 {
-        count_smaller[i] = current_smaller;
-        current_smaller += freq[i];
+    // Build prefix sum: for each number, freq[i] becomes count of numbers ≤ i.
+    for i in 1..101 {
+        freq[i] += freq[i - 1];
     }
 
-    nums.iter()
-        .map(|&n| count_smaller[n as usize] as i32)
+    // For each number, the answer is the count of numbers strictly less than it.
+    nums.into_iter()
+        .map(|num| {
+            if num == 0 {
+                0
+            } else {
+                freq[num as usize - 1] as i32
+            }
+        })
         .collect()
 }
 
@@ -122,11 +128,12 @@ mod tests {
         smaller_numbers_than_current_2,
         smaller_numbers_than_current_3,
         smaller_numbers_than_current_4,
-                smaller_numbers_than_current_5
+        smaller_numbers_than_current_5
     );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
         vec![
+            (vec![6, 5, 4, 8], vec![2, 1, 0, 3]),
             (
                 vec![
                     12, 23, 5, 7, 76, 2, 96, 27, 87, 4, 63, 90, 67, 92, 78, 56, 43, 84, 35, 15, 78,
@@ -139,11 +146,11 @@ mod tests {
             ),
             (vec![6, 3, 7, 6, 9], vec![1, 0, 3, 1, 4]),
             (vec![8, 1, 2, 2, 3], vec![4, 0, 1, 1, 3]),
-            (vec![6, 5, 4, 8], vec![2, 1, 0, 3]),
             (vec![6, 5], vec![1, 0]),
             (vec![4, 5], vec![0, 1]),
             (vec![0, 0], vec![0, 0]),
             (vec![7, 7, 7, 7], vec![0, 0, 0, 0]),
+            (vec![7, 0, 7], vec![1, 0, 1]),
         ]
         .into_iter()
         .for_each(|(nums, expected)| {
