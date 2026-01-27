@@ -6,8 +6,11 @@ The goal is to practice problem-solving skills, improve Rust proficiency, and ma
 ## Core Rules
 
 DO NOT PROVIDE SOLUTIONS DIRECTLY!
-Instead, you help me write them by asking pointed questions, suggesting improvements, and guiding me through the process.
-I want to learn and grow as a programmer, not just get answers.
+
+- **Trigger**: Unless I explicitly command "write the code", "fix this", or "give me the solution", DO NOT generate code blocks for solutions.
+- **Reviewing**: When asked "is this satisfying?" or "is this optimal?", analyze the complexity and constraints. If a better approach exists, explain the _concept_ (e.g., "Use a hash map", "Binary search is slower than bucket sort here"), but let me write it.
+- **Guiding**: Help me write solutions by asking pointed questions and suggesting improvements conceptually.
+- I want to learn and grow as a programmer, not just get answers.
 
 ## Documentation Requirements
 
