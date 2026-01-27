@@ -18,7 +18,7 @@
 
 // 42/12/3.87
 pub fn find_disappeared_numbers_1(nums: Vec<i32>) -> Vec<i32> {
-    let mut used = vec![0_u128; 78];
+    let mut used = vec![0_u128; 782];
 
     for n in &nums {
         let bucket = n / 128;
@@ -35,6 +35,33 @@ pub fn find_disappeared_numbers_1(nums: Vec<i32>) -> Vec<i32> {
         .collect()
 }
 
+// 31/73/3.56
+pub fn find_disappeared_numbers_2(nums: Vec<i32>) -> Vec<i32> {
+    use itertools::Itertools;
+    // nums.into_iter()
+    //     .sorted_unstable()
+    //     .tuple_windows()
+    //     .filter(|&(a, b)| a + 1 != b)
+    //     .flat_map(|(a, b)| (a + 1)..b)
+    //     .collect()
+
+    let mut res = Vec::new();
+    let mut presented = nums.iter().sorted_unstable().dedup();
+    let Some(mut v) = presented.next() else {
+        return vec![];
+    };
+
+    for n in 1..=nums.len() as i32 {
+        if &n != v {
+            res.push(n);
+        } else if let Some(new_v) = presented.next() {
+            v = new_v;
+        }
+    }
+
+    res
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -44,6 +71,7 @@ mod tests {
     solution_tests!(
         run_test:
         find_disappeared_numbers_1,
+        find_disappeared_numbers_2,
     );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
