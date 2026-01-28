@@ -70,6 +70,20 @@ pub fn find_disappeared_numbers_3(nums: Vec<i32>) -> Vec<i32> {
     res
 }
 
+pub fn find_disappeared_numbers_4(nums: Vec<i32>) -> Vec<i32> {
+    let mut res = Vec::new();
+
+    // 1 2 3 4
+    // 3 4 1 1
+    // -4: -1 0 -3 -3
+    unsafe {
+        let mut nums = nums;
+    }
+
+    res
+}
+
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -82,6 +96,7 @@ mod tests {
         find_disappeared_numbers_1,
         find_disappeared_numbers_2,
         find_disappeared_numbers_3,
+        find_disappeared_numbers_4,
     );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
