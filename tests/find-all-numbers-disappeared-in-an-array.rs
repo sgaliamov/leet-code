@@ -139,7 +139,8 @@ pub fn find_disappeared_numbers_4(nums: Vec<i32>) -> Vec<i32> {
 /// - small (n=8): 59 ns ⚡ fastest overall
 /// - medium (n=1000): 868 ns ⚡ fastest
 /// - large (n=10000): 20.2 µs
-pub fn find_disappeared_numbers_5(mut nums: Vec<i32>) -> Vec<i32> {
+pub fn find_disappeared_numbers_5(nums: Vec<i32>) -> Vec<i32> {
+    let mut nums = nums;
     let len = nums.len();
     let num_words = len.div_ceil(64);
     let mut mask = vec![0u64; num_words];
@@ -172,7 +173,6 @@ pub fn find_disappeared_numbers_5(mut nums: Vec<i32>) -> Vec<i32> {
             }
             count += 1;
 
-            // Clear the lowest set bit
             not_word &= not_word - 1;
         }
     }
@@ -181,22 +181,31 @@ pub fn find_disappeared_numbers_5(mut nums: Vec<i32>) -> Vec<i32> {
     nums
 }
 
+/// U64 bitset with functional filter - simpler but less optimized than v5.
+///
+/// Time: O(n) - linear mark phase, then filter over range [1..n]
+/// Space: O(n/64) - dynamically sized bitset
+///
+/// Benchmarks:
+/// - small (n=8): 88 ns
+/// - medium (n=1000): 1.88 µs
+/// - large (n=10000): 18.5 µs
 pub fn find_disappeared_numbers_6(nums: Vec<i32>) -> Vec<i32> {
     let len = nums.len();
     let num_words = len.div_ceil(64);
     let mut used = vec![0u64; num_words];
 
-    for n in &nums {
-        let bucket = n / 64;
-        let bit = 1 << (n - bucket * 64);
+    for &n in &nums {
+        let bucket = n >> 6;
+        let bit = 1 << (n - (bucket << 6));
         used[bucket as usize] |= bit;
     }
 
-    (1..=(nums.len() as i32))
+    (1..=(len as i32))
         .filter(|n| {
-            let bucket = n / 64;
-            let bit = 1 << (n - bucket * 64);
-            used[bucket as usize] & bit != bit
+            let bucket = n >> 6;
+            let bit = 1 << (n - (bucket << 6));
+            used[bucket as usize] & bit == 0
         })
         .collect()
 }

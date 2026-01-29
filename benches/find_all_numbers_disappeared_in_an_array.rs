@@ -6,7 +6,7 @@ use std::hint::black_box;
 use criterion::{Criterion, criterion_group, criterion_main};
 use find_all_numbers_disappeared_in_an_array::{
     find_disappeared_numbers_1, find_disappeared_numbers_2, find_disappeared_numbers_3,
-    find_disappeared_numbers_4, find_disappeared_numbers_5,
+    find_disappeared_numbers_4, find_disappeared_numbers_5, find_disappeared_numbers_6,
 };
 
 fn benchmark_find_disappeared(c: &mut Criterion) {
@@ -41,6 +41,9 @@ fn benchmark_find_disappeared(c: &mut Criterion) {
     group.bench_function("v5_u64/small", |b| {
         b.iter(|| find_disappeared_numbers_5(black_box(small.clone())))
     });
+    group.bench_function("v6_u64_filter/small", |b| {
+        b.iter(|| find_disappeared_numbers_6(black_box(small.clone())))
+    });
 
     // Medium benchmarks
     group.bench_function("v1_u128/medium", |b| {
@@ -58,6 +61,9 @@ fn benchmark_find_disappeared(c: &mut Criterion) {
     group.bench_function("v5_u64/medium", |b| {
         b.iter(|| find_disappeared_numbers_5(black_box(medium.clone())))
     });
+    group.bench_function("v6_u64_filter/medium", |b| {
+        b.iter(|| find_disappeared_numbers_6(black_box(medium.clone())))
+    });
 
     // Large benchmarks
     group.bench_function("v1_u128/large", |b| {
@@ -74,6 +80,9 @@ fn benchmark_find_disappeared(c: &mut Criterion) {
     });
     group.bench_function("v5_u64/large", |b| {
         b.iter(|| find_disappeared_numbers_5(black_box(large.clone())))
+    });
+    group.bench_function("v6_u64_filter/large", |b| {
+        b.iter(|| find_disappeared_numbers_6(black_box(large.clone())))
     });
 
     group.finish();
