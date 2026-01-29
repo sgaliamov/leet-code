@@ -28,3 +28,8 @@ The goal is to practice problem-solving skills, improve Rust proficiency, and ma
    }
    let unique_count = mask.count_ones();
    ```
+1. Use faster hasher:
+   ``` rust
+    let mut map: HashMap<_, _, _> =
+        HashMap::with_capacity_and_hasher(26, BuildHasherDefault::<DefaultHasher>::default());
+    ```

@@ -7,7 +7,7 @@
 //! - 2 <= nums.length <= 500
 //! - 0 <= nums[i] <= 100
 
-// 100/70/2.16
+// 0ms | 70/2.16
 pub fn smaller_numbers_than_current_1(nums: Vec<i32>) -> Vec<i32> {
     use std::collections::BTreeMap;
 
@@ -32,7 +32,7 @@ pub fn smaller_numbers_than_current_1(nums: Vec<i32>) -> Vec<i32> {
         })
 }
 
-// 100/30/2.24
+// 0ms | 30/2.24
 pub fn smaller_numbers_than_current_2(nums: Vec<i32>) -> Vec<i32> {
     use itertools::Itertools;
     let mut sorted: Vec<_> = nums
@@ -71,7 +71,7 @@ pub fn smaller_numbers_than_current_2(nums: Vec<i32>) -> Vec<i32> {
     res
 }
 
-// 100/30/2.24
+// 0ms | 30/2.24
 pub fn smaller_numbers_than_current_3(nums: Vec<i32>) -> Vec<i32> {
     let mut sorted = nums.clone();
     sorted.sort_unstable();
@@ -80,7 +80,7 @@ pub fn smaller_numbers_than_current_3(nums: Vec<i32>) -> Vec<i32> {
         .collect()
 }
 
-// 100/30/2.24
+// 0ms | 30/2.24
 pub fn smaller_numbers_than_current_4(nums: Vec<i32>) -> Vec<i32> {
     let mut sorted = nums.clone();
     sorted.sort_unstable();

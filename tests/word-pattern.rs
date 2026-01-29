@@ -6,7 +6,7 @@
 //! Each unique word in s maps to exactly one letter in pattern.
 //! No two letters map to the same word, and no two words map to the same letter.
 
-/// 100/99
+/// 0ms | 99
 pub fn word_pattern_1(pattern: String, s: String) -> bool {
     let mut i = 0;
     let pattern = pattern.into_bytes();
@@ -31,7 +31,7 @@ pub fn word_pattern_1(pattern: String, s: String) -> bool {
     i == pattern.len()
 }
 
-// 100/33
+// 0ms | 33
 pub fn word_pattern_2(pattern: String, s: String) -> bool {
     use itertools::Itertools;
     use std::collections::HashMap;
@@ -60,7 +60,7 @@ pub fn word_pattern_2(pattern: String, s: String) -> bool {
     pattern.next().is_none()
 }
 
-// 100/33
+// 0ms | 33
 pub fn word_pattern_3(pattern: String, s: String) -> bool {
     use itertools::Itertools;
     use std::collections::HashMap;
@@ -95,7 +95,7 @@ pub fn word_pattern_3(pattern: String, s: String) -> bool {
     i == pattern.len()
 }
 
-// 100/71
+// 0ms | 71
 pub fn word_pattern_4(pattern: String, s: String) -> bool {
     let pattern = pattern.into_bytes();
     let mut seen = 0u32; // 32 bits is enough for 26 letters

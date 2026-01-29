@@ -8,7 +8,7 @@
 //! - "a->b" if a != b
 //! - "a" if a == b
 
-// 100/24/2.21
+// 0ms | 24/2.21
 pub fn summary_ranges_1(nums: Vec<i32>) -> Vec<String> {
     if nums.is_empty() {
         return vec![];
@@ -51,7 +51,7 @@ pub fn summary_ranges_1(nums: Vec<i32>) -> Vec<String> {
     ranges
 }
 
-// 100/86/2.19
+// 0ms | 86/2.19
 pub fn summary_ranges_2(nums: Vec<i32>) -> Vec<String> {
     if nums.is_empty() {
         return vec![];
@@ -95,7 +95,7 @@ pub fn summary_ranges_2(nums: Vec<i32>) -> Vec<String> {
     ranges
 }
 
-// 100/24/2.3
+// 0ms | 24/2.3
 pub fn summary_ranges_3(nums: Vec<i32>) -> Vec<String> {
     let capacity = nums
         .iter()
@@ -129,7 +129,7 @@ pub fn summary_ranges_3(nums: Vec<i32>) -> Vec<String> {
         .collect()
 }
 
-// 100/99/2.1
+// 0ms | 99/2.1
 pub fn summary_ranges_4(nums: Vec<i32>) -> Vec<String> {
     let mut s = 0;
     nums.iter()
@@ -155,7 +155,7 @@ pub fn summary_ranges_4(nums: Vec<i32>) -> Vec<String> {
         .collect()
 }
 
-// 100/99/2.07
+// 0ms | 99/2.07
 pub fn summary_ranges_5(nums: Vec<i32>) -> Vec<String> {
     let mut s = 0;
     (0..nums.len())
