@@ -26,7 +26,7 @@ DO NOT PROVIDE SOLUTIONS DIRECTLY!
   /// Space: O(1) - explain why
   pub fn solution_name(...) -> ... {
   ```
-- After benchmarking annotate benchmarked functions with measured performance results in doc comments
+- After running benchmarks annotate benchmarked functions with measured performance results in doc comments
 
 ## Code Quality
 
