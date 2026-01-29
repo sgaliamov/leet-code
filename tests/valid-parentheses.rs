@@ -10,8 +10,6 @@
 //! 1 <= s.length <= 10^4
 //! s consists of parentheses only '()[]{}'.
 
-use std::{alloc::Layout, mem};
-
 // 100-0/78-2.19
 pub fn is_valid_1(s: String) -> bool {
     let mut stack = vec![];
@@ -41,69 +39,39 @@ pub fn is_valid_1(s: String) -> bool {
     stack.is_empty()
 }
 
-pub fn is_valid_2(s: String) -> bool {
-    // if s.len() % 2 != 0 {
-    //     return false;
-    // }
-
-    // let mut stack = vec![0_u64; (s.len() / 2 / 64).max(1)];
-    // let mut cursor = 0;
-    // const STEP: usize = 8;
-    // for c in s.into_bytes() {
-    //     let tbit = match c {
-    //         b'(' => 0x010,
-    //         b')' => 0x011,
-    //         b'[' => 0x100,
-    //         b']' => 0x101,
-    //         b'{' => 0x110,
-    //         b'}' => 0x111,
-    //         _ => unreachable!(),
-    //     };
-    //     let bucket = cursor / 64;
-    //     let stack = stack[bucket];
-    //     let i = cursor % STEP;
-    //     stack |= 1 << i;
-    // }
-
-    false
-}
-
-// 100/99/2.06
+// 100/99/2.03
 pub fn is_valid_3(s: String) -> bool {
-    let mut k: i32 = -1;
-    let mut bytes = s.into_bytes();
+    let mut k = 0;
+    let mut chars = s.into_bytes();
 
-    for i in 0..bytes.len() {
-        let c = bytes[i];
-        match c {
-            b'(' | b'[' | b'{' => {
-                k += 1;
-                bytes[k as usize] = c;
+    for i in 0..chars.len() {
+        let c = chars[i];
+
+        if let b'(' | b'[' | b'{' = c {
+            chars[k] = c;
+            k += 1;
+        } else {
+            if k == 0 {
+                return false;
             }
 
-            _ => {
-                if k == -1 {
-                    return false;
-                }
+            let actual = chars[k - 1];
+            k -= 1;
 
-                let l = bytes[k as usize];
-                k -= 1;
+            let expected = match c {
+                b')' => b'(',
+                b']' => b'[',
+                b'}' => b'{',
+                _ => unreachable!(),
+            };
 
-                let r = match c {
-                    b')' => b'(',
-                    b']' => b'[',
-                    b'}' => b'{',
-                    _ => unreachable!(),
-                };
-
-                if r != l {
-                    return false;
-                }
+            if expected != actual {
+                return false;
             }
         }
     }
 
-    k == -1
+    k == 0
 }
 
 #[cfg(test)]
