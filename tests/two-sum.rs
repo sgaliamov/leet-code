@@ -1,3 +1,16 @@
+//! https://leetcode.com/problems/two-sum
+//! Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+//! You may assume that each input would have exactly one solution, and you may not use the same element twice.
+//! You can return the answer in any order.
+//!
+//! Constraints:
+//! - 2 <= nums.length <= 104
+//! - -109 <= nums[i] <= 109
+//! - -109 <= target <= 109
+//! - Only one valid answer exists.
+//!
+//! Follow-up: Can you come up with an algorithm that is less than O(n2) time complexity?
+
 // 100/82/2.28
 pub fn two_sum_1(nums: Vec<i32>, target: i32) -> Vec<i32> {
     use itertools::Itertools;
@@ -37,7 +50,9 @@ mod tests {
 
     fn run_test(target_fn: fn(Vec<i32>, i32) -> Vec<i32>) {
         vec![
-            (vec![3, 2, 4], 6, vec![1, 2]), //
+            (vec![3, 2, 4], 6, vec![1, 2]),
+            (vec![2, 7, 11, 15], 9, vec![0, 1]),
+            (vec![3, 3], 6, vec![0, 1]),
         ]
         .into_iter()
         .for_each(|(nums, target, expected)| {
