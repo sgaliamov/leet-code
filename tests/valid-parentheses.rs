@@ -40,7 +40,7 @@ pub fn is_valid_1(s: String) -> bool {
 }
 
 // 100/99/2.03
-pub fn is_valid_3(s: String) -> bool {
+pub fn is_valid_2(s: String) -> bool {
     let mut k = 0;
     let mut chars = s.into_bytes();
 
@@ -83,7 +83,7 @@ mod tests {
     solution_tests!(
         run_test:
         is_valid_1,
-        is_valid_3,
+        is_valid_2,
     );
 
     fn run_test(target: fn(String) -> bool) {
