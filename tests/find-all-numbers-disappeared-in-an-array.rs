@@ -16,7 +16,7 @@
 //! 1 <= nums[i] <= n
 //! Follow up: Could you do it without extra space and in O(n) runtime? You may assume the returned list does not count as extra space.
 
-// 42/12/3.87
+// 42-4/12/3.87
 pub fn find_disappeared_numbers_1(nums: Vec<i32>) -> Vec<i32> {
     let mut used = vec![0_u128; 782];
 
@@ -35,7 +35,7 @@ pub fn find_disappeared_numbers_1(nums: Vec<i32>) -> Vec<i32> {
         .collect()
 }
 
-// 31/73/3.56
+// 31-773/3.56
 pub fn find_disappeared_numbers_2(nums: Vec<i32>) -> Vec<i32> {
     use itertools::Itertools;
 
@@ -56,7 +56,7 @@ pub fn find_disappeared_numbers_2(nums: Vec<i32>) -> Vec<i32> {
     res
 }
 
-// 31/44/3.62
+// 31-7/44-3.62
 pub fn find_disappeared_numbers_3(nums: Vec<i32>) -> Vec<i32> {
     let mut res = Vec::new();
     let set: std::collections::HashSet<_> = nums.iter().collect();
@@ -70,7 +70,7 @@ pub fn find_disappeared_numbers_3(nums: Vec<i32>) -> Vec<i32> {
     res
 }
 
-// 40/91/3.36
+// 65-1/91-3.36
 pub fn find_disappeared_numbers_4(nums: Vec<i32>) -> Vec<i32> {
     let mut nums = nums;
     let mut i = 0;
@@ -98,6 +98,48 @@ pub fn find_disappeared_numbers_4(nums: Vec<i32>) -> Vec<i32> {
     nums
 }
 
+pub fn find_disappeared_numbers_5(mut nums: Vec<i32>) -> Vec<i32> {
+    let len = nums.len();
+    let num_words = (len + 63) / 64;
+    let mut mask = vec![0u64; num_words];
+
+    for &x in &nums {
+        let val = x as usize - 1;
+        unsafe {
+            *mask.get_unchecked_mut(val / 64) |= 1 << (val % 64);
+        }
+    }
+
+    let mut count = 0;
+    for i in 0..num_words {
+        let mut word = unsafe { *mask.get_unchecked(i) };
+        if word == u64::MAX {
+            continue;
+        }
+
+        let mut not_word = !word;
+        while not_word != 0 {
+            let trailing = not_word.trailing_zeros();
+            let val = (i * 64) + trailing as usize + 1;
+
+            if val > len {
+                break;
+            }
+
+            unsafe {
+                *nums.get_unchecked_mut(count) = val as i32;
+            }
+            count += 1;
+
+            // Clear the lowest set bit
+            not_word &= not_word - 1;
+        }
+    }
+
+    nums.truncate(count);
+    nums
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -111,6 +153,7 @@ mod tests {
         find_disappeared_numbers_2,
         find_disappeared_numbers_3,
         find_disappeared_numbers_4,
+        find_disappeared_numbers_5,
     );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
