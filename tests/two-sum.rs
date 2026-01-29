@@ -64,17 +64,16 @@ pub fn two_sum_2(nums: Vec<i32>, target: i32) -> Vec<i32> {
     vec![]
 }
 
-// 100/36/2.46
+// 100/58/2.39
 pub fn two_sum_3(nums: Vec<i32>, target: i32) -> Vec<i32> {
     use std::collections::HashMap;
     use std::hash::*;
 
-    let mut map: HashMap<_, _, _> = HashMap::with_capacity_and_hasher(
-        nums.len(),
-        BuildHasherDefault::<DefaultHasher>::default(),
-    );
+    let mut map: HashMap<_, _, _> =
+        HashMap::with_hasher(BuildHasherDefault::<DefaultHasher>::default());
 
-    for (i, n) in nums.into_iter().enumerate() {
+    for i in 0..nums.len() {
+        let n = nums[i];
         let t = target - n;
 
         if let Some(&k) = map.get(&t) {
@@ -83,7 +82,7 @@ pub fn two_sum_3(nums: Vec<i32>, target: i32) -> Vec<i32> {
             return if i > k { vec![k, i] } else { vec![i, k] };
         }
 
-        map.entry(n).or_insert(i);
+        map.insert(n, i);
     }
 
     vec![]
