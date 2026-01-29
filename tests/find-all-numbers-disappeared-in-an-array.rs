@@ -101,7 +101,7 @@ pub fn find_disappeared_numbers_3(nums: Vec<i32>) -> Vec<i32> {
 ///
 /// Benchmarks:
 /// - small (n=8): 60 ns
-/// - medium (n=1000): 1.18 µs  
+/// - medium (n=1000): 1.18 µs
 /// - large (n=10000): 18.6 µs ⚡ fastest at scale
 pub fn find_disappeared_numbers_4(nums: Vec<i32>) -> Vec<i32> {
     let mut nums = nums;
@@ -141,7 +141,7 @@ pub fn find_disappeared_numbers_4(nums: Vec<i32>) -> Vec<i32> {
 /// - large (n=10000): 20.2 µs
 pub fn find_disappeared_numbers_5(mut nums: Vec<i32>) -> Vec<i32> {
     let len = nums.len();
-    let num_words = (len + 63) / 64;
+    let num_words = len.div_ceil(64);
     let mut mask = vec![0u64; num_words];
 
     for &x in &nums {
@@ -153,7 +153,7 @@ pub fn find_disappeared_numbers_5(mut nums: Vec<i32>) -> Vec<i32> {
 
     let mut count = 0;
     for i in 0..num_words {
-        let mut word = unsafe { *mask.get_unchecked(i) };
+        let word = unsafe { *mask.get_unchecked(i) };
         if word == u64::MAX {
             continue;
         }
@@ -181,6 +181,26 @@ pub fn find_disappeared_numbers_5(mut nums: Vec<i32>) -> Vec<i32> {
     nums
 }
 
+pub fn find_disappeared_numbers_6(nums: Vec<i32>) -> Vec<i32> {
+    let len = nums.len();
+    let num_words = len.div_ceil(64);
+    let mut used = vec![0u64; num_words];
+
+    for n in &nums {
+        let bucket = n / 64;
+        let bit = 1 << (n - bucket * 64);
+        used[bucket as usize] |= bit;
+    }
+
+    (1..=(nums.len() as i32))
+        .filter(|n| {
+            let bucket = n / 64;
+            let bit = 1 << (n - bucket * 64);
+            used[bucket as usize] & bit != bit
+        })
+        .collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -195,6 +215,7 @@ mod tests {
         find_disappeared_numbers_3,
         find_disappeared_numbers_4,
         find_disappeared_numbers_5,
+        find_disappeared_numbers_6,
     );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
