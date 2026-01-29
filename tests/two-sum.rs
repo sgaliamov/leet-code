@@ -12,7 +12,7 @@
 //!
 //! Follow-up: Can you come up with an algorithm that is less than O(n^2) time complexity?
 
-// 100/82/2.28
+// 0ms | 82/2.28
 pub fn two_sum_1(nums: Vec<i32>, target: i32) -> Vec<i32> {
     use itertools::Itertools;
     let sorted = nums.iter().sorted_unstable().collect_vec();
@@ -38,6 +38,7 @@ pub fn two_sum_1(nums: Vec<i32>, target: i32) -> Vec<i32> {
     vec![]
 }
 
+// 0ms | 82/2.22
 pub fn two_sum_2(nums: Vec<i32>, target: i32) -> Vec<i32> {
     use itertools::Itertools;
     let sorted = nums
@@ -64,7 +65,7 @@ pub fn two_sum_2(nums: Vec<i32>, target: i32) -> Vec<i32> {
     vec![]
 }
 
-// 100/58/2.39
+// 0ms | 58/2.39
 pub fn two_sum_3(nums: Vec<i32>, target: i32) -> Vec<i32> {
     use std::collections::HashMap;
     use std::hash::*;

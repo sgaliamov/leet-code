@@ -3,7 +3,7 @@
 //! Given two strings s and t, return true if s is a subsequence of t, or false otherwise.
 //! A subsequence of a string is a new string that is formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters. (i.e., "ace" is a subsequence of "abcde" while "aec" is not).
 
-// 100/72/2.15
+// 0ms | 72/2.15
 pub fn is_subsequence_1(s: String, t: String) -> bool {
     let s = s.into_bytes();
     let t = t.into_bytes();
@@ -23,7 +23,7 @@ pub fn is_subsequence_1(s: String, t: String) -> bool {
     s.is_empty()
 }
 
-// 100/72/2.19
+// 0ms | 72/2.19
 pub fn is_subsequence_2(s: String, t: String) -> bool {
     if s.is_empty() {
         return true;
@@ -44,7 +44,7 @@ pub fn is_subsequence_2(s: String, t: String) -> bool {
     false
 }
 
-// 100/99/2.08
+// 0ms | 99/2.08
 pub fn is_subsequence_3(s: String, t: String) -> bool {
     if s.is_empty() {
         return true;

@@ -39,7 +39,7 @@ pub fn is_valid_1(s: String) -> bool {
     stack.is_empty()
 }
 
-// 100/99/2.03
+// 0ms | 99/2.03
 pub fn is_valid_2(s: String) -> bool {
     let mut k = 0;
     let mut chars = s.into_bytes();

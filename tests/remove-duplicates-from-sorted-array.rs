@@ -6,7 +6,7 @@
 //! Consider the number of unique elements in nums to be k​​​​​​​​​​​​​​. After removing duplicates, return the number of unique elements k.
 //! The first k elements of nums should contain the unique numbers in sorted order. The remaining elements beyond index k - 1 can be ignored.
 
-// 100/88
+// 0ms | 88
 pub fn remove_duplicates_1(nums: &mut Vec<i32>) -> i32 {
     let mut k = 0;
     let mut i = 0;
@@ -24,7 +24,7 @@ pub fn remove_duplicates_1(nums: &mut Vec<i32>) -> i32 {
     k as i32
 }
 
-// 100/6
+// 0ms | 6
 pub fn remove_duplicates_2(nums: &mut Vec<i32>) -> i32 {
     nums.dedup();
     nums.len() as i32

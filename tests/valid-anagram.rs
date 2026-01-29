@@ -2,7 +2,7 @@
 //!
 //! Given two strings s and t, return true if t is an anagram of s, and false otherwise.
 
-// 100/11
+// 0ms | 11
 pub fn is_anagram_1(s: String, t: String) -> bool {
     use itertools::Itertools;
     s.len() == t.len()
