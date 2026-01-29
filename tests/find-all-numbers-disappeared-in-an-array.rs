@@ -192,8 +192,8 @@ pub fn find_disappeared_numbers_5(nums: Vec<i32>) -> Vec<i32> {
 /// - large (n=10000): 18.5 µs
 pub fn find_disappeared_numbers_6(nums: Vec<i32>) -> Vec<i32> {
     let len = nums.len();
-    let num_words = len.div_ceil(64);
-    let mut used = vec![0u64; num_words];
+    let cnt = len.div_ceil(64);
+    let mut used = vec![0u64; cnt];
 
     for &n in &nums {
         let bucket = n >> 6;
