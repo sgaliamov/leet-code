@@ -10,8 +10,33 @@
 //! 1 <= s.length <= 104
 //! s consists of parentheses only '()[]{}'.
 
+// 100-0/78-2.19
 pub fn is_valid_1(s: String) -> bool {
-    true
+    let mut stack = vec![];
+    for c in s.into_bytes() {
+        match c {
+            b'(' | b'[' | b'{' => stack.push(c),
+
+            _ => {
+                let Some(l) = stack.pop() else {
+                    return false;
+                };
+
+                let r = match c {
+                    b')' => b'(',
+                    b']' => b'[',
+                    b'}' => b'{',
+                    _ => unreachable!(),
+                };
+
+                if r != l {
+                    return false;
+                }
+            }
+        }
+    }
+
+    stack.is_empty()
 }
 
 #[cfg(test)]
@@ -27,8 +52,10 @@ mod tests {
 
     fn run_test(target: fn(String) -> bool) {
         vec![
-            ("()", true),
+            ("(", false),
             ("()[]{}", true),
+            ("()", true),
+            ("]", false),
             ("(]", false),
             ("([])", true),
             ("([)]", false),
