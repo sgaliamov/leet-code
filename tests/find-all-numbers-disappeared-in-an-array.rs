@@ -70,19 +70,33 @@ pub fn find_disappeared_numbers_3(nums: Vec<i32>) -> Vec<i32> {
     res
 }
 
+// 40/91/3.36
 pub fn find_disappeared_numbers_4(nums: Vec<i32>) -> Vec<i32> {
-    let mut res = Vec::new();
+    let mut nums = nums;
+    let mut i = 0;
 
-    // 1 2 3 4
-    // 3 4 1 1
-    // -4: -1 0 -3 -3
-    unsafe {
-        let mut nums = nums;
+    while i < nums.len() {
+        let j = nums[i].unsigned_abs() as usize - 1;
+
+        if nums[j] > 0 {
+            nums[j] = -nums[j];
+        }
+        i += 1;
+    }
+    i = 0;
+    let mut j = 0;
+
+    while i < nums.len() {
+        if nums[i] > 0 {
+            nums[j] = i as i32 + 1;
+            j += 1;
+        }
+        i += 1;
     }
 
-    res
+    nums.truncate(j);
+    nums
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -101,6 +115,7 @@ mod tests {
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
         vec![
+            (vec![4, 3, 2, 7, 8, 2, 3, 1], vec![5, 6]),
             (
                 vec![
                     98, 200, 14, 106, 113, 91, 6, 6, 192, 155, 9, 70, 189, 108, 5, 14, 178, 79,
@@ -123,7 +138,6 @@ mod tests {
                     173, 175, 177, 182, 185, 187, 198,
                 ],
             ),
-            (vec![4, 3, 2, 7, 8, 2, 3, 1], vec![5, 6]),
             (vec![1, 2, 3], vec![]),
             (vec![1, 1], vec![2]),
         ]
