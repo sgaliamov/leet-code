@@ -53,20 +53,23 @@ mod tests {
     use super::*;
     use spectral::prelude::*;
 
-    #[test]
-    fn build_array_test() {
+    leet_code::solution_tests!(
+        run_test:
+        build_array_1,
+    );
+
+    fn run_test(target: fn(Vec<i32>, i32) -> Vec<String>) {
         let cases = vec![
             (vec![1, 3], 3, vec!["Push", "Push", "Pop", "Push"]), // Read 1, push; Read 2, push & pop; Read 3, push
             (vec![1, 2, 3], 3, vec!["Push", "Push", "Push"]),     // All sequential, just push
-            (vec![1, 2], 4, vec!["Push", "Push"]),                // Stop after building target,
-            (vec![], 5, vec![]),
+            (vec![1, 2], 4, vec!["Push", "Push"]),                // Stop after building target
+            (vec![], 5, vec![]),                                   // empty target
         ];
 
-        cases.into_iter().for_each(|(target, n, expected)| {
-            let name = format!("build_array({:?}, {})", target, n);
+        for (input_target, n, expected) in cases {
             let expected: Vec<String> = expected.into_iter().map(String::from).collect();
-            let actual = build_array_1(target, n);
-            assert_that!(actual).named(&name).is_equal_to(expected);
-        });
+            let actual = target(input_target, n);
+            assert_that!(actual).is_equal_to(expected);
+        }
     }
 }
