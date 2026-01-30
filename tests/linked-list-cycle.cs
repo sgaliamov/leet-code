@@ -10,10 +10,11 @@
 /// Follow up: Can you solve it using O(1) (i.e. constant) memory?
 
 RunTests(new Solution().HasCycle_1);
+RunTests(new Solution().HasCycle_2);
 Console.WriteLine("All tests passed");
 return 0;
 
-static void RunTests(Func<ListNode?, bool> target)
+static void RunTests(Func<ListNode, bool> target)
 {
     // Test 1: Cycle at position 1
     var node1 = new ListNode(3);
@@ -46,7 +47,7 @@ static void RunTests(Func<ListNode?, bool> target)
     AssertEqual(target(noCycle1), false, "no cycle, multiple nodes");
 
     // Test 5: Null head
-    AssertEqual(target(null), false, "null head");
+    AssertEqual(target(null!), false, "null head");
 }
 
 static void AssertEqual(bool actual, bool expected, string testName)
@@ -72,6 +73,23 @@ public class Solution
                 return true;
             }
 
+            head = head.next;
+        }
+
+        return false;
+    }
+
+    // 109ms - 26.84% | 47.94MB - 29.99%
+    public bool HasCycle_2(ListNode head)
+    {
+        while (head?.next != null)
+        {
+            if (head.val == int.MaxValue)
+            {
+                return true;
+            }
+
+            head.val = int.MaxValue;
             head = head.next;
         }
 
