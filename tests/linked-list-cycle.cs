@@ -9,51 +9,52 @@
 ///
 /// Follow up: Can you solve it using O(1) (i.e. constant) memory?
 
-var solution = new Solution();
-
-// Test 1: Cycle exists
-var node1 = new ListNode(3);
-var node2 = new ListNode(2);
-var node3 = new ListNode(0);
-var node4 = new ListNode(-4);
-node1.next = node2;
-node2.next = node3;
-node3.next = node4;
-node4.next = node2; // cycle
-
-if (!solution.HasCycle_1(node1))
-{
-    Console.WriteLine("FAIL: Test 1 - Expected true");
-    return 1;
-}
-
-// Test 2: No cycle
-var single = new ListNode(1);
-if (solution.HasCycle_1(single))
-{
-    Console.WriteLine("FAIL: Test 2 - Expected false");
-    return 1;
-}
-
-// Test 3: null
-if (solution.HasCycle_1(null!))
-{
-    Console.WriteLine("FAIL: Test 3 - Expected false");
-    return 1;
-}
-
+RunTests(new Solution().HasCycle_1);
 Console.WriteLine("All tests passed");
 return 0;
 
-public class ListNode
+static void RunTests(Func<ListNode?, bool> target)
 {
-    public int val;
-    public ListNode? next;
+    // Test 1: Cycle at position 1
+    var node1 = new ListNode(3);
+    var node2 = new ListNode(2);
+    var node3 = new ListNode(0);
+    var node4 = new ListNode(-4);
+    node1.next = node2;
+    node2.next = node3;
+    node3.next = node4;
+    node4.next = node2;
+    AssertEqual(target(node1), true, "cycle at pos 1");
 
-    public ListNode(int x)
+    // Test 2: Cycle at position 0
+    var singleCycle1 = new ListNode(1);
+    var singleCycle2 = new ListNode(2);
+    singleCycle1.next = singleCycle2;
+    singleCycle2.next = singleCycle1;
+    AssertEqual(target(singleCycle1), true, "cycle at pos 0");
+
+    // Test 3: No cycle, single node
+    var single = new ListNode(1);
+    AssertEqual(target(single), false, "no cycle, single node");
+
+    // Test 4: No cycle, multiple nodes
+    var noCycle1 = new ListNode(1);
+    var noCycle2 = new ListNode(2);
+    var noCycle3 = new ListNode(3);
+    noCycle1.next = noCycle2;
+    noCycle2.next = noCycle3;
+    AssertEqual(target(noCycle1), false, "no cycle, multiple nodes");
+
+    // Test 5: Null head
+    AssertEqual(target(null), false, "null head");
+}
+
+static void AssertEqual(bool actual, bool expected, string testName)
+{
+    if (actual != expected)
     {
-        val = x;
-        next = null;
+        Console.WriteLine($"FAIL: {testName} - Expected {expected}, got {actual}");
+        Environment.Exit(1);
     }
 }
 
@@ -75,5 +76,17 @@ public class Solution
         }
 
         return false;
+    }
+}
+
+public class ListNode
+{
+    public int val;
+    public ListNode? next;
+
+    public ListNode(int x)
+    {
+        val = x;
+        next = null;
     }
 }
