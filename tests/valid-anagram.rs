@@ -28,7 +28,6 @@ pub fn is_anagram_2(s: String, t: String) -> bool {
     }
 
     use std::collections::HashMap;
-
     let mut map = HashMap::new();
     for i in 0..s.len() {
         let c = s.as_bytes()[i];
@@ -49,20 +48,6 @@ pub fn is_anagram_2(s: String, t: String) -> bool {
 
     true
 }
-
-// pub fn is_anagram_3(s: String, t: String) -> bool {
-//     if s.len() != t.len() {
-//         return false;
-//     }
-//     let mut i = 0;
-//     let mut xor = 0;
-//     while i < s.len() && i < t.len() {
-//         xor ^= s.as_bytes()[i];
-//         xor ^= t.as_bytes()[i];
-//         i += 1;
-//     }
-//     xor == 0
-// }
 
 #[cfg(test)]
 mod tests {
