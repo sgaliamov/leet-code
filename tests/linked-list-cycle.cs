@@ -1,5 +1,7 @@
 /// Given head, the head of a linked list, determine if the linked list has a cycle in it.
-/// There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.
+/// There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer.
+/// Internally, pos is used to denote the index of the node that tail's next pointer is connected to.
+/// Note that pos is not passed as a parameter.
 /// Return true if there is a cycle in the linked list. Otherwise, return false.
 ///
 /// Constraints:
@@ -11,6 +13,7 @@
 
 RunTests(new Solution().HasCycle_1);
 RunTests(new Solution().HasCycle_2);
+RunTests(new Solution().HasCycle_3);
 Console.WriteLine("All tests passed");
 return 0;
 
@@ -94,6 +97,27 @@ public class Solution
         }
 
         return false;
+    }
+
+    // 102ms - 61.91% | 48.06MB - 24.82%
+    public bool HasCycle_3(ListNode head)
+    {
+        var turtle = head;
+        var rabbit = head;
+
+        do
+        {
+            turtle = turtle?.next;
+            rabbit = rabbit?.next?.next;
+
+            if (turtle == null || rabbit == null)
+            {
+                return false;
+            }
+
+        } while (turtle != rabbit);
+
+        return true;
     }
 }
 
