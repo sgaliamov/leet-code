@@ -27,19 +27,24 @@ pub fn <function_name>(<params>) -> <return_type> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use leet_code::solution_tests;
     use spectral::prelude::*;
 
-    #[test]
-    fn <function_name>_test() {
-        let cases = vec![
+    solution_tests!(
+        run_test:
+        <function_name>,
+    );
+
+    fn run_test(target: fn(<params>) -> <return_type>) {
+        vec![
             (<input>, <expected>), // Example 1: description
             (<input>, <expected>), // Example 2: description
             // ... more test cases
-        ];
-
-        cases.into_iter().for_each(|(<params>, expected)| {
+        ]
+        .into_iter()
+        .for_each(|(<params>, expected)| {
             let name = format!("<descriptive name>");
-            let actual = <function_name>(<params>);
+            let actual = target(<params>);
             assert_that!(actual).named(&name).is_equal_to(expected);
         });
     }
@@ -53,8 +58,9 @@ mod tests {
 1. **File naming**: Use kebab-case matching the problem slug (e.g., `merge-two-sorted-lists.rs`)
 2. **Module doc**: Include URL, brief description, and all constraints
 3. **Function stub**: Leave implementation as `todo!()`
-4. **Test cases**: Extract ALL examples from problem description
-5. **Test format**: Use `Vec<(input, expected)>` with descriptive comments
-6. **Assertions**: Use spectral's `assert_that!` with `.named()` for context
-7. **Helper functions**: Add at bottom of test module if needed (e.g., for linked lists, trees)
-8. **No implementation**: DO NOT write the solution - leave stub only
+4. **Test structure**: Use `solution_tests!` macro with `run_test` function pattern
+5. **Test cases**: Extract ALL examples from problem description
+6. **Test format**: Use `Vec<(input, expected)>` with descriptive comments in `run_test` function
+7. **Assertions**: Use spectral's `assert_that!` with `.named()` for context
+8. **Helper functions**: Add at bottom of test module if needed (e.g., for linked lists, trees)
+9. **No implementation**: DO NOT write the solution - leave stub only

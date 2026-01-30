@@ -23,10 +23,9 @@ pub fn get_concatenation(nums: Vec<i32>) -> Vec<i32> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use leet_code::solution_tests;
     use spectral::prelude::*;
 
-    solution_tests!(
+     leet_code::solution_tests!(
         run_test:
         get_concatenation,
     );
