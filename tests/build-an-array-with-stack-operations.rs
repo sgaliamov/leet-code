@@ -24,8 +24,28 @@
 //! - 1 <= target[i] <= n
 //! - target is strictly increasing
 
-pub fn build_array(target: Vec<i32>, n: i32) -> Vec<String> {
-    todo!()
+// 0ms | 2.21MB - 63.86%
+pub fn build_array_1(target: Vec<i32>, n: i32) -> Vec<String> {
+    let mut stream = 1..=n;
+    let mut ops = vec![];
+
+    for t in target {
+        for n in stream.by_ref() {
+            if n == t {
+                ops.push("Push".into());
+                break;
+            } else {
+                ops.push("Push".into());
+                ops.push("Pop".into());
+            }
+        }
+
+        if stream.is_empty() {
+            break;
+        }
+    }
+
+    ops
 }
 
 #[cfg(test)]
@@ -36,27 +56,16 @@ mod tests {
     #[test]
     fn build_array_test() {
         let cases = vec![
-            (
-                vec![1, 3],
-                3,
-                vec!["Push", "Push", "Pop", "Push"],
-            ), // Read 1, push; Read 2, push & pop; Read 3, push
-            (
-                vec![1, 2, 3],
-                3,
-                vec!["Push", "Push", "Push"],
-            ), // All sequential, just push
-            (
-                vec![1, 2],
-                4,
-                vec!["Push", "Push"],
-            ), // Stop after building target
+            (vec![1, 3], 3, vec!["Push", "Push", "Pop", "Push"]), // Read 1, push; Read 2, push & pop; Read 3, push
+            (vec![1, 2, 3], 3, vec!["Push", "Push", "Push"]),     // All sequential, just push
+            (vec![1, 2], 4, vec!["Push", "Push"]),                // Stop after building target,
+            (vec![], 5, vec![]),
         ];
 
         cases.into_iter().for_each(|(target, n, expected)| {
             let name = format!("build_array({:?}, {})", target, n);
             let expected: Vec<String> = expected.into_iter().map(String::from).collect();
-            let actual = build_array(target, n);
+            let actual = build_array_1(target, n);
             assert_that!(actual).named(&name).is_equal_to(expected);
         });
     }
