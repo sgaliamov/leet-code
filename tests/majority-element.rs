@@ -13,8 +13,20 @@
 //!
 //! Follow-up: Could you solve the problem in linear time and in O(1) space?
 
-pub fn majority_element(nums: Vec<i32>) -> i32 {
-    todo!()
+// 3ms - 11.90% | 2.44MB - 44.05%
+pub fn majority_element_1(nums: Vec<i32>) -> i32 {
+    nums.into_iter()
+        .fold(
+            std::collections::HashMap::<i32, u32>::new(),
+            |mut map, n| {
+                *map.entry(n).or_default() += 1;
+                map
+            },
+        )
+        .into_iter()
+        .max_by_key(|&x| x.1)
+        .unwrap_or_default()
+        .0
 }
 
 #[cfg(test)]
@@ -25,13 +37,13 @@ mod tests {
 
     solution_tests!(
         run_test:
-        majority_element,
+        majority_element_1,
     );
 
     fn run_test(target: fn(Vec<i32>) -> i32) {
         vec![
-            (vec![3, 2, 3], 3),                       // Example 1: single majority element
-            (vec![2, 2, 1, 1, 1, 2, 2], 2),           // Example 2: majority with multiple occurrences
+            (vec![3, 2, 3], 3),             // Example 1: single majority element
+            (vec![2, 2, 1, 1, 1, 2, 2], 2), // Example 2: majority with multiple occurrences
         ]
         .into_iter()
         .for_each(|(nums, expected)| {
