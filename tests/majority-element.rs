@@ -29,6 +29,27 @@ pub fn majority_element_1(nums: Vec<i32>) -> i32 {
         .0
 }
 
+// 0ms | 2.27MB - 100%
+// The Boyer-Moore voting algorithm
+pub fn majority_element_2(nums: Vec<i32>) -> i32 {
+    let mut candidate = 0;
+    let mut counter = 0;
+
+    for n in nums {
+        if counter == 0 {
+            candidate = n;
+        }
+
+        if n == candidate {
+            counter += 1;
+        } else {
+            counter -= 1;
+        }
+    }
+
+    candidate
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -38,6 +59,7 @@ mod tests {
     solution_tests!(
         run_test:
         majority_element_1,
+        majority_element_2,
     );
 
     fn run_test(target: fn(Vec<i32>) -> i32) {
