@@ -46,6 +46,16 @@ pub fn eval_rpn_2(tokens: Vec<String>) -> i32 {
     // keep results only
     let mut res_stack = Vec::<i32>::new();
 
+    fn find_back(tokens: &[String], mut i: usize) -> (i32, usize) {
+        loop {
+            if let Ok(t) = tokens[i].parse() {
+                return (t, i);
+            }
+
+            i -= 1;
+        }
+    }
+
     for i in 0..tokens.len() {
         let t = tokens[i].as_str();
 
@@ -54,13 +64,13 @@ pub fn eval_rpn_2(tokens: Vec<String>) -> i32 {
             let a = res_stack.pop();
 
             let (a, b) = match (a, b) {
-                (None, None) => (
-                    tokens[i - 2].parse().unwrap(),
-                    tokens[i - 1].parse().unwrap(),
-                ),
-                (None, Some(b)) => (tokens[i - 1].parse().unwrap(), b),
-                (Some(a), None) => (a, tokens[i - 1].parse().unwrap()),
-                (Some(a), Some(b)) => (a, b),
+                (None, None) => {
+                    let (b, j) = find_back(&tokens, i - 1);
+                    (find_back(&tokens, j - 1).0, b)
+                }
+                (None, Some(b)) => (find_back(&tokens, i - 1).0, b),
+                (Some(a), Some(b)) => (b, a),
+                _ => unreachable!(),
             };
 
             let c = match t {
@@ -91,8 +101,8 @@ mod tests {
 
     fn run_test(target: fn(Vec<String>) -> i32) {
         vec![
-            (vec!["2", "1", "+", "3", "*"], 9),  // ((2 + 1) * 3) = 9
             (vec!["4", "13", "5", "/", "+"], 6), // (4 + (13 / 5)) = 6
+            (vec!["2", "1", "+", "3", "*"], 9),  // ((2 + 1) * 3) = 9
             (
                 vec![
                     "10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+",
