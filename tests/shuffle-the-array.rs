@@ -2,17 +2,14 @@
 //!
 //! Given the array nums consisting of 2n elements in the form [x1,x2,...,xn,y1,y2,...,yn].
 //! Return the array in the form [x1,y1,x2,y2,...,xn,yn].
+//!
+//! Constraints:
+//! 1 <= n <= 500
+//! nums.length == 2n
+//! 1 <= nums[i] <= 10^3
 
-/// Pre-allocates with unsafe set_len and direct indexing.
-///
-/// Time: O(n) - single pass with direct assignment
-/// Space: O(n) - allocates new vector of size 2n
-///
-/// Benchmarks (2n=total elements):
-/// - small (2n=6): ~147 ns
-/// - medium (2n=12): ~190 ns
-/// - large (2n=100): ~524 ns
-pub fn shuffle(nums: Vec<i32>, n: i32) -> Vec<i32> {
+// 1ms - 79.38% | 2.26MB - 30.11%
+pub fn shuffle_1(nums: Vec<i32>, n: i32) -> Vec<i32> {
     let n = n as usize;
     let mut ans = Vec::with_capacity(n * 2);
 
@@ -29,7 +26,7 @@ pub fn shuffle(nums: Vec<i32>, n: i32) -> Vec<i32> {
     ans
 }
 
-/// what is probably expected
+// 1ms - 79.38% | 2.21MB - 30.11%
 fn shuffle_2(nums: Vec<i32>, n: i32) -> Vec<i32> {
     let n = n as usize;
     let mut ans = vec![0; n * 2];
@@ -50,7 +47,7 @@ mod tests {
 
     solution_tests!(
         run_test:
-        shuffle,
+        shuffle_1,
         shuffle_2,
     );
 
