@@ -16,6 +16,7 @@
 //! - 1 <= tokens.length <= 10^4
 //! - tokens[i] is either an operator: "+", "-", "*", or "/", or an integer in the range [-200, 200].
 
+// 0ms | 2.83MB - 28.22%
 pub fn eval_rpn_1(tokens: Vec<String>) -> i32 {
     use std::str::FromStr;
     let mut num_stack = Vec::<i32>::new();
@@ -41,6 +42,41 @@ pub fn eval_rpn_1(tokens: Vec<String>) -> i32 {
     num_stack.pop().unwrap()
 }
 
+pub fn eval_rpn_2(tokens: Vec<String>) -> i32 {
+    // keep results only
+    let mut res_stack = Vec::<i32>::new();
+
+    for i in 0..tokens.len() {
+        let t = tokens[i].as_str();
+
+        if let "+" | "-" | "*" | "/" = t {
+            let b = res_stack.pop();
+            let a = res_stack.pop();
+
+            let (a, b) = match (a, b) {
+                (None, None) => (
+                    tokens[i - 2].parse().unwrap(),
+                    tokens[i - 1].parse().unwrap(),
+                ),
+                (None, Some(b)) => (tokens[i - 1].parse().unwrap(), b),
+                (Some(a), None) => (a, tokens[i - 1].parse().unwrap()),
+                (Some(a), Some(b)) => (a, b),
+            };
+
+            let c = match t {
+                "+" => a + b,
+                "-" => a - b,
+                "*" => a * b,
+                "/" => a / b,
+                _ => unreachable!(),
+            };
+            res_stack.push(c);
+        }
+    }
+
+    res_stack.pop().unwrap()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -50,6 +86,7 @@ mod tests {
     solution_tests!(
         run_test:
         eval_rpn_1,
+        eval_rpn_2,
     );
 
     fn run_test(target: fn(Vec<String>) -> i32) {

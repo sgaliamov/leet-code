@@ -34,7 +34,7 @@ DO NOT PROVIDE SOLUTIONS DIRECTLY!
 - Write clear, direct code: prefer explicit loops over chained iterators unless the functional approach is genuinely clearer.
 - Prefer imperative style over functional — we're mastering problem-solving, not Rust libraries.
 - Place helper functions and types at the bottom of the module.
-- Use `unwrap()` only in tests or when failure is genuinely impossible.
+- Use `unwrap()` when it improves performance and the context guarantees safety.
 
 ## Testing Standards
 
@@ -45,6 +45,7 @@ DO NOT PROVIDE SOLUTIONS DIRECTLY!
 - Organize test data as `Vec<(input, expected)>` for parameterized scenarios.
 - Merge similar test cases into single parameterized tests.
 - Use `solution_tests!` macro with `run_test` function pattern:
+
   ```rust
   leet_code::solution_tests!(
       run_test:
@@ -62,6 +63,7 @@ DO NOT PROVIDE SOLUTIONS DIRECTLY!
       }
   }
   ```
+
 - Add benchmark entries to `Cargo.toml`:
   ```toml
   [[bench]]
