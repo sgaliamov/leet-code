@@ -1,8 +1,12 @@
 //! https://leetcode.com/problems/max-consecutive-ones
 //!
 //! Given a binary array nums, return the maximum number of consecutive 1's in the array.
+//!
+//! Constraints:
+//! - `1 <= nums.length <= 10^5`
+//! - `nums[i]` is either `0` or `1`.
 
-pub fn find_max_consecutive_ones(nums: Vec<i32>) -> i32 {
+pub fn find_max_consecutive_ones_1(nums: Vec<i32>) -> i32 {
     let mut max = 0;
     let mut c = 0;
 
@@ -38,7 +42,7 @@ mod tests {
 
     solution_tests!(
         run_test:
-        find_max_consecutive_ones,
+        find_max_consecutive_ones_1,
     );
 
     fn run_test(target: fn(Vec<i32>) -> i32) {
