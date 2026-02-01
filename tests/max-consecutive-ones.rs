@@ -6,6 +6,7 @@
 //! - `1 <= nums.length <= 10^5`
 //! - `nums[i]` is either `0` or `1`.
 
+// 0ms | 2.68MB - 60.51%
 pub fn find_max_consecutive_ones_1(nums: Vec<i32>) -> i32 {
     let mut max = 0;
     let mut c = 0;
@@ -34,6 +35,25 @@ pub fn find_max_consecutive_ones_1(nums: Vec<i32>) -> i32 {
     max as i32
 }
 
+// 0ms | 2.60MB - 60.51%
+pub fn find_max_consecutive_ones_2(nums: Vec<i32>) -> i32 {
+    let mut max = 0;
+    let mut cnt = 0;
+
+    for x in nums {
+        if x == 1 {
+            cnt += 1;
+        } else if cnt > max {
+            max = cnt;
+            cnt = 0;
+        } else {
+            cnt = 0;
+        }
+    }
+
+    cnt.max(max)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -43,6 +63,7 @@ mod tests {
     solution_tests!(
         run_test:
         find_max_consecutive_ones_1,
+        find_max_consecutive_ones_2,
     );
 
     fn run_test(target: fn(Vec<i32>) -> i32) {
