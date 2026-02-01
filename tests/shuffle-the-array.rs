@@ -45,12 +45,13 @@ fn shuffle_3(nums: Vec<i32>, n: i32) -> Vec<i32> {
     let n = n as usize;
 
     for i in 0..n {
-        nums[i] = (nums[i] * 10000) + nums[n + i];
+        nums[i] = (nums[i] << 10) | nums[n + i];
     }
 
     for i in (0..n).rev() {
-        nums[2 * i + 1] = nums[i] % 10000;
-        nums[2 * i] = nums[i] / 10000;
+        let v = nums[i];
+        nums[2 * i] = v >> 10;
+        nums[2 * i + 1] = v ^ nums[2 * i] << 10;
     }
 
     nums.truncate(n * 2);
@@ -72,7 +73,7 @@ mod tests {
 
     fn run_test(target: fn(Vec<i32>, i32) -> Vec<i32>) {
         vec![
-            (vec![2, 5, 1, 3, 4, 7], 3, vec![2, 3, 5, 4, 1, 7]),
+            (vec![2, 5, 1, 3, 1000, 7], 3, vec![2, 3, 5, 1000, 1, 7]),
             (vec![2, 5, 1, 3, 4, 7], 2, vec![2, 1, 5, 3]),
         ]
         .into_iter()
