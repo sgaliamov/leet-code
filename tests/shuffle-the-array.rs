@@ -48,9 +48,9 @@ fn shuffle_3(nums: Vec<i32>, n: i32) -> Vec<i32> {
         nums[i] = (nums[i] * 10000) + nums[n + i];
     }
 
-    for i in 0..=n - 1 {
-        nums[2 * n - 1 - 2 * i] = nums[n - i - 1] % 10000;
-        nums[2 * n - 1 - 2 * i - 1] = nums[n - i - 1] / 10000;
+    for i in (0..n).rev() {
+        nums[2 * i + 1] = nums[i] % 10000;
+        nums[2 * i] = nums[i] / 10000;
     }
 
     nums.truncate(n * 2);
