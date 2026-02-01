@@ -39,6 +39,24 @@ fn shuffle_2(nums: Vec<i32>, n: i32) -> Vec<i32> {
     ans
 }
 
+// 0ms | 2.26MB - 30.11%
+fn shuffle_3(nums: Vec<i32>, n: i32) -> Vec<i32> {
+    let mut nums = nums;
+    let n = n as usize;
+
+    for i in 0..n {
+        nums[i] = (nums[i] * 10000) + nums[n + i];
+    }
+
+    for i in 0..=n - 1 {
+        nums[2 * n - 1 - 2 * i] = nums[n - i - 1] % 10000;
+        nums[2 * n - 1 - 2 * i - 1] = nums[n - i - 1] / 10000;
+    }
+
+    nums.truncate(n * 2);
+    nums
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -49,6 +67,7 @@ mod tests {
         run_test:
         shuffle_1,
         shuffle_2,
+        shuffle_3,
     );
 
     fn run_test(target: fn(Vec<i32>, i32) -> Vec<i32>) {
@@ -58,8 +77,8 @@ mod tests {
         ]
         .into_iter()
         .for_each(|(nums, n, expected)| {
+            let name = format!("{nums:?} {expected:?}");
             let actual = target(nums, n);
-            let name = format!("{expected:?}");
 
             assert_that!(actual).named(&name).is_equal_to(&expected);
         });
