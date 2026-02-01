@@ -16,30 +16,31 @@
 //! - 1 <= tokens.length <= 10^4
 //! - tokens[i] is either an operator: "+", "-", "*", or "/", or an integer in the range [-200, 200].
 
-// 0ms | 2.83MB - 28.22%
+// 0ms | 2.83MB - 28.53%
 pub fn eval_rpn_1(tokens: Vec<String>) -> i32 {
-    use std::str::FromStr;
-    let mut num_stack = Vec::<i32>::new();
+    let mut stack = vec![];
 
     for t in tokens {
-        if let "+" | "-" | "*" | "/" = t.as_str() {
-            let b = num_stack.pop().unwrap();
-            let a = num_stack.pop().unwrap();
+        let t = t.as_str();
 
-            let c = match t.as_str() {
+        if let "+" | "-" | "*" | "/" = t {
+            let b = stack.pop().unwrap();
+            let a = stack.pop().unwrap();
+
+            let c = match t {
                 "+" => a + b,
                 "-" => a - b,
                 "*" => a * b,
                 "/" => a / b,
-                _ => unreachable!(),
+                _ => 0,
             };
-            num_stack.push(c);
+            stack.push(c);
         } else {
-            num_stack.push(i32::from_str(t.as_str()).unwrap());
+            stack.push(t.parse().unwrap());
         }
     }
 
-    num_stack.pop().unwrap()
+    stack.pop().unwrap()
 }
 
 // 0ms | 2.90MB - 28.52%
@@ -55,7 +56,7 @@ pub fn eval_rpn_2(tokens: Vec<String>) -> i32 {
                     "-" => a - b,
                     "*" => a * b,
                     "/" => a / b,
-                    _ => unreachable!(),
+                    _ => 0,
                 };
                 num_stack.push(c);
             } else {

@@ -35,6 +35,7 @@ DO NOT PROVIDE SOLUTIONS DIRECTLY!
 - Prefer imperative style over functional — we're mastering problem-solving, not Rust libraries.
 - Place helper functions and types at the bottom of the module.
 - Use `unwrap()` when it improves performance and the context guarantees safety.
+- Don't suggest using external crates, like `smallvec`, except for `Itertools`.
 
 ## Testing Standards
 
