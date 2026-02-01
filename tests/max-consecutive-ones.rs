@@ -1,8 +1,13 @@
 //! https://leetcode.com/problems/max-consecutive-ones
 //!
 //! Given a binary array nums, return the maximum number of consecutive 1's in the array.
+//!
+//! Constraints:
+//! - `1 <= nums.length <= 10^5`
+//! - `nums[i]` is either `0` or `1`.
 
-pub fn find_max_consecutive_ones(nums: Vec<i32>) -> i32 {
+// 0ms | 2.68MB - 60.51%
+pub fn find_max_consecutive_ones_1(nums: Vec<i32>) -> i32 {
     let mut max = 0;
     let mut c = 0;
 
@@ -30,6 +35,45 @@ pub fn find_max_consecutive_ones(nums: Vec<i32>) -> i32 {
     max as i32
 }
 
+// 0ms | 2.60MB - 60.51%
+pub fn find_max_consecutive_ones_2(nums: Vec<i32>) -> i32 {
+    let mut max = 0;
+    let mut cnt = 0;
+
+    for x in nums {
+        if x == 1 {
+            cnt += 1;
+        } else if cnt > max {
+            max = cnt;
+            cnt = 0;
+        } else {
+            cnt = 0;
+        }
+    }
+
+    cnt.max(max)
+}
+
+// 0ms | 2.76MB - 16.31%
+pub fn find_max_consecutive_ones_3(nums: Vec<i32>) -> i32 {
+    let mut max = 0;
+
+    nums.into_iter().fold(0, |mut cnt, n| {
+        if n == 1 {
+            cnt += 1;
+            if cnt > max {
+                max = cnt;
+            }
+        } else {
+            cnt = 0;
+        }
+
+        cnt
+    });
+
+    max
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -38,7 +82,9 @@ mod tests {
 
     solution_tests!(
         run_test:
-        find_max_consecutive_ones,
+        find_max_consecutive_ones_1,
+        find_max_consecutive_ones_2,
+        find_max_consecutive_ones_3,
     );
 
     fn run_test(target: fn(Vec<i32>) -> i32) {
