@@ -42,49 +42,29 @@ pub fn eval_rpn_1(tokens: Vec<String>) -> i32 {
     num_stack.pop().unwrap()
 }
 
+// 0ms | 2.90MB - 28.52%
 pub fn eval_rpn_2(tokens: Vec<String>) -> i32 {
-    // keep results only
-    let mut res_stack = Vec::<i32>::new();
-
-    fn find_back(tokens: &[String], mut i: usize) -> (i32, usize) {
-        loop {
-            if let Ok(t) = tokens[i].parse() {
-                return (t, i);
+    tokens
+        .into_iter()
+        .fold(vec![], |mut num_stack, t| {
+            if let "+" | "-" | "*" | "/" = t.as_str() {
+                let b = num_stack.pop().unwrap();
+                let a = num_stack.pop().unwrap();
+                let c = match t.as_str() {
+                    "+" => a + b,
+                    "-" => a - b,
+                    "*" => a * b,
+                    "/" => a / b,
+                    _ => unreachable!(),
+                };
+                num_stack.push(c);
+            } else {
+                num_stack.push(t.parse().unwrap());
             }
-
-            i -= 1;
-        }
-    }
-
-    for i in 0..tokens.len() {
-        let t = tokens[i].as_str();
-
-        if let "+" | "-" | "*" | "/" = t {
-            let b = res_stack.pop();
-            let a = res_stack.pop();
-
-            let (a, b) = match (a, b) {
-                (None, None) => {
-                    let (b, j) = find_back(&tokens, i - 1);
-                    (find_back(&tokens, j - 1).0, b)
-                }
-                (None, Some(b)) => (find_back(&tokens, i - 1).0, b),
-                (Some(a), Some(b)) => (b, a),
-                _ => unreachable!(),
-            };
-
-            let c = match t {
-                "+" => a + b,
-                "-" => a - b,
-                "*" => a * b,
-                "/" => a / b,
-                _ => unreachable!(),
-            };
-            res_stack.push(c);
-        }
-    }
-
-    res_stack.pop().unwrap()
+            num_stack
+        })
+        .pop()
+        .unwrap()
 }
 
 #[cfg(test)]
