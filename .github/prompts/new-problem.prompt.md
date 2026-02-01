@@ -20,7 +20,7 @@ Given a raw LeetCode problem description, create a properly organized test modul
 
 // Helper types/structs if needed (e.g., ListNode, TreeNode)
 
-pub fn <function_name>(<params>) -> <return_type> {
+pub fn <function_name_1>(<params>) -> <return_type> {
     todo!()
 }
 
@@ -32,7 +32,7 @@ mod tests {
 
     solution_tests!(
         run_test:
-        <function_name>,
+        <function_name_1>,
     );
 
     fn run_test(target: fn(<params>) -> <return_type>) {
