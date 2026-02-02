@@ -40,6 +40,7 @@ pub fn exclusive_time_1(n: i32, logs: Vec<String>) -> Vec<i32> {
         let Some((id, act, time)) = rec.split(':').collect_tuple() else {
             break;
         };
+
         let id: usize = id.parse().unwrap();
         let time: i32 = time.parse().unwrap();
 
@@ -64,6 +65,37 @@ pub fn exclusive_time_1(n: i32, logs: Vec<String>) -> Vec<i32> {
     counter
 }
 
+// 0ms | 2.36MB - 37.82% - not mine
+pub fn exclusive_time_2(n: i32, logs: Vec<String>) -> Vec<i32> {
+    let mut counter = vec![0; n as usize];
+    let mut stack = vec![];
+    let mut prev = 0;
+
+    for rec in logs {
+        let mut rec = rec.split(':');
+        let id: usize = rec.next().unwrap().parse().unwrap();
+        let act = rec.next().unwrap();
+        let time: i32 = rec.next().unwrap().parse().unwrap();
+
+        if act == "start" {
+            if let Some(&id) = stack.last() {
+                let duration = time - prev;
+                counter[id] += duration;
+            }
+
+            stack.push(id);
+            prev = time;
+        } else {
+            let duration = time - prev + 1;
+            counter[id] += duration;
+            stack.pop();
+            prev = time + 1;
+        }
+    }
+
+    counter
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -73,6 +105,7 @@ mod tests {
     solution_tests!(
         run_test:
         exclusive_time_1,
+        exclusive_time_2,
     );
 
     fn run_test(target: fn(i32, Vec<String>) -> Vec<i32>) {
