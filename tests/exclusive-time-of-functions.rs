@@ -30,6 +30,7 @@
 //! - No two end events will happen at the same timestamp
 //! - Each function has an "end" log for each "start" log
 
+// 2ms - 29.49% | 2.25MB - 93.59%
 pub fn exclusive_time_1(n: i32, logs: Vec<String>) -> Vec<i32> {
     use itertools::Itertools;
     let mut counter = vec![0; n as usize];
@@ -43,11 +44,20 @@ pub fn exclusive_time_1(n: i32, logs: Vec<String>) -> Vec<i32> {
         let time: i32 = time.parse().unwrap();
 
         if act == "start" {
-            stack.push(time);
+            if let Some(&(id, start)) = stack.last() {
+                let duration = time - start;
+                counter[id] += duration;
+            }
+
+            stack.push((id, time));
         } else {
-            let start = stack.pop().unwrap();
+            let (id, start) = stack.pop().unwrap();
             let duration = time - start + 1;
             counter[id] += duration;
+
+            if let Some((_, start)) = stack.last_mut() {
+                *start = time + 1;
+            }
         }
     }
 
@@ -68,6 +78,11 @@ mod tests {
     fn run_test(target: fn(i32, Vec<String>) -> Vec<i32>) {
         vec![
             (
+                1,
+                vec!["0:start:0".to_string(), "0:end:6".to_string()],
+                vec![7],
+            ),
+            (
                 2,
                 vec![
                     "0:start:0".to_string(),
@@ -76,7 +91,7 @@ mod tests {
                     "0:end:6".to_string(),
                 ],
                 vec![3, 4],
-            ), // Example 1: Function 0 executes for 3 units, function 1 for 4 units
+            ),
             (
                 1,
                 vec![
@@ -88,7 +103,7 @@ mod tests {
                     "0:end:7".to_string(),
                 ],
                 vec![8],
-            ), // Example 2: Recursive calls, function 0 executes for 8 units total
+            ),
             (
                 2,
                 vec![
@@ -100,7 +115,7 @@ mod tests {
                     "0:end:7".to_string(),
                 ],
                 vec![7, 1],
-            ), // Example 3: Nested calls with different functions
+            ),
         ]
         .into_iter()
         .for_each(|(n, logs, expected)| {
