@@ -1,6 +1,11 @@
 #![allow(clippy::new_without_default)]
 
-/// Decreasing monotonic stack (safe version)
+/// Decreasing monotonic stack (optimized with unsafe)
+///
+/// Benchmark results (criterion):
+/// - Typical case (n=100):  160.53 ns vs 201.80 ns (20% faster)
+/// - Typical case (n=1000): 1.325 µs vs 1.425 µs (7% faster)
+/// - Worst case: ~equal (no popping work = no optimization gain)
 pub struct DecreasingStack<T> {
     pub stack: Vec<T>,
 }
@@ -18,44 +23,14 @@ impl<T: PartialOrd> DecreasingStack<T> {
         }
     }
 
+    /// Push value onto stack, maintaining decreasing order.
+    ///
+    /// Pops all elements smaller than `val` before pushing.
+    ///
+    /// Time: O(n) amortized per operation (each element pushed/popped once)
+    /// Space: O(1) auxiliary
     #[inline]
     pub fn push(&mut self, val: T) {
-        while let Some(last) = self.stack.last()
-            && last < &val
-        {
-            self.stack.pop();
-        }
-
-        self.stack.push(val);
-    }
-
-    #[inline]
-    pub fn pop(&mut self) -> Option<T> {
-        self.stack.pop()
-    }
-}
-
-/// Decreasing monotonic stack (optimized with unsafe)
-pub struct DecreasingStackUnsafe<T> {
-    pub stack: Vec<T>,
-}
-
-impl<T: PartialOrd> DecreasingStackUnsafe<T> {
-    #[inline]
-    pub fn new() -> Self {
-        Self { stack: Vec::new() }
-    }
-
-    #[inline]
-    pub fn with_capacity(capacity: usize) -> Self {
-        Self {
-            stack: Vec::with_capacity(capacity),
-        }
-    }
-
-    #[inline]
-    pub fn push(&mut self, val: T) {
-        // Safety: We check len before accessing and only shrink when len > 0
         unsafe {
             let mut len = self.stack.len();
             while len > 0 {
