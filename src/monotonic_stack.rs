@@ -31,24 +31,35 @@ impl<T: PartialOrd> DecreasingStack<T> {
     /// Space: O(1) auxiliary
     #[inline]
     pub fn push(&mut self, val: T) {
-        unsafe {
-            let mut len = self.stack.len();
-            while len > 0 {
-                let last = self.stack.get_unchecked(len - 1);
-                if last >= &val {
-                    break;
-                }
-                len -= 1;
-            }
-            self.stack.set_len(len);
-        }
-        self.stack.push(val);
+        push_decreasing(&mut self.stack, val);
     }
 
     #[inline]
     pub fn pop(&mut self) -> Option<T> {
         self.stack.pop()
     }
+}
+
+/// Push value onto stack, maintaining decreasing order.
+///
+/// Pops all elements smaller than `val` before pushing.
+///
+/// Time: O(n) amortized per operation (each element pushed/popped once)
+/// Space: O(1) auxiliary
+#[inline]
+pub fn push_decreasing<T: PartialOrd>(stack: &mut Vec<T>, val: T) {
+    unsafe {
+        let mut len = stack.len();
+        while len > 0 {
+            let last = stack.get_unchecked(len - 1);
+            if last >= &val {
+                break;
+            }
+            len -= 1;
+        }
+        stack.set_len(len);
+    }
+    stack.push(val);
 }
 
 #[cfg(test)]

@@ -13,7 +13,9 @@
 //! - `1 <= prices.length <= 500`
 //! - `1 <= prices[i] <= 1000`
 
-// 0ms | 2.07MB - 100%
+use leet_code::push_decreasing;
+
+// 0ms | 2.07MB - 100% | O(n²)
 pub fn final_prices_1(mut prices: Vec<i32>) -> Vec<i32> {
     for i in 0..prices.len() {
         let p = prices[i];
