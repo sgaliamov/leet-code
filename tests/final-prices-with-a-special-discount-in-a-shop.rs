@@ -13,9 +13,15 @@
 //! - `1 <= prices.length <= 500`
 //! - `1 <= prices[i] <= 1000`
 
+// 0ms | 2.07MB - 100%
+pub fn final_prices_1(mut prices: Vec<i32>) -> Vec<i32> {
+    for i in 0..prices.len() {
+        let p = prices[i];
+        let d = *prices.iter().skip(i + 1).find(|&x| x <= &p).unwrap_or(&0);
+        prices[i] -= d;
+    }
 
-pub fn final_prices(prices: Vec<i32>) -> Vec<i32> {
-    todo!()
+    prices
 }
 
 #[cfg(test)]
@@ -26,7 +32,7 @@ mod tests {
 
     solution_tests!(
         run_test:
-        final_prices,
+        final_prices_1,
     );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
