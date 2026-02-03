@@ -1,4 +1,4 @@
-mod monotonic_stack;
+pub mod monotonic_stack;
 
 pub use monotonic_stack::*;
 

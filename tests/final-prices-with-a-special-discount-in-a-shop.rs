@@ -13,6 +13,7 @@
 //! - `1 <= prices.length <= 500`
 //! - `1 <= prices[i] <= 1000`
 
+
 pub fn final_prices(prices: Vec<i32>) -> Vec<i32> {
     todo!()
 }

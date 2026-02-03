@@ -1,8 +1,8 @@
 #![allow(clippy::new_without_default)]
 
-/// Decreasing monotonic stack
+/// Decreasing monotonic stack (safe version)
 pub struct DecreasingStack<T> {
-    stack: Vec<T>,
+    pub stack: Vec<T>,
 }
 
 impl<T: PartialOrd> DecreasingStack<T> {
@@ -26,6 +26,47 @@ impl<T: PartialOrd> DecreasingStack<T> {
             self.stack.pop();
         }
 
+        self.stack.push(val);
+    }
+
+    #[inline]
+    pub fn pop(&mut self) -> Option<T> {
+        self.stack.pop()
+    }
+}
+
+/// Decreasing monotonic stack (optimized with unsafe)
+pub struct DecreasingStackUnsafe<T> {
+    pub stack: Vec<T>,
+}
+
+impl<T: PartialOrd> DecreasingStackUnsafe<T> {
+    #[inline]
+    pub fn new() -> Self {
+        Self { stack: Vec::new() }
+    }
+
+    #[inline]
+    pub fn with_capacity(capacity: usize) -> Self {
+        Self {
+            stack: Vec::with_capacity(capacity),
+        }
+    }
+
+    #[inline]
+    pub fn push(&mut self, val: T) {
+        // Safety: We check len before accessing and only shrink when len > 0
+        unsafe {
+            let mut len = self.stack.len();
+            while len > 0 {
+                let last = self.stack.get_unchecked(len - 1);
+                if last >= &val {
+                    break;
+                }
+                len -= 1;
+            }
+            self.stack.set_len(len);
+        }
         self.stack.push(val);
     }
 

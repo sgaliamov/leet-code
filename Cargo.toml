@@ -38,3 +38,7 @@ harness = false
 [[bench]]
 name = "find_all_numbers_disappeared_in_an_array"
 harness = false
+
+[[bench]]
+name = "monotonic_stack"
+harness = false
