@@ -1,19 +1,14 @@
+#![allow(clippy::new_without_default)]
+
 /// Decreasing monotonic stack
 pub struct DecreasingStack<T> {
     stack: Vec<T>,
 }
 
-impl<T: PartialOrd> Default for DecreasingStack<T> {
-    #[inline]
-    fn default() -> Self {
-        Self { stack: Vec::new() }
-    }
-}
-
 impl<T: PartialOrd> DecreasingStack<T> {
     #[inline]
     pub fn new() -> Self {
-        Self::default()
+        Self { stack: Vec::new() }
     }
 
     #[inline]
@@ -48,7 +43,7 @@ mod tests {
     #[test]
     fn test() {
         use Operation::*;
-        let mut stack = DecreasingStack { stack: vec![] };
+        let mut stack = DecreasingStack::new();
 
         let operations = vec![
             (Push(5), Some(vec![5])),
