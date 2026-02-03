@@ -1,9 +1,28 @@
 /// Decreasing monotonic stack
-pub struct MonotonicDescStack<T> {
+pub struct DecreasingStack<T> {
     stack: Vec<T>,
 }
 
-impl<T: PartialOrd> MonotonicDescStack<T> {
+impl<T: PartialOrd> Default for DecreasingStack<T> {
+    #[inline]
+    fn default() -> Self {
+        Self { stack: Vec::new() }
+    }
+}
+
+impl<T: PartialOrd> DecreasingStack<T> {
+    #[inline]
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    #[inline]
+    pub fn with_capacity(capacity: usize) -> Self {
+        Self {
+            stack: Vec::with_capacity(capacity),
+        }
+    }
+
     #[inline]
     pub fn push(&mut self, val: T) {
         while let Some(last) = self.stack.last()
@@ -29,7 +48,7 @@ mod tests {
     #[test]
     fn test() {
         use Operation::*;
-        let mut stack = MonotonicDescStack { stack: vec![] };
+        let mut stack = DecreasingStack { stack: vec![] };
 
         let operations = vec![
             (Push(5), Some(vec![5])),
