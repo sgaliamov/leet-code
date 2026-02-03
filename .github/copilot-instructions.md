@@ -45,7 +45,7 @@ DO NOT PROVIDE SOLUTIONS DIRECTLY!
 - Name the testing object as `target`, expected as `expected`, actual as `actual` when applicable.
 - Organize test data as `Vec<(input, expected)>` for parameterized scenarios.
 - Merge similar test cases into single parameterized tests.
-- Use `solution_tests!` macro with `run_test` function pattern:
+- Use `solution_tests!` macro with `run_test` function pattern for problem's solution tests:
 
   ```rust
   leet_code::solution_tests!(
@@ -64,7 +64,7 @@ DO NOT PROVIDE SOLUTIONS DIRECTLY!
       }
   }
   ```
-
+- For helper modules, use standard `#[cfg(test)] mod tests` structure.
 - Add benchmark entries to `Cargo.toml`:
   ```toml
   [[bench]]
