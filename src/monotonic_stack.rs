@@ -62,13 +62,29 @@ pub fn push_decreasing<T: PartialOrd>(stack: &mut Vec<T>, val: T) {
     stack.push(val);
 }
 
+#[inline]
+pub fn push_increasing<T: PartialOrd>(stack: &mut Vec<T>, val: T) {
+    unsafe {
+        let mut len = stack.len();
+        while len > 0 {
+            let last = stack.get_unchecked(len - 1);
+            if last <= &val {
+                break;
+            }
+            len -= 1;
+        }
+        stack.set_len(len);
+    }
+    stack.push(val);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use spectral::prelude::*;
 
     #[test]
-    fn test() {
+    fn test_push_decreasing() {
         use Operation::*;
         let mut stack = DecreasingStack::new();
 
@@ -99,6 +115,25 @@ mod tests {
                     }
                 }
             }
+        }
+    }
+
+    #[test]
+    fn test_push_increasing() {
+        let cases = vec![
+            (3, vec![3]),       // initial push
+            (5, vec![3, 5]),    // push larger, stack grows
+            (2, vec![2]),       // push smaller, pops all
+            (7, vec![2, 7]),    // push larger again
+            (4, vec![2, 4]),    // push smaller, pops 7
+            (8, vec![2, 4, 8]), // push larger, stack grows
+            (1, vec![1]),       // push smallest, clears stack
+        ];
+
+        let mut stack: Vec<i32> = Vec::new();
+        for (input, expected) in cases {
+            push_increasing(&mut stack, input);
+            assert_that!(&stack).is_equal_to(&expected);
         }
     }
 

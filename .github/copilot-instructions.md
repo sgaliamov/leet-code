@@ -64,7 +64,8 @@ DO NOT PROVIDE SOLUTIONS DIRECTLY!
       }
   }
   ```
-- For helper modules, use standard `#[cfg(test)] mod tests` structure.
+
+- For helper modules do not use `solution_tests!`; write standard `#[cfg(test)] mod tests` instead, but keep test cases as `Vec<(input, expected)>`.
 - Add benchmark entries to `Cargo.toml`:
   ```toml
   [[bench]]
