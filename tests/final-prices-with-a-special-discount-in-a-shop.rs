@@ -128,28 +128,21 @@ pub fn final_prices_4(mut prices: Vec<i32>) -> Vec<i32> {
     prices
 }
 
+// refactoring by claude
 pub fn final_prices_5(mut prices: Vec<i32>) -> Vec<i32> {
-    prices
-        .iter_mut()
-        .rev()
-        .fold(vec![], |mut stack, price_mut| {
-            let price = *price_mut;
+    let mut stack = Vec::new();
 
-            while let Some(&top) = stack.last() {
-                if top > price {
-                    stack.pop();
-                } else {
-                    break;
-                }
-            }
+    for price in prices.iter_mut().rev() {
+        while stack.last().is_some_and(|&top| top > *price) {
+            stack.pop();
+        }
 
-            if let Some(top) = stack.last() {
-                *price_mut -= top;
-            }
+        if let Some(&discount) = stack.last() {
+            *price -= discount;
+        }
 
-            stack.push(price);
-            stack
-        });
+        stack.push(*price);
+    }
 
     prices
 }
