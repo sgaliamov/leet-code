@@ -42,6 +42,8 @@ pub fn max_depth_1(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
 }
 
 // 0ms | 2.61MB - 73.71%
+// stack gives DFS
+// queue gives BFS
 pub fn max_depth_2(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     let Some(root) = root else {
         return 0;
