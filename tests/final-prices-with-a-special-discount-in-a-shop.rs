@@ -13,8 +13,6 @@
 //! - 1 <= prices.length <= 500
 //! - 1 <= prices[i] <= 1000
 
-use leet_code::{push_decreasing, push_increasing};
-
 // 0ms | 2.07MB - 100% | O(n²)
 pub fn final_prices_1(mut prices: Vec<i32>) -> Vec<i32> {
     for i in 0..prices.len() {
@@ -26,6 +24,7 @@ pub fn final_prices_1(mut prices: Vec<i32>) -> Vec<i32> {
     prices
 }
 
+// 0ms | 2.19MB - 66.90%
 pub fn final_prices_2(mut prices: Vec<i32>) -> Vec<i32> {
     use std::collections::VecDeque;
 
@@ -55,6 +54,10 @@ pub fn final_prices_2(mut prices: Vec<i32>) -> Vec<i32> {
                     break;
                 }
             }
+
+            if stack.is_empty() {
+                break;
+            }
         }
     }
 
@@ -75,6 +78,7 @@ mod tests {
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
         vec![
+            (vec![4, 10, 6, 9, 8, 7, 5, 2], vec![2, 4, 1, 1, 1, 2, 3, 2]),
             (vec![8, 10, 9, 4, 6, 6, 2, 3], vec![4, 1, 5, 2, 0, 4, 2, 3]),
             (vec![1, 2, 3, 4, 5], vec![1, 2, 3, 4, 5]),
             (vec![10, 1, 1, 6], vec![9, 0, 1, 6]),
