@@ -103,6 +103,31 @@ pub fn final_prices_3(mut prices: Vec<i32>) -> Vec<i32> {
     prices
 }
 
+// canonical monotonic stack solution
+pub fn final_prices_4(mut prices: Vec<i32>) -> Vec<i32> {
+    let mut stack = Vec::new();
+
+    for i in (0..prices.len()).rev() {
+        let price = prices[i];
+
+        while let Some(&top) = stack.last() {
+            if top > price {
+                stack.pop();
+            } else {
+                break;
+            }
+        }
+
+        if let Some(top) = stack.last() {
+            prices[i] -= top;
+        }
+
+        stack.push(price);
+    }
+
+    prices
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -113,7 +138,8 @@ mod tests {
         run_test:
         final_prices_1,
         final_prices_2,
-        final_prices_3
+        final_prices_3,
+        final_prices_4
     );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
