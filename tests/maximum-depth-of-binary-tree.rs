@@ -30,14 +30,40 @@ impl TreeNode {
     }
 }
 
-pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+// 0ms | 2.69MB - 74.3%
+pub fn max_depth_1(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     let Some(root) = root else {
         return 0;
     };
 
-    let l = max_depth(root.borrow().left.clone());
-    let r = max_depth(root.borrow().right.clone());
+    let l = max_depth_1(root.borrow().left.clone());
+    let r = max_depth_1(root.borrow().right.clone());
     l.max(r) + 1
+}
+
+// 0ms | 2.61MB - 73.71%
+pub fn max_depth_2(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+    let Some(root) = root else {
+        return 0;
+    };
+
+    let mut stack = vec![];
+    stack.push((root.clone(), 1));
+    let mut depth = 0;
+
+    while let Some((node, d)) = stack.pop() {
+        depth = d.max(depth);
+
+        if let Some(l) = node.borrow().left.clone() {
+            stack.push((l, d + 1));
+        }
+
+        if let Some(r) = node.borrow().right.clone() {
+            stack.push((r, d + 1));
+        }
+    }
+
+    depth
 }
 
 #[cfg(test)]
@@ -48,7 +74,8 @@ mod tests {
 
     solution_tests!(
         run_test:
-        max_depth,
+        max_depth_1,
+        max_depth_2,
     );
 
     fn run_test(target: fn(Option<Rc<RefCell<TreeNode>>>) -> i32) {
