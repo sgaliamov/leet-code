@@ -1,6 +1,6 @@
-use std::hint::black_box;
-use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
+use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
 use leet_code::monotonic_stack::DecreasingStack;
+use std::hint::black_box;
 
 /// Safe reference implementation for comparison
 struct DecreasingStackSafe<T> {
@@ -8,11 +8,6 @@ struct DecreasingStackSafe<T> {
 }
 
 impl<T: PartialOrd> DecreasingStackSafe<T> {
-    #[inline]
-    fn new() -> Self {
-        Self { stack: Vec::new() }
-    }
-
     #[inline]
     fn with_capacity(capacity: usize) -> Self {
         Self {
@@ -22,10 +17,14 @@ impl<T: PartialOrd> DecreasingStackSafe<T> {
 
     #[inline]
     fn push(&mut self, val: T) {
-        while let Some(last) = self.stack.last()
-            && last < &val
-        {
-            self.stack.pop();
+        while let Some(last) = self.stack.last() {
+            if last > &val {
+                break;
+            }
+
+            if last == &val {
+                return;
+            }
         }
         self.stack.push(val);
     }

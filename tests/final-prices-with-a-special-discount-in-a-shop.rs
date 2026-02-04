@@ -64,6 +64,45 @@ pub fn final_prices_2(mut prices: Vec<i32>) -> Vec<i32> {
     prices
 }
 
+// 0ms | 2.07MB - 100%
+pub fn final_prices_3(mut prices: Vec<i32>) -> Vec<i32> {
+    fn push_back_increasing(stack: &mut Vec<i32>, val: i32) {
+        while let Some(last) = stack.last() {
+            if last < &val {
+                break;
+            } else if last == &val {
+                return;
+            }
+
+            stack.pop();
+        }
+
+        stack.push(val);
+    }
+
+    let mut stack = Vec::new();
+
+    for i in (0..prices.len()).rev() {
+        let price = prices[i];
+
+        while let Some(&top) = stack.last() {
+            if top > price {
+                stack.pop();
+            } else {
+                break;
+            }
+        }
+
+        if let Some(top) = stack.last() {
+            prices[i] -= top;
+        }
+
+        push_back_increasing(&mut stack, price);
+    }
+
+    prices
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -73,12 +112,14 @@ mod tests {
     solution_tests!(
         run_test:
         final_prices_1,
-        final_prices_2
+        final_prices_2,
+        final_prices_3
     );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
         vec![
             (vec![4, 10, 6, 9, 8, 7, 5, 2], vec![2, 4, 1, 1, 1, 2, 3, 2]),
+            (vec![4, 3, 2, 1], vec![1, 1, 1, 1]),
             (vec![8, 10, 9, 4, 6, 6, 2, 3], vec![4, 1, 5, 2, 0, 4, 2, 3]),
             (vec![1, 2, 3, 4, 5], vec![1, 2, 3, 4, 5]),
             (vec![10, 1, 1, 6], vec![9, 0, 1, 6]),
