@@ -6,7 +6,7 @@
 //! Each unique word in s maps to exactly one letter in pattern.
 //! No two letters map to the same word, and no two words map to the same letter.
 
-/// 0ms | 99
+/// 0ms | 2.20MB - 75%
 pub fn word_pattern_1(pattern: String, s: String) -> bool {
     let mut i = 0;
     let pattern = pattern.into_bytes();
