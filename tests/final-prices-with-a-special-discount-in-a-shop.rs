@@ -128,6 +128,32 @@ pub fn final_prices_4(mut prices: Vec<i32>) -> Vec<i32> {
     prices
 }
 
+pub fn final_prices_5(mut prices: Vec<i32>) -> Vec<i32> {
+    prices
+        .iter_mut()
+        .rev()
+        .fold(vec![], |mut stack, price_mut| {
+            let price = *price_mut;
+
+            while let Some(&top) = stack.last() {
+                if top > price {
+                    stack.pop();
+                } else {
+                    break;
+                }
+            }
+
+            if let Some(top) = stack.last() {
+                *price_mut -= top;
+            }
+
+            stack.push(price);
+            stack
+        });
+
+    prices
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -139,7 +165,8 @@ mod tests {
         final_prices_1,
         final_prices_2,
         final_prices_3,
-        final_prices_4
+        final_prices_4,
+        final_prices_5
     );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
