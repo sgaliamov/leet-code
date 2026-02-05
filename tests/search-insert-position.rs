@@ -43,7 +43,26 @@ pub fn search_insert_3(nums: Vec<i32>, target: i32) -> i32 {
         }
     }
 
-    s as i32
+    s as _
+}
+
+// 0ms | 2.03MB - 99.5%
+// idiomatic solution | with hint
+pub fn search_insert_4(nums: Vec<i32>, target: i32) -> i32 {
+    let mut lo = 0;
+    let mut hi = nums.len();
+
+    while hi > lo {
+        let mid = lo + ((hi - lo) >> 1);
+
+        if nums[mid] < target {
+            lo = mid + 1;
+        } else {
+            hi = mid;
+        }
+    }
+
+    lo as _
 }
 
 #[cfg(test)]
@@ -57,6 +76,7 @@ mod tests {
         search_insert_1,
         search_insert_2,
         search_insert_3,
+        search_insert_4,
     );
 
     fn run_test(target_fn: fn(Vec<i32>, i32) -> i32) {
