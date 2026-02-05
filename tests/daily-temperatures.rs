@@ -62,6 +62,8 @@ pub fn daily_temperatures_3(mut temperatures: Vec<i32>) -> Vec<i32> {
 
     for j in (0..temperatures.len()).rev() {
         let t = temperatures[j];
+
+        // do not have to use tuple - can keep index only in the stack
         while stack.last().is_some_and(|&(_, v)| v <= t) {
             stack.pop();
         }
