@@ -53,7 +53,7 @@ pub fn search_insert_4(nums: Vec<i32>, target: i32) -> i32 {
     let mut hi = nums.len();
 
     while hi > lo {
-        let mid = lo + ((hi - lo) >> 1);
+        let mid = lo + (hi - lo) / 2;
 
         if nums[mid] < target {
             lo = mid + 1;
