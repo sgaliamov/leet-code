@@ -1,3 +1,7 @@
+pub mod monotonic_stack;
+
+pub use monotonic_stack::*;
+
 #[macro_export]
 macro_rules! solution_tests {
     ($run_test:ident: $($func:ident),+ $(,)?) => {
