@@ -31,6 +31,31 @@ pub fn daily_temperatures_1(mut temperatures: Vec<i32>) -> Vec<i32> {
     temperatures
 }
 
+// 4ms - 66.65% | 3.82MB - 84.24%
+pub fn daily_temperatures_2(mut temperatures: Vec<i32>) -> Vec<i32> {
+    let mut stack = Vec::<(usize, i32)>::new();
+    let mut j = temperatures.len();
+
+    for t in temperatures.iter_mut().rev() {
+        j -= 1;
+
+        while stack.last().is_some_and(|(_, v)| v <= t) {
+            stack.pop();
+        }
+
+        let v = *t;
+        if let Some((i, _)) = stack.last() {
+            *t = (i - j) as i32;
+        } else {
+            *t = 0;
+        }
+
+        stack.push((j, v));
+    }
+
+    temperatures
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -40,6 +65,7 @@ mod tests {
     solution_tests!(
         run_test:
         daily_temperatures_1,
+        daily_temperatures_2,
     );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
