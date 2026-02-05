@@ -26,6 +26,21 @@ pub fn search_insert_2(nums: Vec<i32>, target: i32) -> i32 {
     }
 }
 
+pub fn search_insert_3(nums: Vec<i32>, target: i32) -> i32 {
+    let mut i = nums.len() / 2;
+
+    loop {
+
+        if target < nums[i] {
+            i /= 2;
+        }
+
+
+    }
+
+    i as i32
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
