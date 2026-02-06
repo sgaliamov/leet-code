@@ -53,6 +53,35 @@ pub fn largest_rectangle_area_1(heights: Vec<i32>) -> i32 {
     max
 }
 
+// fails on [2, 1, 2]
+pub fn largest_rectangle_area_2(heights: Vec<i32>) -> i32 {
+    use itertools::Itertools;
+    let sorted = heights
+        .iter()
+        .enumerate()
+        .sorted_by_key(|x| x.1)
+        .collect_vec();
+
+    let mut max = 0;
+    for i in 0..sorted.len() {
+        let mut cnt = 1;
+        let mut c = sorted[i].0;
+
+        for j in i + 1..sorted.len() {
+            if sorted[j].0 - c == 1 {
+                cnt += 1;
+                c = j;
+            } else {
+                break;
+            }
+        }
+
+        max = max.max(cnt * heights[i]);
+    }
+
+    max
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -66,8 +95,10 @@ mod tests {
 
     fn run_test(target: fn(Vec<i32>) -> i32) {
         vec![
-            (vec![2, 1, 5, 6, 2, 3], 10), // histogram with multiple bars
-            (vec![2, 4], 4),              // two bars
+            (vec![2, 1, 2], 3),
+            (vec![4, 2], 4),
+            (vec![2, 1, 5, 6, 2, 3], 10),
+            (vec![2, 4], 4),
         ]
         .into_iter()
         .for_each(|(heights, expected)| {

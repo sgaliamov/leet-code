@@ -2,7 +2,7 @@
 mod shuffle_the_array;
 
 use criterion::{Criterion, criterion_group, criterion_main};
-use shuffle_the_array::shuffle as current_version;
+use shuffle_the_array::shuffle_1 as current_version;
 use std::hint::black_box;
 
 fn with_capacity_push(nums: Vec<i32>, n: i32) -> Vec<i32> {
