@@ -55,6 +55,43 @@ pub fn average_of_levels_1(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<f64> {
     averages
 }
 
+// 0ms | 3.07MB - 57.69%
+pub fn average_of_levels_2(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<f64> {
+    use std::collections::VecDeque;
+
+    let mut queue = VecDeque::new();
+    let mut averages = vec![];
+    let mut cur = 0;
+    let mut sum = 0_i64;
+    let mut cnt = 0;
+    queue.push_back((0, root.unwrap().clone()));
+
+    while let Some((level, node)) = queue.pop_front() {
+        if let Some(node) = &node.borrow().left {
+            queue.push_back((level + 1, node.clone()));
+        }
+
+        if let Some(node) = &node.borrow().right {
+            queue.push_back((level + 1, node.clone()));
+        }
+
+        let val = node.borrow().val as i64;
+
+        if level == cur {
+            sum += val;
+            cnt += 1;
+        } else {
+            averages.push(sum as f64 / cnt as f64);
+            cur = level;
+            sum = val;
+            cnt = 1;
+        }
+    }
+
+    averages.push(sum as f64 / cnt as f64);
+    averages
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -64,6 +101,7 @@ mod tests {
     solution_tests!(
         run_test:
         average_of_levels_1,
+        average_of_levels_2,
     );
 
     fn run_test(target: fn(Option<Rc<RefCell<TreeNode>>>) -> Vec<f64>) {
@@ -75,6 +113,10 @@ mod tests {
             (
                 vec![Some(3), Some(9), Some(20), Some(15), Some(7)],
                 vec![3.00000, 14.50000, 11.00000],
+            ),
+            (
+                vec![Some(2147483647), Some(2147483647), Some(2147483647)],
+                vec![2147483647.0, 2147483647.0],
             ),
         ]
         .into_iter()
