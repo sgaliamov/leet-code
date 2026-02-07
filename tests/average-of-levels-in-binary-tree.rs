@@ -1,0 +1,141 @@
+//! https://leetcode.com/problems/average-of-levels-in-binary-tree/
+//!
+//! Given the root of a binary tree, return the average value of the nodes on each level
+//! in the form of an array. Answers within 10^-5 of the actual answer will be accepted.
+//!
+//! Example 1:
+//! Input: root = [3,9,20,null,null,15,7]
+//! Output: [3.00000,14.50000,11.00000]
+//! Explanation: The average value of nodes on level 0 is 3, on level 1 is 14.5, and on level 2 is 11.
+//!
+//! Example 2:
+//! Input: root = [3,9,20,15,7]
+//! Output: [3.00000,14.50000,11.00000]
+//!
+//! Constraints:
+//! - The number of nodes in the tree is in the range [1, 10^4]
+//! - -2^31 <= Node.val <= 2^31 - 1
+
+use std::cell::RefCell;
+use std::rc::Rc;
+
+// 2ms - 3.85% | 3.02MB - 57.69%
+pub fn average_of_levels_1(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<f64> {
+    use std::collections::VecDeque;
+
+    let mut queue = VecDeque::new();
+    let mut averages = vec![0.0];
+    let mut cur = 0;
+    let mut cnt = 0;
+    queue.push_back((0, root.unwrap().clone()));
+
+    while let Some((level, node)) = queue.pop_front() {
+        if let Some(node) = &node.borrow().left {
+            queue.push_back((level + 1, node.clone()));
+        }
+
+        if let Some(node) = &node.borrow().right {
+            queue.push_back((level + 1, node.clone()));
+        }
+
+        let val = node.borrow().val as f64;
+
+        if level == cur {
+            averages[cur] += val;
+            cnt += 1;
+        } else {
+            averages[cur] /= cnt as f64;
+            cur = level;
+            averages.push(val);
+            cnt = 1;
+        }
+    }
+
+    averages[cur] /= cnt as f64;
+    averages
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use leet_code::solution_tests;
+    use spectral::prelude::*;
+
+    solution_tests!(
+        run_test:
+        average_of_levels_1,
+    );
+
+    fn run_test(target: fn(Option<Rc<RefCell<TreeNode>>>) -> Vec<f64>) {
+        vec![
+            (
+                vec![Some(3), Some(9), Some(20), None, None, Some(15), Some(7)],
+                vec![3.00000, 14.50000, 11.00000],
+            ),
+            (
+                vec![Some(3), Some(9), Some(20), Some(15), Some(7)],
+                vec![3.00000, 14.50000, 11.00000],
+            ),
+        ]
+        .into_iter()
+        .for_each(|(tree, expected)| {
+            let root = build_tree(&tree);
+            let name = format!("tree={:?}", tree);
+            let actual = target(root);
+            assert_that!(actual).named(&name).is_equal_to(expected);
+        });
+    }
+
+    fn build_tree(values: &[Option<i32>]) -> Option<Rc<RefCell<TreeNode>>> {
+        if values.is_empty() || values[0].is_none() {
+            return None;
+        }
+
+        let root = Rc::new(RefCell::new(TreeNode::new(values[0].unwrap())));
+        let mut queue = std::collections::VecDeque::new();
+        queue.push_back(Rc::clone(&root));
+
+        let mut i = 1;
+        while i < values.len() {
+            if let Some(node) = queue.pop_front() {
+                if i < values.len() {
+                    if let Some(val) = values[i] {
+                        let left = Rc::new(RefCell::new(TreeNode::new(val)));
+                        node.borrow_mut().left = Some(Rc::clone(&left));
+                        queue.push_back(left);
+                    }
+                    i += 1;
+                }
+
+                if i < values.len() {
+                    if let Some(val) = values[i] {
+                        let right = Rc::new(RefCell::new(TreeNode::new(val)));
+                        node.borrow_mut().right = Some(Rc::clone(&right));
+                        queue.push_back(right);
+                    }
+                    i += 1;
+                }
+            }
+        }
+
+        Some(root)
+    }
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct TreeNode {
+    pub val: i32,
+    pub left: Option<Rc<RefCell<TreeNode>>>,
+    pub right: Option<Rc<RefCell<TreeNode>>>,
+}
+
+impl TreeNode {
+    #[inline]
+    pub fn new(val: i32) -> Self {
+        TreeNode {
+            val,
+            left: None,
+            right: None,
+        }
+    }
+}
