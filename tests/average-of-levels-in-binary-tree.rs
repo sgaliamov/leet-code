@@ -103,7 +103,6 @@ pub fn average_of_levels_3(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<f64> {
 
     let mut result = Vec::new();
     let mut queue = VecDeque::new();
-
     queue.push_back(root.unwrap());
 
     while !queue.is_empty() {
