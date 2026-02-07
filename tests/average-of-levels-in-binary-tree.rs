@@ -92,6 +92,43 @@ pub fn average_of_levels_2(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<f64> {
     averages
 }
 
+/// Claude 4.5
+/// Level-order BFS with two-queue approach for clean level separation.
+/// Processes all nodes at current level before moving to next level.
+///
+/// Time: O(n) - visit each node exactly once
+/// Space: O(w) - where w is maximum width of tree (worst case n/2 for perfect tree)
+pub fn average_of_levels_3(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<f64> {
+    use std::collections::VecDeque;
+
+    let mut result = Vec::new();
+    let mut queue = VecDeque::new();
+
+    queue.push_back(root.unwrap());
+
+    while !queue.is_empty() {
+        let mut sum = 0i64;
+        let count = queue.len();
+
+        for _ in 0..count {
+            let node = queue.pop_front().unwrap();
+            let borrowed = node.borrow();
+            sum += borrowed.val as i64;
+
+            if let Some(left) = &borrowed.left {
+                queue.push_back(left.clone());
+            }
+            if let Some(right) = &borrowed.right {
+                queue.push_back(right.clone());
+            }
+        }
+
+        result.push(sum as f64 / count as f64);
+    }
+
+    result
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -102,6 +139,7 @@ mod tests {
         run_test:
         average_of_levels_1,
         average_of_levels_2,
+        average_of_levels_3,
     );
 
     fn run_test(target: fn(Option<Rc<RefCell<TreeNode>>>) -> Vec<f64>) {
