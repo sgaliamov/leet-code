@@ -57,6 +57,7 @@ pub fn is_valid_sudoku_1(board: Vec<Vec<char>>) -> bool {
     true
 }
 
+// 0ms | 2.25MB - 46.56%
 pub fn is_valid_sudoku_2(board: Vec<Vec<char>>) -> bool {
     let mut set = [0_u32; 9];
 
@@ -68,7 +69,7 @@ pub fn is_valid_sudoku_2(board: Vec<Vec<char>>) -> bool {
             continue;
         }
 
-        let n = (board[row][col] as u8 - b'1') as usize; // needs 3 bits
+        let n = (board[row][col] as u8 - b'1') as usize;
 
         let row_bits = 1 << row;
         if set[n] & row_bits == row_bits {
@@ -84,7 +85,7 @@ pub fn is_valid_sudoku_2(board: Vec<Vec<char>>) -> bool {
             set[n] |= col_bits;
         }
 
-        let cell = row / 3 + col / 3;
+        let cell = row / 3 * 3 + col / 3;
         let cell_bits = 1 << 18 << cell;
         if set[n] & cell_bits == cell_bits {
             return false;
