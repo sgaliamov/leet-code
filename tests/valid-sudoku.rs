@@ -69,29 +69,19 @@ pub fn is_valid_sudoku_2(board: Vec<Vec<char>>) -> bool {
             continue;
         }
 
-        let n = (board[row][col] as u8 - b'1') as usize;
-
         let row_bits = 1 << row;
-        if set[n] & row_bits == row_bits {
-            return false;
-        } else {
-            set[n] |= row_bits;
-        }
-
         let col_bits = 1 << 9 << col;
-        if set[n] & col_bits == col_bits {
-            return false;
-        } else {
-            set[n] |= col_bits;
-        }
-
         let cell = row / 3 * 3 + col / 3;
         let cell_bits = 1 << 18 << cell;
-        if set[n] & cell_bits == cell_bits {
+
+        let d = (board[row][col] as u8 - b'1') as usize;
+        if set[d] & row_bits != 0 || set[d] & col_bits != 0 || set[d] & cell_bits != 0 {
             return false;
-        } else {
-            set[n] |= cell_bits;
         }
+
+        set[d] |= row_bits;
+        set[d] |= col_bits;
+        set[d] |= cell_bits;
     }
 
     true
