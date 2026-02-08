@@ -83,7 +83,21 @@ pub fn largest_rectangle_area_2(heights: Vec<i32>) -> i32 {
 }
 
 pub fn largest_rectangle_area_3(heights: Vec<i32>) -> i32 {
-    0
+    let mut stack = Vec::<i32>::new();
+    let mut max = 0;
+
+    for i in heights {
+        while stack.last().is_some_and(|&l| l < i) {
+            stack.pop();
+        }
+
+        if let Some(&l) = stack.last() {
+            let area = stack.len() as i32 * l;
+            max = max.max(area)
+        }
+    }
+
+    max
 }
 
 #[cfg(test)]
@@ -95,6 +109,7 @@ mod tests {
     solution_tests!(
         run_test:
         largest_rectangle_area_1,
+        largest_rectangle_area_3
     );
 
     fn run_test(target: fn(Vec<i32>) -> i32) {
