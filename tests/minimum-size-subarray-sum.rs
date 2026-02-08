@@ -43,25 +43,25 @@ pub fn min_subarray_len_1(target: i32, nums: Vec<i32>) -> i32 {
     if min == usize::MAX { 0 } else { min as i32 }
 }
 
+// with hits
 pub fn min_subarray_len_2(target: i32, nums: Vec<i32>) -> i32 {
     let mut lo = 0;
     let mut hi = 0;
     let mut min = usize::MAX;
-    let mut sum = nums[0];
+    let mut sum = 0;
 
-    while hi < nums.len() && lo < nums.len() {
-        while lo <= hi && sum >= target {
+    while hi < nums.len() {
+        if sum < target {
+            sum += nums[hi];
+        }
+
+        while sum >= target {
             min = min.min(hi - lo + 1);
             sum -= nums[lo];
             lo += 1;
         }
 
-        if sum < target {
-            hi += 1;
-            if hi < nums.len() {
-                sum += nums[hi];
-            }
-        }
+        hi += 1;
     }
 
     if min == usize::MAX { 0 } else { min as i32 }
