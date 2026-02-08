@@ -82,6 +82,10 @@ pub fn largest_rectangle_area_2(heights: Vec<i32>) -> i32 {
     max
 }
 
+pub fn largest_rectangle_area_3(heights: Vec<i32>) -> i32 {
+    0
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
