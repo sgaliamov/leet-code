@@ -12,18 +12,19 @@
 //! Follow-up: If you have figured out the O(n) solution, try coding another solution
 //! of which the time complexity is O(n log(n)).
 
+// 0ms | 3.02MB - 28.82%
 pub fn min_subarray_len_1(target: i32, nums: Vec<i32>) -> i32 {
     let mut lo = 0;
-    let mut i = 0;
+    let mut hi = 0;
     let mut min = usize::MAX;
     let mut sum = nums[0];
 
     loop {
         if sum >= target {
-            min = min.min(i - lo + 1);
+            min = min.min(hi - lo + 1);
             sum -= nums[lo];
             lo += 1;
-        } else if i == nums.len() {
+        } else if hi == nums.len() {
             break;
         }
 
@@ -32,9 +33,9 @@ pub fn min_subarray_len_1(target: i32, nums: Vec<i32>) -> i32 {
         }
 
         if sum < target {
-            i += 1;
-            if i < nums.len() {
-                sum += nums[i];
+            hi += 1;
+            if hi < nums.len() {
+                sum += nums[hi];
             }
         }
     }
@@ -60,6 +61,7 @@ mod tests {
             (2, vec![1], 0),
             (4, vec![1, 4, 4], 1),
             (11, vec![1, 1, 1, 1, 1, 1, 1, 1], 0),
+            (3, vec![1, 1, 1], 3),
             (1, vec![1], 1),
         ]
         .into_iter()
