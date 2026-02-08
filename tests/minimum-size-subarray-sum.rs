@@ -43,6 +43,30 @@ pub fn min_subarray_len_1(target: i32, nums: Vec<i32>) -> i32 {
     if min == usize::MAX { 0 } else { min as i32 }
 }
 
+pub fn min_subarray_len_2(target: i32, nums: Vec<i32>) -> i32 {
+    let mut lo = 0;
+    let mut hi = 0;
+    let mut min = usize::MAX;
+    let mut sum = nums[0];
+
+    while hi < nums.len() && lo < nums.len() {
+        while lo <= hi && sum >= target {
+            min = min.min(hi - lo + 1);
+            sum -= nums[lo];
+            lo += 1;
+        }
+
+        if sum < target {
+            hi += 1;
+            if hi < nums.len() {
+                sum += nums[hi];
+            }
+        }
+    }
+
+    if min == usize::MAX { 0 } else { min as i32 }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -52,17 +76,18 @@ mod tests {
     solution_tests!(
         run_test:
         min_subarray_len_1,
+        min_subarray_len_2,
     );
 
     fn run_test(target: fn(i32, Vec<i32>) -> i32) {
         vec![
-            (7, vec![2, 3, 1, 2, 4, 1], 3),
-            (7, vec![2, 3, 1, 2, 4, 3], 2),
-            (2, vec![1], 0),
             (4, vec![1, 4, 4], 1),
             (11, vec![1, 1, 1, 1, 1, 1, 1, 1], 0),
             (3, vec![1, 1, 1], 3),
             (1, vec![1], 1),
+            (7, vec![2, 3, 1, 2, 4, 1], 3),
+            (7, vec![2, 3, 1, 2, 4, 3], 2),
+            (2, vec![1], 0),
         ]
         .into_iter()
         .for_each(|(target_val, nums, expected)| {
