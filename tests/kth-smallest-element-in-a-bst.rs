@@ -61,19 +61,17 @@ pub fn kth_smallest_2(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     values[k as usize - 1]
 }
 
+// 1ms - 10% | 3.13MB - 52%
 pub fn kth_smallest_3(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
-    fn traverse(node: Option<Rc<RefCell<TreeNode>>>, values: &mut Vec<i32>) -> Option<i32> {
-        let node = node?;
+    fn traverse(node: Option<Rc<RefCell<TreeNode>>>, values: &mut Vec<i32>) {
+        let Some(node) = node else {
+            return;
+        };
 
-        if let Some(l) = traverse(node.borrow_mut().left.take(), values) {
-            values.push(l);
-        }
-
-        if let Some(r) = traverse(node.borrow_mut().right.take(), values) {
-            values.push(r);
-        }
-
-        Some(node.borrow().val)
+        let val = node.borrow().val;
+        traverse(node.borrow_mut().left.take(), values);
+        values.push(val);
+        traverse(node.borrow_mut().right.take(), values);
     }
 
     let mut values = vec![];
@@ -96,7 +94,7 @@ mod tests {
 
     fn run_test(target: fn(Option<Rc<RefCell<TreeNode>>>, i32) -> i32) {
         vec![
-            (vec![Some(1), Some(2), Some(3)], 3, 3),
+            (vec![Some(2), Some(1), Some(3)], 3, 3),
             (vec![Some(1), None, Some(2)], 2, 2),
             (vec![Some(3), Some(1), Some(4), None, Some(2)], 2, 2),
             (vec![Some(1)], 1, 1),
