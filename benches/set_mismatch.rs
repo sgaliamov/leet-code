@@ -1,7 +1,7 @@
 #[path = "../tests/set-mismatch.rs"]
 mod set_mismatch;
 
-use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
+use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
 use set_mismatch::*;
 use std::hint::black_box;
 
@@ -46,37 +46,21 @@ fn benchmark_set_mismatch(c: &mut Criterion) {
     for size in [100, 1000, 10000] {
         let nums = generate_test_data(size);
 
-        group.bench_with_input(
-            BenchmarkId::new("hashset", size),
-            &nums,
-            |b, nums| {
-                b.iter(|| find_error_nums_1(black_box(nums.clone())));
-            },
-        );
+        group.bench_with_input(BenchmarkId::new("hashset", size), &nums, |b, nums| {
+            b.iter(|| find_error_nums_1(black_box(nums.clone())));
+        });
 
-        group.bench_with_input(
-            BenchmarkId::new("bool_array", size),
-            &nums,
-            |b, nums| {
-                b.iter(|| find_error_nums_2(black_box(nums.clone())));
-            },
-        );
+        group.bench_with_input(BenchmarkId::new("bool_array", size), &nums, |b, nums| {
+            b.iter(|| find_error_nums_2(black_box(nums.clone())));
+        });
 
-        group.bench_with_input(
-            BenchmarkId::new("sum_formula", size),
-            &nums,
-            |b, nums| {
-                b.iter(|| find_error_nums_3(black_box(nums.clone())));
-            },
-        );
+        group.bench_with_input(BenchmarkId::new("sum_formula", size), &nums, |b, nums| {
+            b.iter(|| find_error_nums_3(black_box(nums.clone())));
+        });
 
-        group.bench_with_input(
-            BenchmarkId::new("xor_trick", size),
-            &nums,
-            |b, nums| {
-                b.iter(|| find_error_nums_4(black_box(nums.clone())));
-            },
-        );
+        group.bench_with_input(BenchmarkId::new("xor_trick", size), &nums, |b, nums| {
+            b.iter(|| find_error_nums_4(black_box(nums.clone())));
+        });
 
         group.bench_with_input(
             BenchmarkId::new("sum_of_squares", size),

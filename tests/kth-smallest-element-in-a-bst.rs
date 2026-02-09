@@ -15,7 +15,7 @@ use leet_code::TreeNode;
 use std::cell::RefCell;
 use std::rc::Rc;
 
-pub fn kth_smallest(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
+pub fn kth_smallest(_root: Option<Rc<RefCell<TreeNode>>>, _k: i32) -> i32 {
     todo!()
 }
 
