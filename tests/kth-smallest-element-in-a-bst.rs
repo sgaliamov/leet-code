@@ -33,6 +33,31 @@ pub fn kth_smallest_1(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     path[path.len() - k as usize].borrow().val
 }
 
+// 0ms | 3MB - 98.04%
+pub fn kth_smallest_2(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
+    use std::collections::VecDeque;
+
+    let mut stack = VecDeque::new();
+    let mut values = vec![];
+    let node = root.unwrap();
+    stack.push_back(node);
+
+    while let Some(node) = stack.pop_front() {
+        if let Some(left) = node.borrow_mut().left.take() {
+            stack.push_back(left);
+        };
+
+        if let Some(right) = node.borrow_mut().right.take() {
+            stack.push_back(right);
+        };
+
+        values.push(node.borrow().val);
+    }
+
+    values.sort_unstable();
+    values[k as usize - 1]
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -42,6 +67,7 @@ mod tests {
     solution_tests!(
         run_test:
         kth_smallest_1,
+        kth_smallest_2,
     );
 
     fn run_test(target: fn(Option<Rc<RefCell<TreeNode>>>, i32) -> i32) {
