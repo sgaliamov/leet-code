@@ -18,7 +18,7 @@ impl TreeNode {
         }
     }
 
-    pub fn build_tree(values: &[Option<i32>]) -> Option<Rc<RefCell<TreeNode>>> {
+    pub fn build(values: &[Option<i32>]) -> Option<Rc<RefCell<TreeNode>>> {
         if values.is_empty() || values[0].is_none() {
             return None;
         }

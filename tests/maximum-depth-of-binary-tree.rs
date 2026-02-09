@@ -9,9 +9,9 @@
 //! - The number of nodes in the tree is in the range `[0, 10^4]`
 //! - `-100 <= Node.val <= 100`
 
+use leet_code::TreeNode;
 use std::cell::RefCell;
 use std::rc::Rc;
-use leet_code::tree::{TreeNode, build_tree};
 
 // 0ms | 2.69MB - 74.3%
 pub fn max_depth_1(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
@@ -74,11 +74,10 @@ mod tests {
         ]
         .into_iter()
         .for_each(|(input, expected)| {
-            let root = build_tree(&input);
+            let root = TreeNode::build(&input);
             let name = format!("max_depth({:?}) = {}", input, expected);
             let actual = target(root);
             assert_that!(actual).named(&name).is_equal_to(expected);
         });
     }
-
 }

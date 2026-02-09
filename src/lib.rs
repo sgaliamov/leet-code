@@ -1,5 +1,5 @@
 pub mod monotonic_stack;
-pub mod tree;
+mod tree;
 
 pub use monotonic_stack::*;
 pub use tree::*;

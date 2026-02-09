@@ -16,6 +16,7 @@
 //! - The number of nodes in the tree is in the range [1, 10^4]
 //! - -2^31 <= Node.val <= 2^31 - 1
 
+use leet_code::TreeNode;
 use std::cell::RefCell;
 use std::rc::Rc;
 
@@ -128,8 +129,6 @@ pub fn average_of_levels_3(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<f64> {
     result
 }
 
-use leet_code::tree::{TreeNode, build_tree};
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -160,13 +159,10 @@ mod tests {
         ]
         .into_iter()
         .for_each(|(tree, expected)| {
-            let root = build_tree(&tree);
+            let root = TreeNode::build(&tree);
             let name = format!("tree={:?}", tree);
             let actual = target(root);
             assert_that!(actual).named(&name).is_equal_to(expected);
         });
     }
-
 }
-
-use leet_code::tree::TreeNode;

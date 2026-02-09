@@ -11,9 +11,9 @@
 //! Follow up: If the BST is modified often (i.e., we can do insert and delete operations)
 //! and you need to find the kth smallest frequently, how would you optimize?
 
+use leet_code::TreeNode;
 use std::cell::RefCell;
 use std::rc::Rc;
-use leet_code::tree::{TreeNode, build_tree};
 
 pub fn kth_smallest(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     todo!()
@@ -33,16 +33,27 @@ mod tests {
     fn run_test(target: fn(Option<Rc<RefCell<TreeNode>>>, i32) -> i32) {
         vec![
             (vec![Some(3), Some(1), Some(4), None, Some(2)], 1, 1), // BST with 4 nodes, find 1st smallest
-            (vec![Some(5), Some(3), Some(6), Some(2), Some(4), None, None, Some(1)], 3, 3), // BST with 7 nodes, find 3rd smallest
+            (
+                vec![
+                    Some(5),
+                    Some(3),
+                    Some(6),
+                    Some(2),
+                    Some(4),
+                    None,
+                    None,
+                    Some(1),
+                ],
+                3,
+                3,
+            ), // BST with 7 nodes, find 3rd smallest
         ]
         .into_iter()
         .for_each(|(tree, k, expected)| {
-            let root = build_tree(&tree);
+            let root = TreeNode::build(&tree);
             let name = format!("tree={tree:?}, k={k}");
             let actual = target(root, k);
             assert_that!(actual).named(&name).is_equal_to(expected);
         });
     }
-
 }
-
