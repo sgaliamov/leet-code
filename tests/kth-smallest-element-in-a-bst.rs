@@ -15,8 +15,22 @@ use leet_code::TreeNode;
 use std::cell::RefCell;
 use std::rc::Rc;
 
-pub fn kth_smallest(_root: Option<Rc<RefCell<TreeNode>>>, _k: i32) -> i32 {
-    todo!()
+// wrong
+pub fn kth_smallest_1(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
+    let mut node = root.unwrap();
+    let mut path = vec![node.clone()];
+
+    loop {
+        let Some(left) = node.borrow_mut().left.take() else {
+            break;
+        };
+
+        path.push(left.clone());
+        node = left;
+    }
+
+    let k = path.len().min(k as usize);
+    path[path.len() - k as usize].borrow().val
 }
 
 #[cfg(test)]
@@ -27,12 +41,15 @@ mod tests {
 
     solution_tests!(
         run_test:
-        kth_smallest,
+        kth_smallest_1,
     );
 
     fn run_test(target: fn(Option<Rc<RefCell<TreeNode>>>, i32) -> i32) {
         vec![
-            (vec![Some(3), Some(1), Some(4), None, Some(2)], 1, 1), // BST with 4 nodes, find 1st smallest
+            (vec![Some(1), None, Some(2)], 2, 2),
+            (vec![Some(3), Some(1), Some(4), None, Some(2)], 2, 2),
+            (vec![Some(1)], 1, 1),
+            (vec![Some(3), Some(1), Some(4), None, Some(2)], 1, 1),
             (
                 vec![
                     Some(5),
@@ -46,7 +63,7 @@ mod tests {
                 ],
                 3,
                 3,
-            ), // BST with 7 nodes, find 3rd smallest
+            ),
         ]
         .into_iter()
         .for_each(|(tree, k, expected)| {
