@@ -15,7 +15,7 @@ use leet_code::TreeNode;
 use std::cell::RefCell;
 use std::rc::Rc;
 
-// 0ms | 3MB - 98.04% - wrong
+// 0ms | 3MB - 98.04% | O(n log n)
 pub fn kth_smallest_1(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     use std::collections::VecDeque;
 
@@ -61,7 +61,7 @@ pub fn kth_smallest_2(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     values[k as usize - 1]
 }
 
-// 1ms - 10% | 3.13MB - 52%
+// 0ms | 2.92MB - 98% | not optimal, as collect all values
 pub fn kth_smallest_3(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     fn traverse(node: Option<Rc<RefCell<TreeNode>>>, values: &mut Vec<i32>) {
         let Some(node) = node else {
@@ -79,6 +79,31 @@ pub fn kth_smallest_3(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     values[k as usize - 1]
 }
 
+// still is not optimal, as collect >= k values an need to unwind the recursion
+pub fn kth_smallest_4(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
+    fn traverse(node: Option<Rc<RefCell<TreeNode>>>, values: &mut Vec<i32>, k: usize) {
+        let Some(node) = node else {
+            return;
+        };
+
+        traverse(node.borrow_mut().left.take(), values, k);
+
+        let val = node.borrow().val;
+        values.push(val);
+
+        if values.len() == k {
+            return;
+        }
+
+        traverse(node.borrow_mut().right.take(), values, k);
+    }
+
+    let k = k as usize;
+    let mut values = vec![];
+    traverse(root, &mut values, k);
+    values[k - 1]
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -90,6 +115,7 @@ mod tests {
         kth_smallest_1,
         kth_smallest_2,
         kth_smallest_3,
+        kth_smallest_4,
     );
 
     fn run_test(target: fn(Option<Rc<RefCell<TreeNode>>>, i32) -> i32) {
