@@ -61,7 +61,7 @@ pub fn kth_smallest_2(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     values[k as usize - 1]
 }
 
-// 0ms | 2.92MB - 98% | not optimal, as collect all values
+// 0ms | 2.92MB - 98% | not optimal, as collects all values
 pub fn kth_smallest_3(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     fn traverse(node: Option<Rc<RefCell<TreeNode>>>, values: &mut Vec<i32>) {
         let Some(node) = node else {
@@ -79,7 +79,7 @@ pub fn kth_smallest_3(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     values[k as usize - 1]
 }
 
-// still is not optimal, as collect >= k values an need to unwind the recursion
+// still is not optimal, as collects >= k values and needs to unwind the recursion
 pub fn kth_smallest_4(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     fn traverse(node: Option<Rc<RefCell<TreeNode>>>, values: &mut Vec<i32>, k: usize) {
         let Some(node) = node else {
@@ -104,6 +104,30 @@ pub fn kth_smallest_4(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     values[k - 1]
 }
 
+pub fn kth_smallest_5(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
+    fn traverse(node: Option<Rc<RefCell<TreeNode>>>, cnt: &mut i32, k: i32) -> Option<i32> {
+        let node = node?;
+
+        if let Some(val) = traverse(node.borrow_mut().left.take(), cnt, k) {
+            return Some(val);
+        }
+
+        let val = node.borrow().val;
+        *cnt += 1;
+        if cnt == &k {
+            return Some(val);
+        }
+
+        if let Some(val) = traverse(node.borrow_mut().right.take(), cnt, k) {
+            return Some(val);
+        }
+
+        None
+    }
+
+    traverse(root, &mut 0, k).unwrap()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -116,6 +140,7 @@ mod tests {
         kth_smallest_2,
         kth_smallest_3,
         kth_smallest_4,
+        kth_smallest_5,
     );
 
     fn run_test(target: fn(Option<Rc<RefCell<TreeNode>>>, i32) -> i32) {
