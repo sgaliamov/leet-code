@@ -38,7 +38,7 @@ pub fn kth_smallest_1(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     values[k as usize - 1]
 }
 
-// 0ms | 3.05MB - 88.46% | work, but cumbersome
+// 0ms | 2.99MB - 98.08% | work, but cumbersome
 pub fn kth_smallest_2(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     let mut stack = Vec::new();
     let mut cnt = 0;
@@ -50,11 +50,10 @@ pub fn kth_smallest_2(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
             stack.push(right);
         }
 
-        if node.borrow().left.is_some() || node.borrow().right.is_some() {
-            stack.push(node.clone());
-        }
-
         if let Some(left) = node.borrow_mut().left.take() {
+            // parent node need to go in the middle to be able to access its value.
+            // it's safe to reiterate it as child nodes are "taken" out at that moment.
+            stack.push(node.clone());
             stack.push(left);
         } else {
             cnt += 1;
