@@ -50,12 +50,12 @@ pub fn kth_smallest_2(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
             stack.push(right);
         }
 
-        // to narrow borrowing
+        // to narrow the borrowing
         let left = node.borrow_mut().left.take();
 
         if let Some(left) = left {
-            // parent node need to go in the middle to be able to access its value.
-            // it's safe to reiterate it as child nodes are "taken" out at that moment.
+            // the parent node need to go in the middle to be able to access its value.
+            // it's safe to reiterate it, as the child nodes are "taken" out already, and wont be processed again.
             stack.push(node);
             stack.push(left);
         } else {
@@ -137,6 +137,40 @@ pub fn kth_smallest_5(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     traverse(root, &mut 0, k).unwrap()
 }
 
+pub fn kth_smallest_6(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
+    let mut stack = vec![];
+    let mut cnt = 0;
+
+    let mut node = root.unwrap();
+    stack.push(node.clone());
+
+    while !stack.is_empty() {
+        loop {
+            let Some(left) = node.borrow_mut().left.take() else {
+                break;
+            };
+
+            node = left.clone();
+            stack.push(left);
+        }
+
+        if let Some(last) = stack.pop() {
+            cnt += 1;
+            if cnt == k {
+                return last.borrow().val;
+            }
+
+            if let Some(right) = last.borrow_mut().right.take() {
+                node = right;
+            } else {
+                break;
+            }
+        }
+    }
+
+    -1
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -150,6 +184,7 @@ mod tests {
         kth_smallest_3,
         kth_smallest_4,
         kth_smallest_5,
+        kth_smallest_6,
     );
 
     fn run_test(target: fn(Option<Rc<RefCell<TreeNode>>>, i32) -> i32) {
