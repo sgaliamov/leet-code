@@ -38,10 +38,10 @@ pub fn kth_smallest_1(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     values[k as usize - 1]
 }
 
+// 0ms | 3.05MB - 88.46% | work, but cumbersome
 pub fn kth_smallest_2(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     let mut stack = Vec::new();
-    // let mut cnt = 0;
-    let mut values = vec![];
+    let mut cnt = 0;
     let node = root.unwrap();
     stack.push(node);
 
@@ -57,11 +57,14 @@ pub fn kth_smallest_2(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
         if let Some(left) = node.borrow_mut().left.take() {
             stack.push(left);
         } else {
-            values.push(node.borrow().val);
+            cnt += 1;
+            if cnt == k {
+                return node.borrow().val;
+            }
         }
     }
 
-    values[k as usize - 1]
+    -1
 }
 
 // 0ms | 2.92MB - 98% | not optimal, as collects all values
