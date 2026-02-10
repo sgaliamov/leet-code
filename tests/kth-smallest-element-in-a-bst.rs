@@ -50,10 +50,13 @@ pub fn kth_smallest_2(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
             stack.push(right);
         }
 
-        if let Some(left) = node.borrow_mut().left.take() {
+        // to narrow borrowing
+        let left = node.borrow_mut().left.take();
+
+        if let Some(left) = left {
             // parent node need to go in the middle to be able to access its value.
             // it's safe to reiterate it as child nodes are "taken" out at that moment.
-            stack.push(node.clone());
+            stack.push(node);
             stack.push(left);
         } else {
             cnt += 1;
