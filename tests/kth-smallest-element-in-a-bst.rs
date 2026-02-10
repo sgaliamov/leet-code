@@ -15,11 +15,9 @@ use leet_code::TreeNode;
 use std::cell::RefCell;
 use std::rc::Rc;
 
-// 0ms | 3MB - 98.04% | O(n log n)
+// 0ms | 3MB - 98.04% | DFS | O(n log n)
 pub fn kth_smallest_1(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
-    use std::collections::VecDeque;
-
-    let mut stack = VecDeque::new();
+    let mut stack = std::collections::VecDeque::new();
     let mut values = vec![];
     let node = root.unwrap();
     stack.push_back(node);
@@ -42,6 +40,7 @@ pub fn kth_smallest_1(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
 
 pub fn kth_smallest_2(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     let mut stack = Vec::new();
+    // let mut cnt = 0;
     let mut values = vec![];
     let node = root.unwrap();
     stack.push(node);
@@ -49,13 +48,17 @@ pub fn kth_smallest_2(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     while let Some(node) = stack.pop() {
         if let Some(right) = node.borrow_mut().right.take() {
             stack.push(right);
-        };
+        }
+
+        if node.borrow().left.is_some() || node.borrow().right.is_some() {
+            stack.push(node.clone());
+        }
 
         if let Some(left) = node.borrow_mut().left.take() {
             stack.push(left);
-        };
-
-        values.push(node.borrow().val);
+        } else {
+            values.push(node.borrow().val);
+        }
     }
 
     values[k as usize - 1]
@@ -104,6 +107,7 @@ pub fn kth_smallest_4(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     values[k - 1]
 }
 
+// optimal recursive solution
 pub fn kth_smallest_5(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     fn traverse(node: Option<Rc<RefCell<TreeNode>>>, cnt: &mut i32, k: i32) -> Option<i32> {
         let node = node?;
@@ -145,11 +149,11 @@ mod tests {
 
     fn run_test(target: fn(Option<Rc<RefCell<TreeNode>>>, i32) -> i32) {
         vec![
+            (vec![Some(3), Some(1), Some(4), None, Some(2)], 1, 1),
             (vec![Some(2), Some(1), Some(3)], 3, 3),
             (vec![Some(1), None, Some(2)], 2, 2),
             (vec![Some(3), Some(1), Some(4), None, Some(2)], 2, 2),
             (vec![Some(1)], 1, 1),
-            (vec![Some(3), Some(1), Some(4), None, Some(2)], 1, 1),
             (
                 vec![
                     Some(5),
