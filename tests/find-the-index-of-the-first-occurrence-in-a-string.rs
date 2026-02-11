@@ -8,16 +8,19 @@
 //! - 1 <= haystack.length, needle.length <= 10^4
 //! - haystack and needle consist of only lowercase English characters.
 
-pub fn str_str(haystack: String, needle: String) -> i32 {
+// 0ms | 2.17MB - 76.57%
+pub fn str_str_1(haystack: String, needle: String) -> i32 {
     let haystack = haystack.as_bytes();
     let needle = needle.into_bytes();
     let mut i = 0;
 
     while i < haystack.len() {
         let mut j = 0;
+        let s = i;
 
         while j < needle.len() && i < haystack.len() {
             if haystack[i] != needle[j] {
+                i = s;
                 break;
             }
 
@@ -43,7 +46,7 @@ mod tests {
 
     solution_tests!(
         run_test:
-        str_str,
+        str_str_1,
     );
 
     fn run_test(target: fn(String, String) -> i32) {
