@@ -8,6 +8,7 @@
         "itertools",
         "nonoverlapping",
         "nums",
+        "strs",
         "subarray",
         "uninit",
         "usize"
