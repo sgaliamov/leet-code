@@ -29,6 +29,10 @@ pub fn longest_common_prefix_1(strs: Vec<String>) -> String {
     String::from_iter(chars)
 }
 
+// hint:
+// Think: if you had two byte slices, what would you do to check if they match up to a certain length?
+// Then consider how to apply that to find where they stop matching across all strings.
+
 #[cfg(test)]
 mod tests {
     use super::*;
