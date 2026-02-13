@@ -11,22 +11,20 @@
 //! - -10^9 <= nums[i] <= 10^9
 //! - 0 <= k <= 10^5
 
-// 14ms - 42.15% | 6.71MB - 22.61%
+// 10ms - 69.35% | 6.71MB - 22.61%
 pub fn contains_nearby_duplicate_1(nums: Vec<i32>, k: i32) -> bool {
     use std::collections::HashMap;
     let mut map = HashMap::new();
     let k = k as usize;
 
-    for i in 0..nums.len() {
-        let n = nums[i];
-
-        let e = map.entry(n);
-        let j = *e.or_insert(i);
-
-        if i - j <= k && i != j {
+    for (i, &n) in nums.iter().enumerate() {
+        if let Some(&j) = map.get(&n)
+            && i - j <= k
+        {
             return true;
         }
-        map.entry(n).and_modify(|e| *e = i);
+
+        map.insert(n, i);
     }
 
     false
