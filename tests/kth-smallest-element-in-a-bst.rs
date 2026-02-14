@@ -139,36 +139,36 @@ pub fn kth_smallest_5(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
 
 pub fn kth_smallest_6(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     let mut stack = vec![];
-    let mut cnt = 0;
+    let mut vals = vec![];
+    let mut current = root.unwrap();
+    stack.push(current.clone());
 
-    let mut node = root.unwrap();
-    stack.push(node.clone());
-
-    while !stack.is_empty() {
+    loop {
         loop {
-            let Some(left) = node.borrow_mut().left.take() else {
+            let Some(left) = current.borrow_mut().left.take() else {
                 break;
             };
 
-            node = left.clone();
+            current = left.clone();
             stack.push(left);
         }
 
-        if let Some(last) = stack.pop() {
-            cnt += 1;
-            if cnt == k {
-                return last.borrow().val;
-            }
-
-            if let Some(right) = last.borrow_mut().right.take() {
-                node = right;
-            } else {
-                break;
-            }
+        if let Some(node) = stack.pop() {
+            vals.push(node.borrow().val);
+            current = node;
+        } else {
+            break;
         }
+
+        let Some(right) = current.borrow_mut().right.take() else {
+            continue;
+        };
+
+        current = right.clone();
+        stack.push(right);
     }
 
-    -1
+    vals[k as usize - 1]
 }
 
 #[cfg(test)]
