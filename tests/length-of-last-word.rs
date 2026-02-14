@@ -1,23 +1,7 @@
 //! https://leetcode.com/problems/length-of-last-word/
 //!
 //! Given a string s consisting of words and spaces, return the length of the last word in the string.
-//!
 //! A word is a maximal substring consisting of non-space characters only.
-//!
-//! Example 1:
-//! Input: s = "Hello World"
-//! Output: 5
-//! Explanation: The last word is "World" with length 5.
-//!
-//! Example 2:
-//! Input: s = "   fly me   to   the moon  "
-//! Output: 4
-//! Explanation: The last word is "moon" with length 4.
-//!
-//! Example 3:
-//! Input: s = "luffy is still joyboy"
-//! Output: 6
-//! Explanation: The last word is "joyboy" with length 6.
 //!
 //! Constraints:
 //! - 1 <= s.length <= 10^4
@@ -25,8 +9,44 @@
 //! - There will be at least one word in s.
 
 // 0ms | 2.14 MB - 62.56%
-pub fn length_of_last_word(s: String) -> i32 {
+pub fn length_of_last_word_1(s: String) -> i32 {
     s.split_whitespace().last().unwrap().len() as i32
+}
+
+// 0ms | 2.18 MB - 60.33%
+pub fn length_of_last_word_2(s: String) -> i32 {
+    let bytes = s.as_bytes();
+    let mut len = 0;
+
+    for i in (0..bytes.len()).rev() {
+        if bytes[i] == b' ' {
+            if len == 0 {
+                continue;
+            } else {
+                break;
+            }
+        } else {
+            len += 1;
+        }
+    }
+
+    len
+}
+
+// 0ms | 2.07MB - 97.62%
+pub fn length_of_last_word_3(s: String) -> i32 {
+    let bytes = s.as_bytes();
+    let mut len = 0;
+
+    for i in (0..bytes.len()).rev() {
+        if bytes[i] != b' ' {
+            len += 1;
+        } else if len != 0 {
+            return len;
+        }
+    }
+
+    len
 }
 
 #[cfg(test)]
@@ -37,7 +57,9 @@ mod tests {
 
     solution_tests!(
         run_test:
-        length_of_last_word,
+        length_of_last_word_1,
+        length_of_last_word_2,
+        length_of_last_word_3,
     );
 
     fn run_test(target: fn(String) -> i32) {
