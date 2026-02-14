@@ -38,6 +38,10 @@ pub fn str_str_1(haystack: String, needle: String) -> i32 {
     -1
 }
 
+pub fn str_str_2(haystack: String, needle: String) -> i32 {
+    todo!("improve")
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

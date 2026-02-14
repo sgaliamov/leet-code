@@ -30,6 +30,10 @@ pub fn contains_nearby_duplicate_1(nums: Vec<i32>, k: i32) -> bool {
     false
 }
 
+pub fn contains_nearby_duplicate_2(nums: Vec<i32>, k: i32) -> bool {
+    todo!("improve")
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
