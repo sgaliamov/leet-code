@@ -2,11 +2,13 @@
     "cSpell.words": [
         "ascii",
         "claude",
+        "clippy",
         "deque",
         "gemini",
         "itertools",
         "nonoverlapping",
         "nums",
+        "strs",
         "subarray",
         "uninit",
         "usize"

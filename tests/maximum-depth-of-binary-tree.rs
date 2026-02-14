@@ -9,26 +9,9 @@
 //! - The number of nodes in the tree is in the range `[0, 10^4]`
 //! - `-100 <= Node.val <= 100`
 
+use leet_code::TreeNode;
 use std::cell::RefCell;
 use std::rc::Rc;
-
-#[derive(Debug, PartialEq, Eq)]
-pub struct TreeNode {
-    pub val: i32,
-    pub left: Option<Rc<RefCell<TreeNode>>>,
-    pub right: Option<Rc<RefCell<TreeNode>>>,
-}
-
-impl TreeNode {
-    #[inline]
-    pub fn new(val: i32) -> Self {
-        TreeNode {
-            val,
-            left: None,
-            right: None,
-        }
-    }
-}
 
 // 0ms | 2.69MB - 74.3%
 pub fn max_depth_1(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
@@ -91,45 +74,10 @@ mod tests {
         ]
         .into_iter()
         .for_each(|(input, expected)| {
-            let root = build_tree(&input);
+            let root = TreeNode::build(&input);
             let name = format!("max_depth({:?}) = {}", input, expected);
             let actual = target(root);
             assert_that!(actual).named(&name).is_equal_to(expected);
         });
-    }
-
-    fn build_tree(values: &[Option<i32>]) -> Option<Rc<RefCell<TreeNode>>> {
-        if values.is_empty() || values[0].is_none() {
-            return None;
-        }
-
-        let root = Rc::new(RefCell::new(TreeNode::new(values[0].unwrap())));
-        let mut queue = std::collections::VecDeque::new();
-        queue.push_back(Rc::clone(&root));
-
-        let mut i = 1;
-        while i < values.len() {
-            if let Some(node) = queue.pop_front() {
-                if i < values.len() {
-                    if let Some(val) = values[i] {
-                        let left = Rc::new(RefCell::new(TreeNode::new(val)));
-                        node.borrow_mut().left = Some(Rc::clone(&left));
-                        queue.push_back(left);
-                    }
-                    i += 1;
-                }
-
-                if i < values.len() {
-                    if let Some(val) = values[i] {
-                        let right = Rc::new(RefCell::new(TreeNode::new(val)));
-                        node.borrow_mut().right = Some(Rc::clone(&right));
-                        queue.push_back(right);
-                    }
-                    i += 1;
-                }
-            }
-        }
-
-        Some(root)
     }
 }

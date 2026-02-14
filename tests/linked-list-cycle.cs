@@ -119,6 +119,11 @@ public class Solution
 
         return true;
     }
+
+    public bool HasCycle_4(ListNode head)
+    {
+        throw new NotImplementedException("improve");
+    }
 }
 
 public class ListNode

@@ -63,7 +63,7 @@ mod tests {
             (vec![1, 3], 3, vec!["Push", "Push", "Pop", "Push"]), // Read 1, push; Read 2, push & pop; Read 3, push
             (vec![1, 2, 3], 3, vec!["Push", "Push", "Push"]),     // All sequential, just push
             (vec![1, 2], 4, vec!["Push", "Push"]),                // Stop after building target
-            (vec![], 5, vec![]),                                   // empty target
+            (vec![], 5, vec![]),                                  // empty target
         ];
 
         for (input_target, n, expected) in cases {

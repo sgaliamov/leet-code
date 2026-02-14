@@ -23,10 +23,10 @@ impl ListNode {
 }
 
 pub fn merge_two_lists(
-    list1: Option<Box<ListNode>>,
-    list2: Option<Box<ListNode>>,
+    _list1: Option<Box<ListNode>>,
+    _list2: Option<Box<ListNode>>,
 ) -> Option<Box<ListNode>> {
-    todo!()
+    todo!("solve")
 }
 
 #[cfg(test)]
@@ -37,13 +37,9 @@ mod tests {
     #[test]
     fn merge_two_lists_test() {
         let cases = vec![
-            (
-                vec![1, 2, 4],
-                vec![1, 3, 4],
-                vec![1, 1, 2, 3, 4, 4],
-            ), // Example 1
-            (vec![], vec![], vec![]),    // Example 2: both empty
-            (vec![], vec![0], vec![0]),  // Example 3: first empty
+            (vec![1, 2, 4], vec![1, 3, 4], vec![1, 1, 2, 3, 4, 4]), // Example 1
+            (vec![], vec![], vec![]),                               // Example 2: both empty
+            (vec![], vec![0], vec![0]),                             // Example 3: first empty
         ];
 
         cases.into_iter().for_each(|(list1, list2, expected)| {
