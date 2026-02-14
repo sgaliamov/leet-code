@@ -137,44 +137,64 @@ pub fn kth_smallest_5(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     traverse(root, &mut 0, k).unwrap()
 }
 
+// 0ms | 3.2MB - 41.67%
 pub fn kth_smallest_6(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     let mut stack = vec![];
-    // let mut vals = vec![];
     let mut cnt = 0;
-    let mut current = root.unwrap();
-    stack.push(current.clone());
+    stack.push(root.unwrap());
 
     loop {
         loop {
-            let Some(left) = current.borrow_mut().left.take() else {
+            let cur = stack.last().unwrap().clone();
+            let Some(left) = cur.borrow_mut().left.take() else {
                 break;
             };
 
-            current = left.clone();
             stack.push(left);
         }
 
-        if let Some(node) = stack.pop() {
-            // vals.push(node.borrow().val);
-            cnt += 1;
-            if cnt == k {
-                return node.borrow().val;
-            }
-            current = node;
-        } else {
+        let Some(cur) = stack.pop() else {
             break;
+        };
+
+        cnt += 1;
+        if cnt == k {
+            return cur.borrow().val;
         }
 
-        let Some(right) = current.borrow_mut().right.take() else {
+        let Some(right) = cur.borrow_mut().right.take() else {
             continue;
         };
 
-        current = right.clone();
         stack.push(right);
     }
 
-    // vals[k as usize - 1]
     cnt
+}
+
+// by claude
+// 0ms | 3.16MB - 41.67%
+pub fn kth_smallest_7(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
+    let mut stack = vec![];
+    let mut current = root;
+    let mut cnt = 0;
+
+    while current.is_some() || !stack.is_empty() {
+        while let Some(node) = current {
+            stack.push(node.clone());
+            current = node.borrow_mut().left.take();
+        }
+
+        let node = stack.pop().unwrap();
+        cnt += 1;
+        if cnt == k {
+            return node.borrow().val;
+        }
+
+        current = node.borrow_mut().right.take();
+    }
+
+    unreachable!()
 }
 
 #[cfg(test)]
@@ -191,12 +211,13 @@ mod tests {
         kth_smallest_4,
         kth_smallest_5,
         kth_smallest_6,
+        kth_smallest_7,
     );
 
     fn run_test(target: fn(Option<Rc<RefCell<TreeNode>>>, i32) -> i32) {
         vec![
-            (vec![Some(3), Some(1), Some(4), None, Some(2)], 1, 1),
             (vec![Some(2), Some(1), Some(3)], 3, 3),
+            (vec![Some(3), Some(1), Some(4), None, Some(2)], 1, 1),
             (vec![Some(1), None, Some(2)], 2, 2),
             (vec![Some(3), Some(1), Some(4), None, Some(2)], 2, 2),
             (vec![Some(1)], 1, 1),
