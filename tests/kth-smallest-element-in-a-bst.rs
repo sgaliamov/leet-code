@@ -15,7 +15,7 @@ use leet_code::TreeNode;
 use std::cell::RefCell;
 use std::rc::Rc;
 
-// 0ms | 3MB - 98.04% | DFS | O(n log n)
+// 0ms | 3MB - 98.04% | BFS | O(n log n)
 pub fn kth_smallest_1(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     let mut stack = std::collections::VecDeque::new();
     let mut values = vec![];
@@ -69,7 +69,7 @@ pub fn kth_smallest_2(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     -1
 }
 
-// 0ms | 2.92MB - 98% | not optimal, as collects all values
+// 0ms | 2.92MB - 98% | not optimal, as collects all values, but short
 pub fn kth_smallest_3(root: Option<Rc<RefCell<TreeNode>>>, k: i32) -> i32 {
     fn traverse(node: Option<Rc<RefCell<TreeNode>>>, values: &mut Vec<i32>) {
         let Some(node) = node else {
