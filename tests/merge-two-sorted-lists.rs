@@ -26,7 +26,7 @@ pub fn merge_two_lists(
     _list1: Option<Box<ListNode>>,
     _list2: Option<Box<ListNode>>,
 ) -> Option<Box<ListNode>> {
-    todo!()
+    todo!("solve")
 }
 
 #[cfg(test)]
