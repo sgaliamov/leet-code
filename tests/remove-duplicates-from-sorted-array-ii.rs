@@ -27,7 +27,8 @@
 //! - -10^4 <= nums[i] <= 10^4
 //! - nums is sorted in non-decreasing order.
 
-pub fn remove_duplicates_1(nums: &mut Vec<i32>) -> usize {
+// 3ms - 70.91% | 2.34MB - 19.55%
+pub fn remove_duplicates_1(nums: &mut Vec<i32>) -> i32 {
     let mut p = 1;
     let mut v = nums[0];
     let mut cnt = 1;
@@ -46,7 +47,7 @@ pub fn remove_duplicates_1(nums: &mut Vec<i32>) -> usize {
         }
     }
 
-    p
+    p as i32
 }
 
 #[cfg(test)]
@@ -68,6 +69,10 @@ mod tests {
                 vec![0, 0, 1, 1, 2, 3, 3],
             ),
             (vec![1, 1, 1, 2, 2, 3], 5, vec![1, 1, 2, 2, 3]),
+            (vec![1, 2, 3], 3, vec![1, 2, 3]),
+            (vec![1, 2, 2, 2, 3], 4, vec![1, 2, 2, 3]),
+            (vec![1, 1, 1, 2, 2, 3, 3, 3, 3], 6, vec![1, 1, 2, 2, 3, 3]),
+            (vec![1], 1, vec![1]),
         ];
         for (mut input, expected_k, expected_nums) in cases {
             let name = format!(
