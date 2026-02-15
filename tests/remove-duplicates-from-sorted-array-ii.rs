@@ -52,6 +52,28 @@ pub fn remove_duplicates_1(nums: &mut Vec<i32>) -> i32 {
     p as i32
 }
 
+// 3ms - 70.91% | 2.35MB - 19.55%
+pub fn remove_duplicates_2(nums: &mut Vec<i32>) -> i32 {
+    if nums.len() <= 2 {
+        return nums.len() as i32;
+    }
+
+    let mut p = 2;
+    for i in 2..nums.len() {
+        if nums[p - 1] == nums[p - 2] {
+            if nums[p - 1] != nums[i] {
+                nums[p] = nums[i];
+                p += 1;
+            }
+        } else {
+            nums[p] = nums[i];
+            p += 1;
+        }
+    }
+
+    p as i32
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -61,9 +83,10 @@ mod tests {
     solution_tests!(
         run_test:
         remove_duplicates_1,
+        remove_duplicates_2,
     );
 
-    fn run_test(target: fn(&mut Vec<i32>) -> usize) {
+    fn run_test(target: fn(&mut Vec<i32>) -> i32) {
         let cases = vec![
             (
                 vec![0, 0, 1, 1, 1, 1, 2, 3, 3],
@@ -82,7 +105,7 @@ mod tests {
                 input, expected_k, expected_nums
             );
 
-            let actual_k = target(&mut input);
+            let actual_k = target(&mut input) as usize;
 
             assert_that!(input[..actual_k].to_vec())
                 .named(&name)
