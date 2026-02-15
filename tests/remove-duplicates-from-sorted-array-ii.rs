@@ -28,6 +28,7 @@
 //! - nums is sorted in non-decreasing order.
 
 // 0ms | 2.16MB - 97.27%
+// Bench: 550ns (large), 490ns (worst case)
 pub fn remove_duplicates_1(nums: &mut Vec<i32>) -> i32 {
     let mut p = 1;
     let mut v = nums[0];
@@ -53,6 +54,7 @@ pub fn remove_duplicates_1(nums: &mut Vec<i32>) -> i32 {
 }
 
 // 3ms - 70.91% | 2.35MB - 19.55%
+// Bench: 654ns (large), 602ns (worst case)
 pub fn remove_duplicates_2(nums: &mut Vec<i32>) -> i32 {
     if nums.len() <= 2 {
         return nums.len() as i32;
@@ -75,6 +77,7 @@ pub fn remove_duplicates_2(nums: &mut Vec<i32>) -> i32 {
 }
 
 // 0ms | 2.29MB - 65%
+// Bench: 523ns (large), 477ns (worst case) - fastest
 pub fn remove_duplicates_3(nums: &mut Vec<i32>) -> i32 {
     if nums.len() <= 2 {
         return nums.len() as i32;

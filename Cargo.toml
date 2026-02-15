@@ -42,3 +42,7 @@ harness = false
 [[bench]]
 name = "monotonic_stack"
 harness = false
+
+[[bench]]
+name = "remove-duplicates-from-sorted-array-ii"
+harness = false
