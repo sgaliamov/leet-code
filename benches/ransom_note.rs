@@ -1,4 +1,4 @@
-use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
+use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
 use std::hint::black_box;
 
 #[path = "../tests/ransom-note.rs"]
@@ -110,7 +110,8 @@ fn benchmark_ransom_note(c: &mut Criterion) {
     // Best case for bitflag: short ransom note, very long magazine
     let long_magazine = (
         "abc".to_string(),
-        "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz".to_string(),
+        "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"
+            .to_string(),
     );
     group.bench_with_input(
         BenchmarkId::new("can_construct_5_long_mag", "abc/long"),

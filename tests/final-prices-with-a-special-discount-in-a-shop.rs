@@ -128,25 +128,6 @@ pub fn final_prices_4(mut prices: Vec<i32>) -> Vec<i32> {
     prices
 }
 
-// refactoring by claude
-pub fn final_prices_5(mut prices: Vec<i32>) -> Vec<i32> {
-    let mut stack = Vec::new();
-
-    for price in prices.iter_mut().rev() {
-        while stack.last().is_some_and(|&top| top > *price) {
-            stack.pop();
-        }
-
-        if let Some(&discount) = stack.last() {
-            *price -= discount;
-        }
-
-        stack.push(*price);
-    }
-
-    prices
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -159,7 +140,6 @@ mod tests {
         final_prices_2,
         final_prices_3,
         final_prices_4,
-        final_prices_5
     );
 
     fn run_test(target: fn(Vec<i32>) -> Vec<i32>) {
