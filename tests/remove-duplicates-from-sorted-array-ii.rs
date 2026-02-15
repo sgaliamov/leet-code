@@ -27,7 +27,7 @@
 //! - -10^4 <= nums[i] <= 10^4
 //! - nums is sorted in non-decreasing order.
 
-// 3ms - 70.91% | 2.29MB - 65%
+// 0ms | 2.16MB - 97.27%
 pub fn remove_duplicates_1(nums: &mut Vec<i32>) -> i32 {
     let mut p = 1;
     let mut v = nums[0];
@@ -74,7 +74,7 @@ pub fn remove_duplicates_2(nums: &mut Vec<i32>) -> i32 {
     p as i32
 }
 
-// 3ms - 70.91% | 2.35MB - 19.55%
+// 0ms | 2.29MB - 65%
 pub fn remove_duplicates_3(nums: &mut Vec<i32>) -> i32 {
     if nums.len() <= 2 {
         return nums.len() as i32;
@@ -83,7 +83,9 @@ pub fn remove_duplicates_3(nums: &mut Vec<i32>) -> i32 {
     let mut p = 2;
     for i in 2..nums.len() {
         if nums[p - 2] != nums[i] {
-            nums[p] = nums[i];
+            if nums[p] != nums[i] {
+                nums[p] = nums[i];
+            }
             p += 1;
         }
     }
