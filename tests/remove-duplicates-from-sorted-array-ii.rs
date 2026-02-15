@@ -79,7 +79,7 @@ pub fn remove_duplicates_2(nums: &mut Vec<i32>) -> i32 {
 // 0ms | 2.29MB - 65%
 // Bench: 523ns (large), 477ns (worst case) - fastest
 pub fn remove_duplicates_3(nums: &mut Vec<i32>) -> i32 {
-    if nums.len() <= 2 {
+    if nums.len() < 2 {
         return nums.len() as i32;
     }
 
@@ -96,6 +96,20 @@ pub fn remove_duplicates_3(nums: &mut Vec<i32>) -> i32 {
     p as i32
 }
 
+// Bench: 381ns (large), 350ns (worst case) - fastest with retain
+pub fn remove_duplicates_4(nums: &mut Vec<i32>) -> i32 {
+    let mut p = (-1, 0);
+
+    nums.retain(|&n| {
+        let res = p.0 == p.1 && p.1 == n;
+        p.1 = p.0;
+        p.0 = n;
+        !res
+    });
+
+    nums.len() as i32
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -107,6 +121,7 @@ mod tests {
         remove_duplicates_1,
         remove_duplicates_2,
         remove_duplicates_3,
+        remove_duplicates_4,
     );
 
     fn run_test(target: fn(&mut Vec<i32>) -> i32) {

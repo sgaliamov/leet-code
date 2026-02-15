@@ -3,7 +3,7 @@ mod remove_duplicates_from_sorted_array_ii;
 
 use criterion::{criterion_group, criterion_main, Criterion};
 use remove_duplicates_from_sorted_array_ii::{
-    remove_duplicates_1, remove_duplicates_2, remove_duplicates_3,
+    remove_duplicates_1, remove_duplicates_2, remove_duplicates_3, remove_duplicates_4,
 };
 use std::hint::black_box;
 
@@ -109,6 +109,35 @@ fn benchmark_remove_duplicates(c: &mut Criterion) {
         b.iter(|| {
             let mut input = black_box(worst_case.clone());
             remove_duplicates_3(&mut input)
+        })
+    });
+
+    // v4 - retain with state tracking
+    group.bench_function("v4_retain/small", |b| {
+        b.iter(|| {
+            let mut input = black_box(small_input.clone());
+            remove_duplicates_4(&mut input)
+        })
+    });
+
+    group.bench_function("v4_retain/medium", |b| {
+        b.iter(|| {
+            let mut input = black_box(medium_input.clone());
+            remove_duplicates_4(&mut input)
+        })
+    });
+
+    group.bench_function("v4_retain/large", |b| {
+        b.iter(|| {
+            let mut input = black_box(large_input.clone());
+            remove_duplicates_4(&mut input)
+        })
+    });
+
+    group.bench_function("v4_retain/worst_case", |b| {
+        b.iter(|| {
+            let mut input = black_box(worst_case.clone());
+            remove_duplicates_4(&mut input)
         })
     });
 
