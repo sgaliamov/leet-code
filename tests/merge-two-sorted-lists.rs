@@ -22,11 +22,58 @@ impl ListNode {
     }
 }
 
+// 0ms | 2.00MB
 pub fn merge_two_lists(
-    _list1: Option<Box<ListNode>>,
-    _list2: Option<Box<ListNode>>,
+    mut list1: Option<Box<ListNode>>,
+    mut list2: Option<Box<ListNode>>,
 ) -> Option<Box<ListNode>> {
-    todo!("solve")
+    let mut values = vec![];
+
+    loop {
+        let Some(mut l1) = list1.take() else {
+            while let Some(node) = list2 {
+                values.push(node.val);
+                list2 = node.next;
+            }
+            break;
+        };
+
+        let Some(mut l2) = list2.take() else {
+            values.push(l1.val);
+            while let Some(node) = l1.next {
+                values.push(node.val);
+                l1 = node
+            }
+            break;
+        };
+
+        if l1.val < l2.val {
+            values.push(l1.val);
+
+            if let Some(next) = l1.next.take() {
+                list1 = Some(next);
+            }
+
+            list2 = Some(l2);
+        } else {
+            values.push(l2.val);
+
+            if let Some(next) = l2.next.take() {
+                list2 = Some(next);
+            }
+
+            list1 = Some(l1);
+        }
+    }
+
+    let mut head = None;
+    for val in values.into_iter().rev() {
+        let mut node = ListNode::new(val);
+        node.next = head;
+        head = Some(Box::new(node));
+    }
+
+    head
 }
 
 #[cfg(test)]
@@ -37,9 +84,18 @@ mod tests {
     #[test]
     fn merge_two_lists_test() {
         let cases = vec![
-            (vec![1, 2, 4], vec![1, 3, 4], vec![1, 1, 2, 3, 4, 4]), // Example 1
-            (vec![], vec![], vec![]),                               // Example 2: both empty
-            (vec![], vec![0], vec![0]),                             // Example 3: first empty
+            (
+                vec![-10, -6, -6, -6, -3, 5],
+                vec![],
+                vec![-10, -6, -6, -6, -3, 5],
+            ),
+            (vec![5], vec![1, 2, 4], vec![1, 2, 4, 5]),
+            (vec![1, 3, 5], vec![2, 4], vec![1, 2, 3, 4, 5]),
+            (vec![1, 2, 4], vec![1, 3, 4], vec![1, 1, 2, 3, 4, 4]),
+            (vec![1, 2], vec![1, 3, 4], vec![1, 1, 2, 3, 4]),
+            (vec![], vec![], vec![]),
+            (vec![], vec![0], vec![0]),
+            (vec![0], vec![], vec![0]),
         ];
 
         cases.into_iter().for_each(|(list1, list2, expected)| {
