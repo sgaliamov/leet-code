@@ -23,7 +23,7 @@ impl ListNode {
 }
 
 // 0ms | 2.00MB
-pub fn merge_two_lists(
+pub fn merge_two_lists_1(
     mut list1: Option<Box<ListNode>>,
     mut list2: Option<Box<ListNode>>,
 ) -> Option<Box<ListNode>> {
@@ -76,6 +76,39 @@ pub fn merge_two_lists(
     head
 }
 
+pub struct ListIter<'a> {
+    node: &'a Option<Box<ListNode>>,
+}
+
+impl<'a> ListIter<'a> {
+    pub fn new(node: &'a Option<Box<ListNode>>) -> Self {
+        Self { node }
+    }
+}
+
+impl<'a> Iterator for ListIter<'a>
+where
+    Self: 'a,
+{
+    type Item = &'a Box<ListNode>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if let Some(r) = self.node {
+            self.node = &r.next;
+            return Some(r);
+        }
+
+        None
+    }
+}
+
+pub fn merge_two_lists_2(
+    mut _list1: Option<Box<ListNode>>,
+    mut _list2: Option<Box<ListNode>>,
+) -> Option<Box<ListNode>> {
+    todo!("solve")
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -103,7 +136,7 @@ mod tests {
             let list1 = vec_to_list(list1);
             let list2 = vec_to_list(list2);
             let expected = vec_to_list(expected);
-            let actual = merge_two_lists(list1, list2);
+            let actual = merge_two_lists_2(list1, list2);
             assert_that!(actual).named(&name).is_equal_to(expected);
         });
     }
