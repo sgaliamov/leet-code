@@ -30,8 +30,26 @@ pub fn contains_nearby_duplicate_1(nums: Vec<i32>, k: i32) -> bool {
     false
 }
 
+// 8ms - 79.77% | 6.77MB - 22.96%
 pub fn contains_nearby_duplicate_2(nums: Vec<i32>, k: i32) -> bool {
-    todo!("improve")
+    use std::collections::HashMap;
+    use std::hash::{BuildHasherDefault, DefaultHasher};
+
+    let mut map: HashMap<_, _, _> =
+        HashMap::with_hasher(BuildHasherDefault::<DefaultHasher>::default());
+    let k = k as usize;
+
+    for i in 0..nums.len() {
+        let n = nums[i];
+
+        if let Some(j) = map.insert(n, i)
+            && i - j <= k
+        {
+            return true;
+        }
+    }
+
+    false
 }
 
 #[cfg(test)]
@@ -43,13 +61,14 @@ mod tests {
     solution_tests!(
         run_test:
         contains_nearby_duplicate_1,
+        contains_nearby_duplicate_2,
     );
 
     fn run_test(target: fn(Vec<i32>, i32) -> bool) {
         vec![
-            (vec![1, 0, 1, 1], 1, true),        // duplicates within distance 1
-            (vec![1, 2, 3, 1, 2, 3], 2, false), // duplicates outside distance 2
-            (vec![1, 2, 3, 1], 3, true),        // duplicates within distance 3
+            (vec![1, 0, 1, 1], 1, true),
+            (vec![1, 2, 3, 1, 2, 3], 2, false),
+            (vec![1, 2, 3, 1], 3, true),
         ]
         .into_iter()
         .for_each(|(nums, k, expected)| {
