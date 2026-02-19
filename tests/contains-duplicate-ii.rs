@@ -73,25 +73,6 @@ pub fn contains_nearby_duplicate_3(nums: Vec<i32>, k: i32) -> bool {
     false
 }
 
-// pub fn contains_nearby_duplicate_4(nums: Vec<i32>, k: i32) -> bool {
-//     let k = k as usize;
-//     let mut set = std::collections::BTreeSet::new();
-
-//     for i in 0..nums.len() {
-//         let n = nums[i];
-
-//         if !set.insert(n) {
-//             return true;
-//         }
-
-//         if set.len() > k {
-//             set.pop_first();
-//         }
-//     }
-
-//     false
-// }
-
 // 1047ms - 5.06% | 3.02MB - 97.62%
 pub fn contains_nearby_duplicate_4(nums: Vec<i32>, k: i32) -> bool {
     for i in 0..nums.len() {
@@ -99,6 +80,30 @@ pub fn contains_nearby_duplicate_4(nums: Vec<i32>, k: i32) -> bool {
         let lo = 0.max(i as i32 - k) as usize;
         if nums[lo..i].contains(&n) {
             return true;
+        }
+    }
+
+    false
+}
+
+// 4ms - 92.61% | 3.58MB - 83.27%
+pub fn contains_nearby_duplicate_5(nums: Vec<i32>, k: i32) -> bool {
+    use std::collections::HashSet;
+    use std::hash::{BuildHasherDefault, DefaultHasher};
+
+    let k = k as usize;
+    let mut set =
+        HashSet::with_capacity_and_hasher(k, BuildHasherDefault::<DefaultHasher>::default());
+
+    for i in 0..nums.len() {
+        let n = nums[i];
+
+        if !set.insert(n) {
+            return true;
+        }
+
+        if k <= i {
+            set.remove(&nums[i - k]);
         }
     }
 
@@ -117,11 +122,13 @@ mod tests {
         contains_nearby_duplicate_2,
         contains_nearby_duplicate_3,
         contains_nearby_duplicate_4,
+        contains_nearby_duplicate_5,
     );
 
     fn run_test(target: fn(Vec<i32>, i32) -> bool) {
         vec![
             (vec![1, 2, 3, 1, 2, 3], 2, false),
+            (vec![7, 9, 6, 1, 2, 3, 1, 2, 3], 2, false),
             // (vec![1, 1], 0, true),
             (vec![1, 0, 1, 1], 1, true),
             (vec![1, 2, 3, 1], 3, true),
