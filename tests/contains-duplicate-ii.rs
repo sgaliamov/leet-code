@@ -129,7 +129,7 @@ mod tests {
         vec![
             (vec![1, 2, 3, 1, 2, 3], 2, false),
             (vec![7, 9, 6, 1, 2, 3, 1, 2, 3], 2, false),
-            // (vec![1, 1], 0, true),
+            (vec![1, 1], 0, false),
             (vec![1, 0, 1, 1], 1, true),
             (vec![1, 2, 3, 1], 3, true),
         ]
