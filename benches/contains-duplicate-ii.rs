@@ -22,6 +22,8 @@ fn with_random_state(nums: Vec<i32>, k: i32) -> bool {
     false
 }
 
+// Small: DefaultHasher is ~24% faster (1.74µs vs 2.29µs)
+// Large: DefaultHasher is ~52% faster (140µs vs 295µs)
 fn with_default_hasher(nums: Vec<i32>, k: i32) -> bool {
     let k = k as usize;
     let mut set = HashSet::with_hasher(BuildHasherDefault::<DefaultHasher>::default());

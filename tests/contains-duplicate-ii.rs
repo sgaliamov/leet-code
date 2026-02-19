@@ -77,23 +77,21 @@ pub fn contains_nearby_duplicate_3(nums: Vec<i32>, k: i32) -> bool {
 pub fn contains_nearby_duplicate_4(nums: Vec<i32>, k: i32) -> bool {
     for i in 0..nums.len() {
         let n = nums[i];
-        let lo = 0.max(i as i32 - k) as usize;
-        if nums[lo..i].contains(&n) {
+        let j = i.saturating_sub(k as usize);
+        if nums[j..i].contains(&n) {
             return true;
         }
     }
-
     false
 }
 
-// 4ms - 92.61% | 3.58MB - 83.27%
+// 3ms - 96.89% | 3.58MB - 83.27%
 pub fn contains_nearby_duplicate_5(nums: Vec<i32>, k: i32) -> bool {
     use std::collections::HashSet;
     use std::hash::{BuildHasherDefault, DefaultHasher};
 
     let k = k as usize;
-    let mut set =
-        HashSet::with_capacity_and_hasher(k, BuildHasherDefault::<DefaultHasher>::default());
+    let mut set = HashSet::with_hasher(BuildHasherDefault::<DefaultHasher>::default());
 
     for i in 0..nums.len() {
         let n = nums[i];
