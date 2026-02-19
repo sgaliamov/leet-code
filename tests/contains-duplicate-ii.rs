@@ -108,6 +108,30 @@ pub fn contains_nearby_duplicate_5(nums: Vec<i32>, k: i32) -> bool {
     false
 }
 
+pub fn contains_nearby_duplicate_6(nums: Vec<i32>, k: i32) -> bool {
+    use std::collections::HashSet;
+    use std::hash::{BuildHasherDefault, DefaultHasher};
+
+    let k = k as usize;
+    let mut set = HashSet::with_hasher(BuildHasherDefault::<DefaultHasher>::default());
+
+    for i in 0..nums.len() {
+        unsafe {
+            let n = *nums.get_unchecked(i);
+
+            if !set.insert(n) {
+                return true;
+            }
+
+            if k <= i {
+                set.remove(nums.get_unchecked(i - k));
+            }
+        }
+    }
+
+    false
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -121,6 +145,7 @@ mod tests {
         contains_nearby_duplicate_3,
         contains_nearby_duplicate_4,
         contains_nearby_duplicate_5,
+        contains_nearby_duplicate_6,
     );
 
     fn run_test(target: fn(Vec<i32>, i32) -> bool) {
