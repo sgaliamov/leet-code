@@ -52,6 +52,48 @@ pub fn contains_nearby_duplicate_2(nums: Vec<i32>, k: i32) -> bool {
     false
 }
 
+// 1044ms - 5.06% | 3.53MB - 83.27%
+pub fn contains_nearby_duplicate_3(nums: Vec<i32>, k: i32) -> bool {
+    let k = k as usize;
+    let mut set = std::collections::VecDeque::with_capacity(k + 1);
+
+    for i in 0..nums.len() {
+        let n = nums[i];
+
+        if set.contains(&n) {
+            return true;
+        }
+
+        set.push_back(n);
+        if set.len() > k {
+            set.pop_front();
+        }
+    }
+
+    false
+}
+
+// pub fn contains_nearby_duplicate_3(nums: Vec<i32>, k: i32) -> bool {
+//     use std::collections::HashSet;
+//     use std::hash::{BuildHasherDefault, DefaultHasher};
+
+//     let k = k as usize;
+//     let mut set: HashSet<_, _> =
+//         HashSet::with_capacity_and_hasher(k, BuildHasherDefault::<DefaultHasher>::default());
+
+//     for i in 0..nums.len() {
+//         let n = nums[i];
+
+//         if !set.insert(n){
+//             return true;
+//         }
+
+//         // if set.len()
+//     }
+
+//     false
+// }
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -62,6 +104,7 @@ mod tests {
         run_test:
         contains_nearby_duplicate_1,
         contains_nearby_duplicate_2,
+        contains_nearby_duplicate_3,
     );
 
     fn run_test(target: fn(Vec<i32>, i32) -> bool) {
