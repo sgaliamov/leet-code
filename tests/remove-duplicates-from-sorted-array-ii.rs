@@ -97,6 +97,7 @@ pub fn remove_duplicates_3(nums: &mut Vec<i32>) -> i32 {
 }
 
 // Bench: 381ns (large), 350ns (worst case) - fastest with retain
+// from leet code
 pub fn remove_duplicates_4(nums: &mut Vec<i32>) -> i32 {
     let mut p = (-1, 0);
 

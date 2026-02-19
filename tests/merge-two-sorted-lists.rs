@@ -106,7 +106,7 @@ pub fn merge_two_lists_2(
     mut _list1: Option<Box<ListNode>>,
     mut _list2: Option<Box<ListNode>>,
 ) -> Option<Box<ListNode>> {
-    todo!("solve")
+    todo!("solve without extra stack")
 }
 
 #[cfg(test)]
