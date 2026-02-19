@@ -30,8 +30,106 @@ pub fn contains_nearby_duplicate_1(nums: Vec<i32>, k: i32) -> bool {
     false
 }
 
+// 8ms - 79.77% | 6.77MB - 22.96%
 pub fn contains_nearby_duplicate_2(nums: Vec<i32>, k: i32) -> bool {
-    todo!("improve")
+    use std::collections::HashMap;
+    use std::hash::{BuildHasherDefault, DefaultHasher};
+
+    let mut map: HashMap<_, _, _> =
+        HashMap::with_hasher(BuildHasherDefault::<DefaultHasher>::default());
+    let k = k as usize;
+
+    for i in 0..nums.len() {
+        let n = nums[i];
+
+        if let Some(j) = map.insert(n, i)
+            && i - j <= k
+        {
+            return true;
+        }
+    }
+
+    false
+}
+
+// 1044ms - 5.06% | 3.53MB - 83.27%
+pub fn contains_nearby_duplicate_3(nums: Vec<i32>, k: i32) -> bool {
+    let k = k as usize;
+    let mut set = std::collections::VecDeque::with_capacity(k + 1);
+
+    for i in 0..nums.len() {
+        let n = nums[i];
+
+        if set.contains(&n) {
+            return true;
+        }
+
+        set.push_back(n);
+        if set.len() > k {
+            set.pop_front();
+        }
+    }
+
+    false
+}
+
+// 1047ms - 5.06% | 3.02MB - 97.62%
+pub fn contains_nearby_duplicate_4(nums: Vec<i32>, k: i32) -> bool {
+    for i in 0..nums.len() {
+        let n = nums[i];
+        let j = i.saturating_sub(k as usize);
+        if nums[j..i].contains(&n) {
+            return true;
+        }
+    }
+    false
+}
+
+// 3ms - 96.89% | 3.58MB - 83.27%
+pub fn contains_nearby_duplicate_5(nums: Vec<i32>, k: i32) -> bool {
+    use std::collections::HashSet;
+    use std::hash::{BuildHasherDefault, DefaultHasher};
+
+    let k = k as usize;
+    let mut set = HashSet::with_hasher(BuildHasherDefault::<DefaultHasher>::default());
+
+    for i in 0..nums.len() {
+        let n = nums[i];
+
+        if !set.insert(n) {
+            return true;
+        }
+
+        if k <= i {
+            set.remove(&nums[i - k]);
+        }
+    }
+
+    false
+}
+
+pub fn contains_nearby_duplicate_6(nums: Vec<i32>, k: i32) -> bool {
+    use std::collections::HashSet;
+    use std::hash::{BuildHasherDefault, DefaultHasher};
+
+    let k = k as usize;
+    let mut set = HashSet::with_hasher(BuildHasherDefault::<DefaultHasher>::default());
+
+    for i in 0..nums.len() {
+        unsafe {
+            let n = *nums.get_unchecked(i);
+
+            if !set.insert(n) {
+                return true;
+            }
+
+            if k <= i {
+                set.remove(nums.get_unchecked(i - k));
+            }
+        }
+    }
+
+    false
 }
 
 #[cfg(test)]
@@ -43,13 +141,20 @@ mod tests {
     solution_tests!(
         run_test:
         contains_nearby_duplicate_1,
+        contains_nearby_duplicate_2,
+        contains_nearby_duplicate_3,
+        contains_nearby_duplicate_4,
+        contains_nearby_duplicate_5,
+        contains_nearby_duplicate_6,
     );
 
     fn run_test(target: fn(Vec<i32>, i32) -> bool) {
         vec![
-            (vec![1, 0, 1, 1], 1, true),        // duplicates within distance 1
-            (vec![1, 2, 3, 1, 2, 3], 2, false), // duplicates outside distance 2
-            (vec![1, 2, 3, 1], 3, true),        // duplicates within distance 3
+            (vec![1, 2, 3, 1, 2, 3], 2, false),
+            (vec![7, 9, 6, 1, 2, 3, 1, 2, 3], 2, false),
+            (vec![1, 1], 0, false),
+            (vec![1, 0, 1, 1], 1, true),
+            (vec![1, 2, 3, 1], 3, true),
         ]
         .into_iter()
         .for_each(|(nums, k, expected)| {

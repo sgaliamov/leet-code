@@ -5,6 +5,7 @@
         "clippy",
         "deque",
         "gemini",
+        "hashers",
         "itertools",
         "nonoverlapping",
         "nums",
