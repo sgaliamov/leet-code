@@ -123,6 +123,60 @@ pub fn num_islands_1(mut grid: Vec<Vec<char>>) -> i32 {
     (cnt - b'2') as i32
 }
 
+pub fn num_islands_2(mut grid: Vec<Vec<char>>) -> i32 {
+    fn explore(i: u16, j: u16, grid: &mut [Vec<char>], mark: char) {
+        let mut stack = vec![(i, j)];
+        let m = grid.len() - 1;
+
+        while let Some((i, j)) = stack.pop() {
+            let i = i as usize;
+            let j = j as usize;
+            grid[i][j] = mark;
+            let n = grid[i].len() - 1;
+
+            let up = if i != 0 { grid[i - 1][j] } else { '0' };
+            let dw = if i != m { grid[i + 1][j] } else { '0' };
+            let lf = if j != 0 { grid[i][j - 1] } else { '0' };
+            let rt = if j != n { grid[i][j + 1] } else { '0' };
+
+            let i = i as u16;
+            let j = j as u16;
+
+            if dw == '1' {
+                stack.push((i + 1, j));
+            }
+
+            if lf == '1' {
+                stack.push((i, j - 1));
+            }
+
+            if up == '1' {
+                stack.push((i - 1, j));
+            }
+
+            if rt == '1' {
+                stack.push((i, j + 1));
+            }
+        }
+    }
+
+    let mut cnt = b'2';
+
+    for i in 0..grid.len() {
+        for j in 0..grid[i].len() {
+            let c = grid[i][j];
+            if c != '1' {
+                continue;
+            }
+
+            explore(i as u16, j as u16, &mut grid, cnt as char);
+            cnt += 1;
+        }
+    }
+
+    (cnt - b'2') as i32
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -132,6 +186,7 @@ mod tests {
     solution_tests!(
         run_test:
         num_islands_1,
+        num_islands_2,
     );
 
     fn run_test(target: fn(Vec<Vec<char>>) -> i32) {
