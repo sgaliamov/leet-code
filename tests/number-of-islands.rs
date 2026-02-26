@@ -13,7 +13,7 @@
 //! - grid[i][j] is '0' or '1'
 
 // todo: solve
-pub fn num_islands_1(mut grid: Vec<Vec<char>>) -> i32 {
+pub fn num_islands_0(mut grid: Vec<Vec<char>>) -> i32 {
     let mut marker = 2_u8;
     let mut cnt = 0;
     let mut map = std::collections::HashMap::new();
@@ -67,8 +67,8 @@ pub fn num_islands_1(mut grid: Vec<Vec<char>>) -> i32 {
     cnt
 }
 
-// correct, but hit time or memory limits
-pub fn num_islands_2(mut grid: Vec<Vec<char>>) -> i32 {
+// works, but hit time or memory limits
+pub fn num_islands_1(mut grid: Vec<Vec<char>>) -> i32 {
     fn explore(i: i32, j: i32, grid: &mut [Vec<char>], mark: char) {
         let mut stack = vec![i * 1000 + j];
         let m = grid.len() - 1;
@@ -131,7 +131,7 @@ mod tests {
 
     solution_tests!(
         run_test:
-        num_islands_2,
+        num_islands_1,
     );
 
     fn run_test(target: fn(Vec<Vec<char>>) -> i32) {
