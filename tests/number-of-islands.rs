@@ -67,12 +67,15 @@ pub fn num_islands_1(mut grid: Vec<Vec<char>>) -> i32 {
     cnt
 }
 
+// correct, but hit time or memory limits
 pub fn num_islands_2(mut grid: Vec<Vec<char>>) -> i32 {
-    fn explore(i: usize, j: usize, grid: &mut [Vec<char>], mark: char) {
-        let mut stack = vec![(i, j)];
+    fn explore(i: i32, j: i32, grid: &mut [Vec<char>], mark: char) {
+        let mut stack = vec![i * 1000 + j];
         let m = grid.len() - 1;
 
-        while let Some((i, j)) = stack.pop() {
+        while let Some(v) = stack.pop() {
+            let j = (v % 1000) as usize;
+            let i = (v / 1000) as usize;
             grid[i][j] = mark;
             let n = grid[i].len() - 1;
 
@@ -82,23 +85,23 @@ pub fn num_islands_2(mut grid: Vec<Vec<char>>) -> i32 {
             let rt = if j != n { grid[i][j + 1] } else { '0' };
 
             if dw == '1' {
-                stack.push((i + 1, j));
-                grid[i + 1][j] = mark;
+                let v = 1000 * (i + 1) + j;
+                stack.push(v as i32);
             }
 
             if lf == '1' {
-                stack.push((i, j - 1));
-                grid[i][j - 1] = mark;
+                let v = 1000 * i + j - 1;
+                stack.push(v as i32);
             }
 
             if up == '1' {
-                stack.push((i - 1, j));
-                grid[i - 1][j] = mark;
+                let v = 1000 * (i - 1) + j;
+                stack.push(v as i32);
             }
 
             if rt == '1' {
-                stack.push((i, j + 1));
-                grid[i][j + 1] = mark;
+                let v = 1000 * i + j + 1;
+                stack.push(v as i32);
             }
         }
     }
@@ -112,7 +115,7 @@ pub fn num_islands_2(mut grid: Vec<Vec<char>>) -> i32 {
                 continue;
             }
 
-            explore(i, j, &mut grid, cnt as char);
+            explore(i as i32, j as i32, &mut grid, cnt as char);
             cnt += 1;
         }
     }
