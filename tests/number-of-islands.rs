@@ -15,7 +15,6 @@
 // todo: solve
 pub fn num_islands_0(mut grid: Vec<Vec<char>>) -> i32 {
     let mut marker = 2_u8;
-    let mut cnt = 0;
     let mut map = std::collections::HashMap::new();
     let mut active = false;
 
@@ -23,6 +22,7 @@ pub fn num_islands_0(mut grid: Vec<Vec<char>>) -> i32 {
     for i in 0..=m {
         let n = grid[i].len() - 1;
 
+        #[allow(clippy::needless_range_loop)]
         for j in 0..=n {
             if grid[i][j] == '0' {
                 if active {
@@ -34,29 +34,27 @@ pub fn num_islands_0(mut grid: Vec<Vec<char>>) -> i32 {
                 active = true;
             }
 
+            let c = marker as char;
             let up = if i != 0 { grid[i - 1][j] } else { '0' };
+            grid[i][j] = c;
+
             if up == '0' {
-                grid[i][j] = marker as char;
-                map.entry(grid[i][j]).or_insert_with(|| {
-                    cnt += 1;
-                    '0'
-                });
+                map.entry(c).or_insert(c);
             } else {
-                let c = marker as char;
+                let root = *map.get(&up).or_else(|| map.get(&c)).unwrap_or(&up);
+
                 match map.get_mut(&c) {
                     Some(known) => {
-                        if known != &up {
-                            *known = up;
-                            cnt -= 1;
+                        if known != &root {
+                            *known = root;
                         }
                     }
                     None => {
-                        map.entry(c).or_insert_with(|| {
-                            // cnt -= 1;
-                            up
-                        });
+                        map.entry(c).or_insert(root);
                     }
                 }
+
+                map.remove(&up);
             }
         }
 
@@ -64,7 +62,8 @@ pub fn num_islands_0(mut grid: Vec<Vec<char>>) -> i32 {
         marker += 1;
     }
 
-    cnt
+    let unique: std::collections::HashSet<_> = map.values().collect();
+    unique.len() as i32
 }
 
 // works, but hit time or memory limits
@@ -123,6 +122,7 @@ pub fn num_islands_1(mut grid: Vec<Vec<char>>) -> i32 {
     (cnt - b'2') as i32
 }
 
+// did not help
 pub fn num_islands_2(mut grid: Vec<Vec<char>>) -> i32 {
     fn explore(i: u16, j: u16, grid: &mut [Vec<char>], mark: char) {
         let mut stack = vec![(i, j)];
@@ -185,12 +185,28 @@ mod tests {
 
     solution_tests!(
         run_test:
+        num_islands_0,
         num_islands_1,
         num_islands_2,
     );
 
     fn run_test(target: fn(Vec<Vec<char>>) -> i32) {
         vec![
+            (
+                vec![
+                    vec!['1', '1', '1', '1', '1', '0', '1', '1', '1', '1'],
+                    vec!['1', '0', '1', '0', '1', '1', '1', '1', '1', '1'],
+                    vec!['0', '1', '1', '1', '0', '1', '1', '1', '1', '1'],
+                    vec!['1', '1', '0', '1', '1', '0', '0', '0', '0', '1'],
+                    vec!['1', '0', '1', '0', '1', '0', '0', '1', '0', '1'],
+                    vec!['1', '0', '0', '1', '1', '1', '0', '1', '0', '0'],
+                    vec!['0', '0', '1', '0', '0', '1', '1', '1', '1', '0'],
+                    vec!['1', '0', '1', '1', '1', '0', '0', '1', '1', '1'],
+                    vec!['1', '1', '1', '1', '1', '1', '1', '1', '0', '1'],
+                    vec!['1', '0', '1', '1', '1', '1', '1', '1', '1', '0'],
+                ],
+                2,
+            ),
             (
                 vec![
                     vec!['1', '0', '1'],
