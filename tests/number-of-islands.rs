@@ -70,7 +70,7 @@ pub fn num_islands_0(mut grid: Vec<Vec<char>>) -> i32 {
     unique.len() as i32
 }
 
-// works, but hit time or memory limits
+// Time Limit Exceeded
 pub fn num_islands_1(mut grid: Vec<Vec<char>>) -> i32 {
     fn explore(i: u32, j: u32, grid: &mut [Vec<char>], mark: char) {
         let mut stack = vec![(i << 10) | j];
@@ -126,7 +126,7 @@ pub fn num_islands_1(mut grid: Vec<Vec<char>>) -> i32 {
     (cnt - b'2') as i32
 }
 
-// did not help
+// Time Limit Exceeded
 pub fn num_islands_2(mut grid: Vec<Vec<char>>) -> i32 {
     fn explore(i: u16, j: u16, grid: &mut [Vec<char>], mark: char) {
         let mut stack = vec![(i, j)];
