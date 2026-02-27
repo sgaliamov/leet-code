@@ -13,17 +13,14 @@
 //! - grid[i][j] is '0' or '1'
 
 // todo: solve
+// Time Limit Exceeded
 pub fn num_islands_0(mut grid: Vec<Vec<char>>) -> i32 {
     let mut marker = 2_u8;
     let mut map = std::collections::HashMap::new();
     let mut active = false;
 
-    let m = grid.len() - 1;
-    for i in 0..=m {
-        let n = grid[i].len() - 1;
-
-        #[allow(clippy::needless_range_loop)]
-        for j in 0..=n {
+    for i in 0..grid.len() {
+        for j in 0..grid[i].len() {
             if grid[i][j] == '0' {
                 if active {
                     marker += 1;
@@ -41,20 +38,16 @@ pub fn num_islands_0(mut grid: Vec<Vec<char>>) -> i32 {
             if up == '0' {
                 map.entry(c).or_insert(c);
             } else {
-                let root = *map.get(&up).or_else(|| map.get(&c)).unwrap_or(&up);
+                let root = *map.get(&up).unwrap();
 
-                match map.get_mut(&c) {
-                    Some(known) => {
-                        if known != &root {
-                            *known = root;
-                        }
-                    }
-                    None => {
-                        map.entry(c).or_insert(root);
-                    }
+                let Some(&known) = map.get(&c) else {
+                    map.entry(c).or_insert(root);
+                    continue;
+                };
+
+                if known != root {
+                    map.entry(root).and_modify(|e| *e = known);
                 }
-
-                map.remove(&up);
             }
         }
 
@@ -62,7 +55,18 @@ pub fn num_islands_0(mut grid: Vec<Vec<char>>) -> i32 {
         marker += 1;
     }
 
-    let unique: std::collections::HashSet<_> = map.values().collect();
+    let unique: std::collections::HashSet<_> = map
+        .values()
+        .map(|mut c| {
+            while let Some(root) = map.get(c) {
+                if c == root {
+                    return root;
+                }
+                c = root;
+            }
+            c
+        })
+        .collect();
     unique.len() as i32
 }
 
@@ -194,8 +198,37 @@ mod tests {
         vec![
             (
                 vec![
-                    vec!['1', '1', '1', '0', '1'],
                     vec!['1', '0', '1', '1', '1'],
+                    vec!['1', '0', '1', '0', '1'],
+                    vec!['1', '0', '1', '0', '1'],
+                    vec!['1', '1', '1', '0', '1'],
+                ],
+                1,
+            ),
+            (
+                vec![
+                    vec!['1', '1', '1', '0', '1'],
+                    vec!['1', '0', '1', '0', '1'],
+                    vec!['1', '0', '1', '0', '1'],
+                    vec!['1', '0', '1', '1', '1'],
+                ],
+                1,
+            ),
+            (
+                vec![
+                    vec!['1', '1', '1', '1', '1'],
+                    vec!['1', '0', '1', '0', '1'],
+                    vec!['1', '0', '1', '0', '1'],
+                    vec!['1', '0', '1', '0', '1'],
+                ],
+                1,
+            ),
+            (
+                vec![
+                    vec!['1', '0', '1', '0', '1'],
+                    vec!['1', '0', '1', '0', '1'],
+                    vec!['1', '0', '1', '0', '1'],
+                    vec!['1', '1', '1', '1', '1'],
                 ],
                 1,
             ),
@@ -253,36 +286,12 @@ mod tests {
             (vec![vec!['1']], 1),
             (
                 vec![
-                    vec!['1', '1', '1', '1', '1'],
-                    vec!['1', '0', '1', '0', '1'],
-                    vec!['1', '0', '1', '0', '1'],
-                ],
-                1,
-            ),
-            (
-                vec![
-                    vec!['1', '0', '1', '0', '1'],
-                    vec!['1', '0', '1', '0', '1'],
-                    vec!['1', '1', '1', '1', '1'],
-                ],
-                1,
-            ),
-            (
-                vec![
                     vec!['1', '1', '0', '0', '0'],
                     vec!['1', '1', '0', '0', '0'],
                     vec!['0', '0', '1', '0', '0'],
                     vec!['0', '0', '0', '1', '1'],
                 ],
                 3,
-            ),
-            (
-                vec![
-                    vec!['1', '0', '1', '1', '1'],
-                    vec!['1', '0', '1', '0', '1'],
-                    vec!['1', '1', '1', '0', '1'],
-                ],
-                1,
             ),
             (
                 vec![
